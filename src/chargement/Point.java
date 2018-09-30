@@ -36,4 +36,8 @@ public class Point {
 	public float getZ() {
 		return z;
 	}
+	
+	public String toString() {
+		return "[Point: x="+x+" y="+y+" z="+z;
+	}
 }
