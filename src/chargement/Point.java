@@ -6,8 +6,17 @@ package chargement;
  *
  */
 public class Point {
+	/**
+	 * Coordonnée sur l'axe x du Point.
+	 */
 	private float x;
+	/**
+	 * Coordonnée sur l'axe y du Point.
+	 */
 	private float y;
+	/**
+	 * Coordonnée sur l'axe z du Point.
+	 */
 	private float z;
 	public Point(float x, float y, float z) {
 		super();
@@ -15,6 +24,7 @@ public class Point {
 		this.y = y;
 		this.z = z;
 	}
+	
 	/**
 	 * Retourne la coordonnée x du point.
 	 * @return
@@ -22,6 +32,7 @@ public class Point {
 	public float getX() {
 		return x;
 	}
+	
 	/**
 	 * Retourne la coordonnée y du point.
 	 * @return
@@ -29,6 +40,7 @@ public class Point {
 	public float getY() {
 		return y;
 	}
+	
 	/**
 	 * Retourne la coordonnée y du point.
 	 * @return
@@ -37,7 +49,10 @@ public class Point {
 		return z;
 	}
 	
+	/**
+	 * Représentation textuelle d'un Point.
+	 */
 	public String toString() {
-		return "[Point: x="+x+" y="+y+" z="+z;
+		return "[Point: x="+x+" y="+y+" z="+z+"]";
 	}
 }

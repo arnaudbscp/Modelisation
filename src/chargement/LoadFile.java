@@ -21,12 +21,27 @@ public class LoadFile {
 	 */
 	BufferedReader br;
 	/**
-	 * Constructeur qui charge le fichier.
+	 * Tableau stockant tous les Point de la figure.
 	 */
-	public LoadFile(){
+	Point[] points;
+	/**
+	 * Tableau stockant toutes les Face de la figure.
+	 */
+	Face[] faces;
+	/**
+	 * Constructeur qui charge le fichier.
+	 * @throws IOException
+	 */
+	public LoadFile() throws IOException{
 		try {
 			fichier = new File("ressources/dolphin.ply");
 			br = new BufferedReader(new FileReader(fichier));
+			br.readLine();
+			br.readLine();
+			points = new Point[RecupNb(br.readLine())];
+			for(int i=0;i<3;i++)
+				br.readLine();
+			faces = new Face[RecupNb(br.readLine())];
 		} catch (FileNotFoundException e) {
 			System.out.println("Le fichier n'a pas été trouvé...");
 			e.printStackTrace();
@@ -40,30 +55,44 @@ public class LoadFile {
 	public void CreerPoints() throws IOException {
 		br.readLine();
 		br.readLine();
-		Point[] points = new Point[RecupNbPoints(br.readLine())];
-		for(int i=0;i<6;i++) // 6 lignes séparent la ligne indiquant le nombre de points de la ligne représentant le premier point. On peut les passer car elles ne sont pas nécessaires à interpréter.
-			br.readLine();
-		for(int j=0;j<points.length;j++) {
-			String ligne_points = br.readLine();
-			//Pour chaque ligne, on récupère les 3 points en repérant les espaces dans la ligne.
-			float x = Float.parseFloat(ligne_points.substring(0, ligne_points.indexOf(" ")));
-			float y = Float.parseFloat(ligne_points.substring(ligne_points.indexOf(" ")+1, ligne_points.indexOf(" ", ligne_points.indexOf(" ")+1)));
-			float z = Float.parseFloat(ligne_points.substring(ligne_points.indexOf(" ", ligne_points.indexOf(" ")+1)+1, ligne_points.length()));
-			points[j] = new Point(x, y, z);
+		for(int i=0;i<points.length;i++) {
+			String ligne_point = br.readLine();
+			//Pour chaque ligne, on récupère les 3 coordonnées en repérant les espaces dans la ligne.
+			float x = Float.parseFloat(ligne_point.substring(0, ligne_point.indexOf(" ")));
+			float y = Float.parseFloat(ligne_point.substring(ligne_point.indexOf(" ")+1, ligne_point.indexOf(" ", ligne_point.indexOf(" ")+1)));
+			float z = Float.parseFloat(ligne_point.substring(ligne_point.indexOf(" ", ligne_point.indexOf(" ")+1)+1));
+			points[i] = new Point(x, y, z);
 		}
 	}
 	
 	/**
-	 * Récupère le nombre de points de la figure.
+	 * Création des faces.
+	 * @throws IOException
+	 */
+	public void CreerFaces() throws IOException {
+		for(int j=0;j<faces.length;j++) {
+			String ligne_face = br.readLine();
+			ligne_face = ligne_face.substring(2,ligne_face.length()-1);//Supprime le 3 en début de chaque ligne.
+			//Pour chaque ligne, on récupère les 3 Point en repérant les espaces dans la ligne.
+			int pt1 = Integer.parseInt(ligne_face.substring(0, ligne_face.indexOf(" ")));
+			int pt2 = Integer.parseInt(ligne_face.substring(ligne_face.indexOf(" ")+1, ligne_face.indexOf(" ", ligne_face.indexOf(" ")+1)));
+			int pt3 = Integer.parseInt(ligne_face.substring(ligne_face.indexOf(" ", ligne_face.indexOf(" ")+1)+1));
+			faces[j] = new Face(points[pt1],points[pt2],points[pt3]);
+		}
+	}
+	
+	/**
+	 * Récupère le nombre de points ou le nombre de faces de la figure, en fonction de la ligne passée en paramètre.
 	 * @param ligne
 	 * @return
 	 */
-	public int RecupNbPoints(String ligne) {
-		return Integer.parseInt(ligne.substring(15, ligne.length()));
+	public int RecupNb(String ligne) {
+		return Integer.parseInt(ligne.substring(ligne.indexOf(" ", ligne.indexOf(" ")+1)+1, ligne.length()));
 	}
 	
 	public static void main(String[] args) throws IOException {
 		LoadFile file = new LoadFile();
 		file.CreerPoints();
+		file.CreerFaces();
 	}
 }
