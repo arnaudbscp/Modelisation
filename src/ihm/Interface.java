@@ -3,7 +3,6 @@ package ihm;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -11,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -24,7 +22,7 @@ public class Interface extends Application {
 		
 		VBox menu = new VBox();
 		
-		corps.setMargin(menu, new Insets(50, 0, 0, 20));
+		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		menu.setMinWidth(150);
 		Button b1 = new Button("Importer");
 		b1.setMinWidth(150);
@@ -85,5 +83,4 @@ public class Interface extends Application {
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
-
 }

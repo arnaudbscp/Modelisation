@@ -18,6 +18,11 @@ public class Face {
 	 */
 	private Point pt3;
 	/**
+	 * Centre de gravité de la face triangulaire. Il s'agit du Point situé à l'intersection des 3 médianes.
+	 */
+	private Point centre_gravite;
+	
+	/**
 	 * Constructeur.
 	 * @param pt1
 	 * @param pt2
@@ -39,9 +44,37 @@ public class Face {
 	}
 	
 	/**
+	 * Retourne le centre de gravité de la face triangulaire.
+	 * @return
+	 */
+	public Point getCentre_gravite() {
+		return centre_gravite;
+	}
+	
+	/**
+	 * Définit le centre de gravité de la face triangulaire.
+	 * @param centre_gravite
+	 */
+	public void setCentre_gravite(Point centre_gravite) {
+		this.centre_gravite = centre_gravite;
+	}
+	
+	/**
+	 * Calcule le centre de gravité de la Face triangulaire.
+	 * @param f
+	 * @return
+	 */
+	public Point calculCentreGravite() {
+		float x = (this.getPoints()[0].getX()+this.getPoints()[1].getX()+this.getPoints()[2].getX())/3;
+		float y = (this.getPoints()[0].getY()+this.getPoints()[1].getY()+this.getPoints()[2].getY())/3;
+		float z = (this.getPoints()[0].getZ()+this.getPoints()[1].getZ()+this.getPoints()[2].getZ())/3;
+		return new Point(x, y, z);
+	}
+
+	/**
 	 * Représentation textuelle d'une Face.
 	 */
 	public String toString() {
-		return "\n[Face:\nPoint 1:"+pt1.toString()+"\nPoint 2:"+pt2.toString()+"\nPoint 3:"+pt3.toString()+"]\n";
+		return "\n[Face:\nPoint 1:"+pt1.toString()+"\nPoint 2:"+pt2.toString()+"\nPoint 3:"+pt3.toString()+"\nBarycentre:"+centre_gravite+"]\n";
 	}
 }

@@ -15,19 +15,19 @@ public class LoadFile {
 	/**
 	 * Stocke le fichier.
 	 */
-	File fichier;
+	private File fichier;
 	/**
 	 * BufferedReader pour lire le fichier ligne par ligne.
 	 */
-	BufferedReader br;
+	private BufferedReader br;
 	/**
 	 * Tableau stockant tous les Point de la figure.
 	 */
-	Point[] points;
+	private Point[] points;
 	/**
 	 * Tableau stockant toutes les Face de la figure.
 	 */
-	Face[] faces;
+	private Face[] faces;
 	/**
 	 * Constructeur qui charge le fichier.
 	 * @throws IOException
@@ -89,10 +89,20 @@ public class LoadFile {
 	public int RecupNb(String ligne) {
 		return Integer.parseInt(ligne.substring(ligne.indexOf(" ", ligne.indexOf(" ")+1)+1, ligne.length()));
 	}
+
+	/**
+	 * Retourne le tableau contenant l'ensemble des Point de la figure.
+	 * @return
+	 */
+	public Point[] getPoints() {
+		return points;
+	}
 	
-	public static void main(String[] args) throws IOException {
-		LoadFile file = new LoadFile();
-		file.CreerPoints();
-		file.CreerFaces();
+	/**
+	 * Retourne le tableau contenant l'ensemble des Face de la figure.
+	 * @return
+	 */
+	public Face[] getFaces() {
+		return faces;
 	}
 }

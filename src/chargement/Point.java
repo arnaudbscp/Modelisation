@@ -50,6 +50,14 @@ public class Point {
 	}
 	
 	/**
+	 * Retourne un tableau contenant les 3 coordonnées du Point.
+	 * @return
+	 */
+	public float[] getCoordonnees() {
+		return new float[] {x,y,z};
+	}
+	
+	/**
 	 * Représentation textuelle d'un Point.
 	 */
 	public String toString() {
