@@ -114,7 +114,7 @@ public class Interface extends Application {
 			
 			for(int i=0;i<faces.length;++i) {
 				faces[i].setCentre_gravite(faces[i].calculCentreGravite());
-			}
+			} 
 			l.trierFaces(faces, 1); 
 			for (int i = 0; i < faces.length; i++) {
 				Polygon triangle = new Polygon();
