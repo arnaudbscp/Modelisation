@@ -11,7 +11,7 @@ import chargement.LoadFile;
 
 class TestNb {
 
-	@Test
+	@Test 
 	public void testNbPoints() throws IOException {
 		LoadFile f = new LoadFile();
 		String model = "ply\n" + 
