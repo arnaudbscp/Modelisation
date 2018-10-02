@@ -8,9 +8,20 @@ import java.io.StringReader;
 import org.junit.jupiter.api.Test;
 
 import chargement.LoadFile;
+import exception.WrongPointLineFormatException;
 
+/**
+ * Classe de test sur un point. On teste si un point est créé à partir des bonnes coordonnées.
+ * @author Valentin
+ *
+ */
 class TestPoint {
 
+	/**
+	 * Méthode de test sur un point. On teste si un point est créé à partir des bonnes coordonnées.
+	 * @author Valentin
+	 *
+	 */
 	@Test
 	void test() throws IOException {
 		LoadFile f = new LoadFile();
@@ -23,11 +34,16 @@ class TestPoint {
 				"element face 0\n" + 
 				"property list uint8 int32 vertex_indices\n" + 
 				"end_header\n" +
-				"13.6601 0 548.364";
+				"13.6601 0 548.364 ";
 		f.lireStream(new StringReader(model));
-		f.CreerPoints();
-		assertEquals(13.6601, f.getPoints()[0].getX());
-		assertEquals(0, f.getPoints()[0].getY());
-		assertEquals(548.364, f.getPoints()[0].getZ());
+		try {
+			f.CreerPoints();
+		} catch (WrongPointLineFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertEquals((float)13.6601, (float)f.getPoints()[0].getX());
+		assertEquals((float)0, (float)f.getPoints()[0].getY());
+		assertEquals((float)548.364, (float)f.getPoints()[0].getZ());
 	}
 }

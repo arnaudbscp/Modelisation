@@ -43,15 +43,24 @@ public class Face {
 		return new Point[] {pt1,pt2,pt3};
 	}
 	
+	/**
+	 * Retourne les coordonnées X des 3 points de la Face, sous forme d'un tableau de double.
+	 * @return
+	 */
 	public double[] recupX() {
 		double[] x = new double[] {pt1.getX()+500,pt2.getX()+500,pt2.getX()+500};
 		return x;
 	}
 	
+	/**
+	 * Retourne les coordonnées Y des 3 points de la Face, sous forme d'un tableau de double.
+	 * @return
+	 */
 	public double[] recupY() {
 		double[] y = new double[] {pt1.getY()+250,pt2.getY()+250,pt2.getY()+250};
 		return y;
 	}
+	
 	/**
 	 * Retourne le centre de gravité de la face triangulaire.
 	 * @return

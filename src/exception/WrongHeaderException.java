@@ -1,7 +1,16 @@
 package exception;
 
+/**
+ * Exception soulevée lorsque l'en-tête du fichier n'est pas écrit dans le format attendu.
+ * @author Valentin
+ *
+ */
 @SuppressWarnings("serial")
 public class WrongHeaderException extends Exception {
+	
+	/**
+	 * Constructeur affichant le message d'erreur.
+	 */
 	public WrongHeaderException() {
 		System.out.println("L'en-tête du fichier n'est pas écrit correctement... Il doit être sous cette forme: (i et j sont des entiers représentant respectivement le nombre de points et le nombre de faces de la figure)\n" +
 				"ply\n" + 

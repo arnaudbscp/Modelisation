@@ -1,14 +1,13 @@
 package ihm;
+
 import java.io.IOException;
 
 import chargement.Face;
 import chargement.Initialisation;
 import chargement.LoadFile;
-import exception.NotAnAxisException;
-import exception.WrongLineFormatException;
-/**
- * @author bascopa & clarissa
- */
+import exception.WrongFaceLineFormatException;
+import exception.WrongPointLineFormatException;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -24,12 +23,13 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * @author bascopa & clarissa
+ */
 public class Interface extends Application {
 
 	public void start(Stage primaryStage) throws Exception {
@@ -44,7 +44,7 @@ public class Interface extends Application {
 		menu.getChildren().add(b1);
 		
 		FileChooser importer = new FileChooser();
-		importer.setTitle("Sélectionner un fichier 3D");
+		importer.setTitle("Selectionner un fichier 3D");
 		b1.setOnAction(e -> {
 			importer.showOpenDialog(primaryStage);
 		});
@@ -102,21 +102,21 @@ public class Interface extends Application {
 		Application.launch(args);
 	}
 	
-	public Group dessin(GraphicsContext gc) throws NotAnAxisException {
+	public Group dessin(GraphicsContext gc){
 	      gc.setLineWidth(1); //epaisseur des lignes
 	      LoadFile file;
 	      Group g = new Group();
 		try {
 			file = new LoadFile();
-			file.CreerPoints();
-			file.CreerFaces();
-			Face[] faces = file.getFaces();
+			try {
+				file.CreerPoints();
+				file.CreerFaces();
+			} catch (WrongPointLineFormatException | WrongFaceLineFormatException e) {
+				// TODO Auto-generated catch block
+				System.exit(1);
+			}
 			Initialisation l = new Initialisation();
-			
-			for(int i=0;i<faces.length;++i) {
-				faces[i].setCentre_gravite(faces[i].calculCentreGravite());
-			} 
-			l.trierFaces(faces, 1); 
+			Face[] faces = l.getFaces();
 			for (int i = 0; i < faces.length; i++) {
 				Polygon triangle = new Polygon();
 				triangle.getPoints().setAll(
@@ -132,9 +132,6 @@ public class Interface extends Application {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (WrongLineFormatException e) {
-			// TODO Auto-generated catch block
-			System.exit(1);
 		}
 		g.setTranslateX(100);
 		g.setTranslateY(150);

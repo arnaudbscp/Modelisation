@@ -7,11 +7,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
+import exception.WrongFaceLineFormatException;
 import exception.WrongHeaderException;
-import exception.WrongLineFormatException;
+import exception.WrongPointLineFormatException;
 
 /**
- * Charge le fichier 3D en créant tous les points.
+ * Charge le fichier 3D en créant tous les points et les faces.
  * @author Valentin
  *
  */
@@ -30,13 +31,17 @@ public class LoadFile {
 	 */
 	private Face[] faces;
 	/**
-	 * Constructeur qui charge le fichier.
+	 * Constructeur appelant la méthode lireStream(Reader in).
 	 * @throws IOException
 	 */
 	public LoadFile() throws IOException{
 		lireStream(new FileReader(new File("ressources/dolphin.ply")));
 	}
-
+	
+	/**
+	 * Méthode qui charge le fichier et créé les tableaux de Point et de Face de longueurs adéquates, sans les remplir.
+	 * @throws IOException
+	 */
 	public void lireStream(Reader in) throws IOException {
 		try {
 			br = new BufferedReader(in);
@@ -58,19 +63,23 @@ public class LoadFile {
 	/**
 	 * Création de tous les points de la figure et stockage dans un tableau de Point.
 	 * @throws IOException
-	 * @throws WrongLineFormatException 
+	 * @throws WrongPointLineFormatException 
 	 */
-	public void CreerPoints() throws IOException, WrongLineFormatException {
+	public void CreerPoints() throws IOException, WrongPointLineFormatException {
 		br.readLine();
 		br.readLine();
 		for(int i=0;i<points.length;i++) {
 			String ligne_point = br.readLine();
-			if(!ligne_point.matches("[[0-9]+.?[0-9]* ]{3}"))
-				throw new WrongLineFormatException();
+			//Je remplace les espaces par des a car je n'arrive pas à gérer les espaces dans la regex.
+			ligne_point=ligne_point.replace(" ", "a");
+			if(!ligne_point.matches("^(-?[0-9]+\\.?[0-9]*a){3}$"))
+				throw new WrongPointLineFormatException(i+10);
+			//On supprime le dernier a (espace) inutile.
+			ligne_point=ligne_point.substring(0,ligne_point.length()-1);
 			//Pour chaque ligne, on récupère les 3 coordonnées en repérant les espaces dans la ligne.
-			float x = Float.parseFloat(ligne_point.substring(0, ligne_point.indexOf(" ")));
-			float y = Float.parseFloat(ligne_point.substring(ligne_point.indexOf(" ")+1, ligne_point.indexOf(" ", ligne_point.indexOf(" ")+1)));
-			float z = Float.parseFloat(ligne_point.substring(ligne_point.indexOf(" ", ligne_point.indexOf(" ")+1)+1));
+			float x = Float.parseFloat(ligne_point.substring(0, ligne_point.indexOf("a")));
+			float y = Float.parseFloat(ligne_point.substring(ligne_point.indexOf("a")+1, ligne_point.indexOf("a", ligne_point.indexOf("a")+1)));
+			float z = Float.parseFloat(ligne_point.substring(ligne_point.indexOf("a", ligne_point.indexOf("a")+1)+1));
 			points[i] = new Point(x, y, z);
 		}
 	}
@@ -78,15 +87,20 @@ public class LoadFile {
 	/**
 	 * Création des faces.
 	 * @throws IOException
+	 * @throws WrongFaceLineFormatException 
 	 */
-	public void CreerFaces() throws IOException {
+	public void CreerFaces() throws IOException, WrongFaceLineFormatException {
 		for(int j=0;j<faces.length;j++) {
 			String ligne_face = br.readLine();
+			//Je remplace les espaces par des a car je n'arrive pas à gérer les espaces dans la regex.
+			ligne_face=ligne_face.replace(" ", "a");
+			if(!ligne_face.matches("^3a([0-9]+a){3}$"))
+				throw new WrongFaceLineFormatException(j+10+points.length);
 			ligne_face = ligne_face.substring(2,ligne_face.length()-1);//Supprime le 3 en début de chaque ligne.
 			//Pour chaque ligne, on récupère les 3 Point en repérant les espaces dans la ligne.
-			int pt1 = Integer.parseInt(ligne_face.substring(0, ligne_face.indexOf(" ")));
-			int pt2 = Integer.parseInt(ligne_face.substring(ligne_face.indexOf(" ")+1, ligne_face.indexOf(" ", ligne_face.indexOf(" ")+1)));
-			int pt3 = Integer.parseInt(ligne_face.substring(ligne_face.indexOf(" ", ligne_face.indexOf(" ")+1)+1));
+			int pt1 = Integer.parseInt(ligne_face.substring(0, ligne_face.indexOf("a")));
+			int pt2 = Integer.parseInt(ligne_face.substring(ligne_face.indexOf("a")+1, ligne_face.indexOf("a", ligne_face.indexOf("a")+1)));
+			int pt3 = Integer.parseInt(ligne_face.substring(ligne_face.indexOf("a", ligne_face.indexOf("a")+1)+1));
 			faces[j] = new Face(points[pt1],points[pt2],points[pt3]);
 		}
 	}
