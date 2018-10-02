@@ -12,6 +12,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.VPos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -86,8 +87,8 @@ public class Interface extends Application {
 		
 		Canvas canv = new Canvas(1100,600);
 		GraphicsContext gc = canv.getGraphicsContext2D();
-        dessin(gc);
-		corps.getChildren().add(canv);
+		
+		corps.getChildren().add(dessin(gc));
 		
 		Scene scene = new Scene(corps, 1280, 600);
 		primaryStage.setScene(scene);
@@ -100,30 +101,40 @@ public class Interface extends Application {
 		Application.launch(args);
 	}
 	
-	public void dessin(GraphicsContext gc) throws NotAnAxisException {
-		  gc.setFill(Color.GREEN); //remplissage
-	      gc.setStroke(Color.BLACK); //contours
+	public Group dessin(GraphicsContext gc) throws NotAnAxisException {
 	      gc.setLineWidth(1); //epaisseur des lignes
 	      LoadFile file;
+	      Group g = new Group();
 		try {
 			file = new LoadFile();
 			file.CreerPoints();
 			file.CreerFaces();
 			Face[] faces = file.getFaces();
 			Initialisation l = new Initialisation();
+			
 			for(int i=0;i<faces.length;++i) {
 				faces[i].setCentre_gravite(faces[i].calculCentreGravite());
 			}
 			l.trierFaces(faces, 1); 
 			for (int i = 0; i < faces.length; i++) {
-				gc.strokePolygon(faces[i].recupX(), faces[i].recupY(), 3);
-				/*gc.transform(faces[i].getPoints()[0].getX(), faces[i].getPoints()[1].getX(), 
-						faces[i].getPoints()[0].getY(), faces[i].getPoints()[1].getY(), , );
-			*/}
+				Polygon triangle = new Polygon();
+				triangle.getPoints().setAll(
+						(double)faces[i].getPoints()[0].getX(), (double)faces[i].getPoints()[0].getY(),
+						(double)faces[i].getPoints()[1].getX(), (double)faces[i].getPoints()[1].getY(),
+						(double)faces[i].getPoints()[2].getX(), (double)faces[i].getPoints()[2].getY()
+				);
+				triangle.setStroke(Color.BLACK);
+				triangle.setFill(Color.GRAY);
+				g.getChildren().add(triangle);
+				
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		g.setTranslateX(100);
+		g.setTranslateY(150);
+		return g;
 	      
 	}
 }
