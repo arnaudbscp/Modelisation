@@ -1,17 +1,23 @@
 package ihm;
-
+/**
+ * @author bascopa & clarissa
+ */
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.ArcType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -71,9 +77,12 @@ public class Interface extends Application {
 		corps.getChildren().add(menu);
 		corps.getChildren().add(dessin);
 		
+		Canvas canv = new Canvas(500,500);
+		GraphicsContext gc = canv.getGraphicsContext2D();
+        dessin(gc);
+		corps.getChildren().add(canv);
 		
-		
-		Scene scene = new Scene(corps, 758, 280);
+		Scene scene = new Scene(corps, 758, 580);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("i3D");
 		primaryStage.setResizable(false);
@@ -82,5 +91,13 @@ public class Interface extends Application {
 	
 	public static void main(String[] args) {
 		Application.launch(args);
+	}
+	
+	public void dessin(GraphicsContext gc) {
+		  gc.setFill(Color.GREEN); //remplissage
+	      gc.setStroke(Color.BLUE); //contours
+	      gc.setLineWidth(2); //epaisseur des lignes
+	      gc.strokeLine(39, 11, 19, 8);//dimmensions lignes
+	      
 	}
 }
