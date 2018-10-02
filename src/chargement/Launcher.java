@@ -11,9 +11,10 @@ import exception.NotAnAxisException;
  */
 public class Launcher {
 	
-	Face[] faces;
+	protected Face[] faces;
+
 	/**
-	 * Méthode principale.
+	 * Constructeur.
 	 * @param args
 	 * @throws IOException
 	 * @throws NotAnAxeException 

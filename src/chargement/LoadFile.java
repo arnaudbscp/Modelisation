@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 
 import exception.WrongHeaderException;
 
@@ -14,10 +15,7 @@ import exception.WrongHeaderException;
  *
  */
 public class LoadFile {
-	/**
-	 * Stocke le fichier.
-	 */
-	private File fichier;
+
 	/**
 	 * BufferedReader pour lire le fichier ligne par ligne.
 	 */
@@ -35,9 +33,12 @@ public class LoadFile {
 	 * @throws IOException
 	 */
 	public LoadFile() throws IOException{
+		lireStream(new FileReader(new File("ressources/dolphin.ply")));
+	}
+
+	public void lireStream(Reader in) throws IOException {
 		try {
-			fichier = new File("ressources/dolphin.ply");
-			br = new BufferedReader(new FileReader(fichier));
+			br = new BufferedReader(in);
 			br.readLine();
 			br.readLine();
 			points = new Point[RecupNb(br.readLine())];
