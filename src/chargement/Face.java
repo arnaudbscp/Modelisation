@@ -43,8 +43,8 @@ public class Face {
 		return new Point[] {pt1,pt2,pt3};
 	}
 	
-	public float[] recupX() {
-		float[] x = new float[] {pt1.getX(),pt2.getX(),pt2.getX()};
+	public double[] recupX() {
+		double[] x = new double[] {pt1.getX(),pt2.getX(),pt2.getX()};
 		return x;
 	}
 	/**
