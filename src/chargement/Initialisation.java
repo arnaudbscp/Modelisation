@@ -5,21 +5,21 @@ import java.io.IOException;
 import exception.NotAnAxisException;
 
 /**
- * Classe principale lançant l'application.
+ * Classe permettant la création des tableaux de points et de faces grâce à LoadFile, qui calcule le centre de gravité des faces et qui trie les faces.
  * @author Valentin
  *
  */
-public class Launcher {
+public class Initialisation {
 	
 	protected Face[] faces;
 
 	/**
-	 * Constructeur.
+	 * Constructeur, créé les 2 tableaux de la longueur adéquate et les remplit, calcule le centre de gravité de chaque face et les trie.
 	 * @param args
 	 * @throws IOException
 	 * @throws NotAnAxeException 
 	 */
-	public Launcher() throws IOException{
+	public Initialisation() throws IOException{
 		LoadFile file = new LoadFile();
 		file.CreerPoints();
 		file.CreerFaces();
@@ -61,6 +61,10 @@ public class Launcher {
 		}
 	}
 
+	/**
+	 * Retourne un tableau contenant toutes les faces.
+	 * @return
+	 */
 	public Face[] getFaces() {
 		return faces;
 	}

@@ -2,7 +2,7 @@ package ihm;
 import java.io.IOException;
 
 import chargement.Face;
-import chargement.Launcher;
+import chargement.Initialisation;
 import chargement.LoadFile;
 import exception.NotAnAxisException;
 /**
@@ -110,7 +110,7 @@ public class Interface extends Application {
 			file.CreerPoints();
 			file.CreerFaces();
 			Face[] faces = file.getFaces();
-			Launcher l = new Launcher();
+			Initialisation l = new Initialisation();
 			for(int i=0;i<faces.length;++i) {
 				faces[i].setCentre_gravite(faces[i].calculCentreGravite());
 			}
