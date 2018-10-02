@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.Reader;
 
 import exception.WrongHeaderException;
+import exception.WrongLineFormatException;
 
 /**
  * Charge le fichier 3D en créant tous les points.
@@ -57,12 +58,15 @@ public class LoadFile {
 	/**
 	 * Création de tous les points de la figure et stockage dans un tableau de Point.
 	 * @throws IOException
+	 * @throws WrongLineFormatException 
 	 */
-	public void CreerPoints() throws IOException {
+	public void CreerPoints() throws IOException, WrongLineFormatException {
 		br.readLine();
 		br.readLine();
 		for(int i=0;i<points.length;i++) {
 			String ligne_point = br.readLine();
+			if(!ligne_point.matches("[[0-9]+.?[0-9]* ]{3}"))
+				throw new WrongLineFormatException();
 			//Pour chaque ligne, on récupère les 3 coordonnées en repérant les espaces dans la ligne.
 			float x = Float.parseFloat(ligne_point.substring(0, ligne_point.indexOf(" ")));
 			float y = Float.parseFloat(ligne_point.substring(ligne_point.indexOf(" ")+1, ligne_point.indexOf(" ", ligne_point.indexOf(" ")+1)));

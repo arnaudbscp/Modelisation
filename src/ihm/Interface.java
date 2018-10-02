@@ -5,6 +5,7 @@ import chargement.Face;
 import chargement.Initialisation;
 import chargement.LoadFile;
 import exception.NotAnAxisException;
+import exception.WrongLineFormatException;
 /**
  * @author bascopa & clarissa
  */
@@ -131,6 +132,9 @@ public class Interface extends Application {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (WrongLineFormatException e) {
+			// TODO Auto-generated catch block
+			System.exit(1);
 		}
 		g.setTranslateX(100);
 		g.setTranslateY(150);

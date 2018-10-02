@@ -3,6 +3,7 @@ package chargement;
 import java.io.IOException;
 
 import exception.NotAnAxisException;
+import exception.WrongLineFormatException;
 
 /**
  * Classe permettant la création des tableaux de points et de faces grâce à LoadFile, qui calcule le centre de gravité des faces et qui trie les faces.
@@ -21,7 +22,12 @@ public class Initialisation {
 	 */
 	public Initialisation() throws IOException{
 		LoadFile file = new LoadFile();
-		file.CreerPoints();
+		try {
+			file.CreerPoints();
+		} catch (WrongLineFormatException e1) {
+			// TODO Auto-generated catch block
+			System.exit(1);
+		}
 		file.CreerFaces();
 		faces = file.getFaces();
 		for(int i=0;i<faces.length;++i) {
