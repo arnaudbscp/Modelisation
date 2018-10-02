@@ -47,6 +47,11 @@ public class Face {
 		double[] x = new double[] {pt1.getX(),pt2.getX(),pt2.getX()};
 		return x;
 	}
+	
+	public double[] recupY() {
+		double[] y = new double[] {pt1.getY(),pt2.getY(),pt2.getY()};
+		return y;
+	}
 	/**
 	 * Retourne le centre de gravité de la face triangulaire.
 	 * @return
