@@ -25,7 +25,7 @@ public class Launcher {
 			faces[i].setCentre_gravite(faces[i].calculCentreGravite());
 		}
 		try {
-			trierFaces(faces,3);
+			trierFaces(faces,2);
 		} catch (NotAnAxisException e) {
 			// TODO Auto-generated catch block
 			System.exit(1);

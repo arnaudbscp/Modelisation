@@ -1,4 +1,10 @@
 package ihm;
+import java.io.IOException;
+
+import chargement.Face;
+import chargement.Launcher;
+import chargement.LoadFile;
+import exception.NotAnAxisException;
 /**
  * @author bascopa & clarissa
  */
@@ -18,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.ArcType;
+import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -77,12 +84,12 @@ public class Interface extends Application {
 		corps.getChildren().add(menu);
 		corps.getChildren().add(dessin);
 		
-		Canvas canv = new Canvas(500,500);
+		Canvas canv = new Canvas(1100,600);
 		GraphicsContext gc = canv.getGraphicsContext2D();
         dessin(gc);
 		corps.getChildren().add(canv);
 		
-		Scene scene = new Scene(corps, 758, 580);
+		Scene scene = new Scene(corps, 1280, 600);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("i3D");
 		primaryStage.setResizable(false);
@@ -93,11 +100,30 @@ public class Interface extends Application {
 		Application.launch(args);
 	}
 	
-	public void dessin(GraphicsContext gc) {
+	public void dessin(GraphicsContext gc) throws NotAnAxisException {
 		  gc.setFill(Color.GREEN); //remplissage
-	      gc.setStroke(Color.BLUE); //contours
-	      gc.setLineWidth(2); //epaisseur des lignes
-	      gc.strokeLine(39, 11, 19, 8);//dimmensions lignes
+	      gc.setStroke(Color.BLACK); //contours
+	      gc.setLineWidth(1); //epaisseur des lignes
+	      LoadFile file;
+		try {
+			file = new LoadFile();
+			file.CreerPoints();
+			file.CreerFaces();
+			Face[] faces = file.getFaces();
+			Launcher l = new Launcher();
+			for(int i=0;i<faces.length;++i) {
+				faces[i].setCentre_gravite(faces[i].calculCentreGravite());
+			}
+			l.trierFaces(faces, 1);
+			for (int i = 0; i < faces.length; i++) {
+				gc.strokePolygon(faces[i].recupX(), faces[i].recupY(), 3);
+				/*gc.transform(faces[i].getPoints()[0].getX(), faces[i].getPoints()[1].getX(), 
+						faces[i].getPoints()[0].getY(), faces[i].getPoints()[1].getY(), , );
+			*/}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	      
 	}
 }
