@@ -10,17 +10,20 @@ import exception.NotAnAxisException;
  *
  */
 public class Launcher {
+	
+	protected Face[] faces;
+
 	/**
-	 * Méthode principale.
+	 * Constructeur.
 	 * @param args
 	 * @throws IOException
 	 * @throws NotAnAxeException 
 	 */
-	public static void main(String[] args) throws IOException{
+	public Launcher() throws IOException{
 		LoadFile file = new LoadFile();
 		file.CreerPoints();
 		file.CreerFaces();
-		Face[] faces = file.getFaces();
+		faces = file.getFaces();
 		for(int i=0;i<faces.length;++i) {
 			faces[i].setCentre_gravite(faces[i].calculCentreGravite());
 		}
@@ -39,7 +42,7 @@ public class Launcher {
 	 * Trie les faces de la plus éloignée à la plus éloignée en fonction de l'axe depuis lequel on visualise la figure.
 	 * @param axe: 0 pour l'axe x, 1 pour l'axe y et 2 pour l'axe z.
 	 */
-	public static void trierFaces(Face[] faces,int axe) throws NotAnAxisException{ //TRI A BULLE PEU EFFICACE, IMPLEMENTER UN ALGORITHME DE TRI PLUS PERFORMANT.
+	public void trierFaces(Face[] faces,int axe) throws NotAnAxisException{ //TRI A BULLE PEU EFFICACE, IMPLEMENTER UN ALGORITHME DE TRI PLUS PERFORMANT.
 		if(axe<0 || axe >2)
 			throw new NotAnAxisException();
 		else {
@@ -56,5 +59,9 @@ public class Launcher {
 				}
 			}while(!trie);
 		}
+	}
+
+	public Face[] getFaces() {
+		return faces;
 	}
 }

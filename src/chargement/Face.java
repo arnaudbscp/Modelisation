@@ -44,15 +44,25 @@ public class Face {
 	}
 	
 	public double[] recupX() {
+<<<<<<< HEAD
 		double[] x = new double[] {pt1.getX()+500,pt2.getX()+500,pt2.getX()+500};
+=======
+		double[] x = new double[] {pt1.getX(),pt2.getX(),pt2.getX()};
+>>>>>>> 53759b625a3175e9f50e678f2e72e1e1f0a6d925
 		return x;
 	}
 	
 	public double[] recupY() {
+<<<<<<< HEAD
 		double[] y = new double[] {pt1.getY()+250,pt2.getY()+250,pt2.getY()+250};
 		return y;
 	}
 	
+=======
+		double[] y = new double[] {pt1.getY(),pt2.getY(),pt2.getY()};
+		return y;
+	}
+>>>>>>> 53759b625a3175e9f50e678f2e72e1e1f0a6d925
 	/**
 	 * Retourne le centre de gravité de la face triangulaire.
 	 * @return

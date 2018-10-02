@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
+
+import exception.WrongHeaderException;
 
 /**
  * Charge le fichier 3D en créant tous les points.
@@ -12,10 +15,7 @@ import java.io.IOException;
  *
  */
 public class LoadFile {
-	/**
-	 * Stocke le fichier.
-	 */
-	private File fichier;
+
 	/**
 	 * BufferedReader pour lire le fichier ligne par ligne.
 	 */
@@ -33,9 +33,12 @@ public class LoadFile {
 	 * @throws IOException
 	 */
 	public LoadFile() throws IOException{
+		lireStream(new FileReader(new File("ressources/dolphin.ply")));
+	}
+
+	public void lireStream(Reader in) throws IOException {
 		try {
-			fichier = new File("ressources/dolphin.ply");
-			br = new BufferedReader(new FileReader(fichier));
+			br = new BufferedReader(in);
 			br.readLine();
 			br.readLine();
 			points = new Point[RecupNb(br.readLine())];
@@ -45,6 +48,9 @@ public class LoadFile {
 		} catch (FileNotFoundException e) {
 			System.out.println("Le fichier n'a pas été trouvé...");
 			e.printStackTrace();
+		} catch (WrongHeaderException e) {
+			// TODO Auto-generated catch block
+			System.exit(1);
 		}
 	}
 	
@@ -86,7 +92,9 @@ public class LoadFile {
 	 * @param ligne
 	 * @return
 	 */
-	public int RecupNb(String ligne) {
+	public int RecupNb(String ligne) throws WrongHeaderException{
+		if(!ligne.substring(ligne.indexOf(" ", ligne.indexOf(" ")+1)+1, ligne.length()).matches("[0-9]+")) 
+			throw new WrongHeaderException();
 		return Integer.parseInt(ligne.substring(ligne.indexOf(" ", ligne.indexOf(" ")+1)+1, ligne.length()));
 	}
 
