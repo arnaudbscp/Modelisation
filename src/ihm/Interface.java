@@ -1,6 +1,8 @@
 package ihm;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 import chargement.Face;
 import chargement.Initialisation;
@@ -11,8 +13,10 @@ import exception.WrongPointLineFormatException;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Point3D;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -59,16 +63,38 @@ public class Interface extends Application {
 		zoom.setShowTickLabels(true);
 		menu.getChildren().addAll(lZoom, zoom);
 		
-		Slider tourner = new Slider();
-		Label lTourner = new Label();
-		lTourner.setText("Tourner");
-		lTourner.setStyle("-fx-padding : 20 0 0 50;");
-		tourner.setMin(-180);
-		tourner.setMax(180);
-		tourner.setMajorTickUnit(90);
-		tourner.setValue(0);
-		tourner.setShowTickLabels(true);
-		menu.getChildren().addAll(lTourner, tourner);
+		Slider tournerX = new Slider();
+		Label lTournerX = new Label();
+		lTournerX.setText("Tourner X");
+		lTournerX.setStyle("-fx-padding : 20 0 0 50;");
+		tournerX.setMin(0);
+		tournerX.setMax(360);
+		tournerX.setMajorTickUnit(90);
+		tournerX.setValue(0);
+		tournerX.setShowTickLabels(true);
+		menu.getChildren().addAll(lTournerX, tournerX);
+		
+		Slider tournerY = new Slider();
+		Label lTournerY = new Label();
+		lTournerY.setText("Tourner Y");
+		lTournerY.setStyle("-fx-padding : 20 0 0 50;");
+		tournerY.setMin(0);
+		tournerY.setMax(360);
+		tournerY.setMajorTickUnit(90);
+		tournerY.setValue(0);
+		tournerY.setShowTickLabels(true);
+		menu.getChildren().addAll(lTournerY, tournerY);
+		
+		Slider tournerZ = new Slider();
+		Label lTournerZ = new Label();
+		lTournerZ.setText("Tourner Z");
+		lTournerZ.setStyle("-fx-padding : 20 0 0 50;");
+		tournerZ.setMin(-180);
+		tournerZ.setMax(180);
+		tournerZ.setMajorTickUnit(90);
+		tournerZ.setValue(0);
+		tournerZ.setShowTickLabels(true);
+		menu.getChildren().addAll(lTournerZ, tournerZ);
 		
 		
 		VBox dessin = new VBox();
@@ -89,7 +115,30 @@ public class Interface extends Application {
 		Canvas canv = new Canvas(1100,600);
 		GraphicsContext gc = canv.getGraphicsContext2D();
 		
-		corps.getChildren().add(dessin(gc));
+		Group objetComplet = dessin(gc);
+		
+		tournerX.setOnMouseDragged(e-> {
+			objetComplet.setRotate(tournerX.getValue());
+		});
+		tournerX.setOnMouseClicked(e-> {
+			objetComplet.setRotate(tournerX.getValue());
+		});
+		
+		tournerY.setOnMouseDragged(e-> {
+			// on créé un objet rotation et on parcours l'objet pour recuperer chaque triangle
+			// t.executer retourne trois nouveaux points avec de nouvelles coordonnées pour chaque triangle
+			/**
+			RotationObjet t = new RotationObjet(objetComplet, tournerY.getValue());
+			for(int index = 0; index < objetComplet.getChildren().size(); index++) {
+				Polygon tmp = (Polygon) objetComplet.getChildren().get(index);
+				for(int i = 0; i < 3; i++) {
+					tmp.getPoints().setAll(t.executer(index));
+				}
+			} REFAIRE L'AFFICHAGE, problème au niveau de la translation Y*/
+		});
+		
+		
+		corps.getChildren().add(objetComplet);
 		
 		Scene scene = new Scene(corps, 1280, 600);
 		primaryStage.setScene(scene);
