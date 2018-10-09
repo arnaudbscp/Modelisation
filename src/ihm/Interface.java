@@ -1,8 +1,6 @@
 package ihm;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.ListIterator;
 
 import chargement.Face;
 import chargement.Initialisation;
@@ -13,10 +11,8 @@ import exception.WrongPointLineFormatException;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
-import javafx.geometry.Point3D;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -98,8 +94,6 @@ public class Interface extends Application {
 		
 		
 		VBox dessin = new VBox();
-		Canvas c = new Canvas();
-		dessin.getChildren().add(c);
 		
 		Separator sep = new Separator();
 		sep.setOrientation(Orientation.VERTICAL);
@@ -143,7 +137,7 @@ public class Interface extends Application {
 		Scene scene = new Scene(corps, 1280, 600);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("i3D");
-		primaryStage.setResizable(false);
+		primaryStage.setResizable(true);
 		primaryStage.show();
 	}
 	
@@ -169,9 +163,9 @@ public class Interface extends Application {
 			for (int i = 0; i < faces.length; i++) {
 				Polygon triangle = new Polygon();
 				triangle.getPoints().setAll(
-						(double)faces[i].getPoints()[0].getX(), (double)faces[i].getPoints()[0].getY(),
-						(double)faces[i].getPoints()[1].getX(), (double)faces[i].getPoints()[1].getY(),
-						(double)faces[i].getPoints()[2].getX(), (double)faces[i].getPoints()[2].getY()
+						(double)faces[i].getPoints()[0].getX()*-1, (double)faces[i].getPoints()[0].getZ()*-1,
+						(double)faces[i].getPoints()[1].getX()*-1, (double)faces[i].getPoints()[1].getZ()*-1,
+						(double)faces[i].getPoints()[2].getX()*-1, (double)faces[i].getPoints()[2].getZ()*-1
 				);
 				triangle.setStroke(Color.BLACK);
 				triangle.setFill(Color.GRAY);
@@ -185,6 +179,5 @@ public class Interface extends Application {
 		g.setTranslateX(100);
 		g.setTranslateY(150);
 		return g;
-	      
 	}
 }
