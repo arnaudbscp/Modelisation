@@ -1,7 +1,7 @@
 package chargement;
 
+import exception.MatriceFormatException;
 import exception.MatriceNullException;
-import exception.MatriceformatException;
 
 public class Matrice {
 
@@ -24,7 +24,7 @@ public class Matrice {
 		return tab;
 	}
 
-	public double[][] MultiplierMatrice(double[][] MA , double[][] MB) throws MatriceNullException, MatriceformatException {
+	public double[][] MultiplierMatrice(double[][] MA , double[][] MB) throws MatriceNullException, MatriceFormatException {
 		double[][] MC;
 		int l,c;
 
@@ -34,7 +34,7 @@ public class Matrice {
 
 
 		if(MA[0].length != MB.length){
-			throw new MatriceformatException();
+			throw new MatriceFormatException();
 		}
 
 		if(MA.length * MA[0].length < MB.length * MB[0].length){

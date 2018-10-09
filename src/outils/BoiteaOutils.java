@@ -1,6 +1,6 @@
-package Outils;
+package outils;
 
-public class Boiteaoutils {
+public class BoiteaOutils {
 
 	public double[][] CreerRotation(double angle) {
 
@@ -14,18 +14,18 @@ public class Boiteaoutils {
 		
 		double[][] tab = new double[][] {{1 , 0 , x1 },
                                          {0 , 1 , x2 },
-                                         {0,0,1}};
+                                         {0 , 0 , 1  }};
                                          
         return tab;
 	}
 	
-	public double[][] CreerHomothétie() {
-		
-		double[][] tab = new double[][] {{1 , 0 , x1 },
-                                         {0 , 1 , x2 },
-                                         {0,0,1}};
-                                         
-        return tab;
-	}
+//	public double[][] CreerHomothétie() {
+//		
+//		double[][] tab = new double[][] {{1 , 0 , x1 },
+//                                         {0 , 1 , x2 },
+//                                         {0,0,1}};
+//                                         
+//        return tab;
+//	}
 }
 
