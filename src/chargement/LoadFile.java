@@ -34,10 +34,10 @@ public class LoadFile {
 	 * Constructeur appelant la méthode lireStream(Reader in).
 	 * @throws IOException
 	 */
-	public LoadFile() throws IOException{
-		lireStream(new FileReader(new File("ressources/dolphin.ply")));
+	public LoadFile(File f) throws IOException{
+		lireStream(new FileReader(new File(f.getPath())));
 	}
-	
+
 	/**
 	 * Méthode qui charge le fichier et créé les tableaux de Point et de Face de longueurs adéquates, sans les remplir.
 	 * @throws IOException

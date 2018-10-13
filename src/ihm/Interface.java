@@ -1,5 +1,6 @@
 package ihm;
 
+import java.io.File;
 import java.io.IOException;
 
 import chargement.Face;
@@ -34,18 +35,23 @@ import javafx.stage.Stage;
  */
 public class Interface extends Application {
 	LoadFile file;
+	File filePly;
+	Initialisation l;
 
 	public void start(Stage primaryStage) throws Exception {
-		try {
+		//Déplacement dans l'action du bouton importer
+		/*try {
 			file = new LoadFile();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		Initialisation l = new Initialisation();
+		}*/
 		Group g = new Group();
 		HBox corps = new HBox();
 
 		VBox menu = new VBox();
+		
+		Canvas canv = new Canvas(1100,600);
+		GraphicsContext gc = canv.getGraphicsContext2D();
 
 		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		menu.setMinWidth(150);
@@ -56,7 +62,34 @@ public class Interface extends Application {
 		FileChooser importer = new FileChooser();
 		importer.setTitle("Selectionner un fichier 3D");
 		b1.setOnAction(e -> {
-			importer.showOpenDialog(primaryStage);
+			filePly = importer.showOpenDialog(primaryStage);
+			String extension = "";
+			int i=0;
+			while (filePly.getPath().charAt(i) != '.')
+				i++;
+			extension = filePly.getPath().substring(i, filePly.getPath().length());	
+			
+			try {
+				if (extension.equals(".ply"))
+					file = new LoadFile(filePly);
+				else 
+					System.out.println("/!\\ Veuillez choisir un fichier .ply ! \n");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			l = null;
+			try {
+				l = new Initialisation(filePly);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				dessin(gc, file, g, l);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			System.out.println("*********************************"+filePly.getPath());
+			
 		});
 
 		Slider zoom = new Slider();
@@ -116,10 +149,9 @@ public class Interface extends Application {
 		corps.getChildren().add(menu);
 		corps.getChildren().add(dessin);
 
-		Canvas canv = new Canvas(1100,600);
-		GraphicsContext gc = canv.getGraphicsContext2D();
-
-		dessin(gc, file, g, l);
+	
+		//Déplacement dans l'action du bouton importer
+		//dessin(gc, file, g, l);
 
 		tournerX.setOnMouseDragged(e-> {
 			Rotation r = new Rotation();
@@ -145,6 +177,14 @@ public class Interface extends Application {
 		primaryStage.show();
 	}
 
+	public File getFichier() {
+		return filePly;
+	}
+
+	public void setFichier(File fichier) {
+		this.filePly = fichier;
+	}
+
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
@@ -158,7 +198,7 @@ public class Interface extends Application {
 			// TODO Auto-generated catch block
 			System.exit(1);
 		}
-		l = new Initialisation();
+		l = new Initialisation(filePly);
 		l.CreerFigure(g);
 		g.setTranslateX(100);
 		g.setTranslateY(150);
