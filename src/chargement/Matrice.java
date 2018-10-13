@@ -7,16 +7,14 @@ public class Matrice {
 
 
 	public double[][] CreerMatrice(Point[] p) {
-		double[][] tab = new double[4][p.length];
+		double[][] tab = new double[3][p.length];
 		for(int i = 0; i < 4; i++) {
-			for(int j = 0; i < p.length; j++) {
+			for(int j = 0; j < p.length; j++) {
 				if(i == 0) {
 					tab[i][j] = p[j].getX();
 				}else if(i == 1) {
 					tab[i][j] = p[j].getY();
 				}else if(i == 2) {
-					tab[i][j] = p[j].getZ();
-				}else if(i == 3) {
 					tab[i][j] = 1;
 				}
 			}

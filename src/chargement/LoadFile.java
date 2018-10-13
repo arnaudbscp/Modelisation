@@ -91,6 +91,7 @@ public class LoadFile {
 	 */
 	public void CreerFaces() throws IOException, WrongFaceLineFormatException {
 		for(int j=0;j<faces.length;j++) {
+			br.mark(faces.length);
 			String ligne_face = br.readLine();
 			//Je remplace les espaces par des a car je n'arrive pas à gérer les espaces dans la regex.
 			ligne_face=ligne_face.replace(" ", "a");
@@ -105,6 +106,14 @@ public class LoadFile {
 		}
 	}
 	
+	public BufferedReader getBr() {
+		return br;
+	}
+
+	public void setPoints(Point[] points) {
+		this.points = points;
+	}
+
 	/**
 	 * Récupère le nombre de points ou le nombre de faces de la figure, en fonction de la ligne passée en paramètre.
 	 * @param ligne

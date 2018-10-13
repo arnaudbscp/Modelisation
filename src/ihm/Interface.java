@@ -5,6 +5,8 @@ import java.io.IOException;
 import chargement.Face;
 import chargement.Initialisation;
 import chargement.LoadFile;
+import exception.MatriceFormatException;
+import exception.MatriceNullException;
 import exception.WrongFaceLineFormatException;
 import exception.WrongPointLineFormatException;
 
@@ -31,24 +33,32 @@ import javafx.stage.Stage;
  * @author bascopa & clarissa
  */
 public class Interface extends Application {
+	LoadFile file;
 
 	public void start(Stage primaryStage) throws Exception {
+		try {
+			file = new LoadFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Initialisation l = new Initialisation();
+		Group g = new Group();
 		HBox corps = new HBox();
-		
+
 		VBox menu = new VBox();
-		
+
 		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		menu.setMinWidth(150);
 		Button b1 = new Button("Importer");
 		b1.setMinWidth(150);
 		menu.getChildren().add(b1);
-		
+
 		FileChooser importer = new FileChooser();
 		importer.setTitle("Selectionner un fichier 3D");
 		b1.setOnAction(e -> {
 			importer.showOpenDialog(primaryStage);
 		});
-		
+
 		Slider zoom = new Slider();
 		Label lZoom = new Label();
 		lZoom.setText("Zoomer");
@@ -58,7 +68,7 @@ public class Interface extends Application {
 		zoom.setValue(50);
 		zoom.setShowTickLabels(true);
 		menu.getChildren().addAll(lZoom, zoom);
-		
+
 		Slider tournerX = new Slider();
 		Label lTournerX = new Label();
 		lTournerX.setText("Tourner X");
@@ -69,7 +79,7 @@ public class Interface extends Application {
 		tournerX.setValue(0);
 		tournerX.setShowTickLabels(true);
 		menu.getChildren().addAll(lTournerX, tournerX);
-		
+
 		Slider tournerY = new Slider();
 		Label lTournerY = new Label();
 		lTournerY.setText("Tourner Y");
@@ -80,7 +90,7 @@ public class Interface extends Application {
 		tournerY.setValue(0);
 		tournerY.setShowTickLabels(true);
 		menu.getChildren().addAll(lTournerY, tournerY);
-		
+
 		Slider tournerZ = new Slider();
 		Label lTournerZ = new Label();
 		lTournerZ.setText("Tourner Z");
@@ -91,10 +101,10 @@ public class Interface extends Application {
 		tournerZ.setValue(0);
 		tournerZ.setShowTickLabels(true);
 		menu.getChildren().addAll(lTournerZ, tournerZ);
-		
-		
+
+
 		VBox dessin = new VBox();
-		
+
 		Separator sep = new Separator();
 		sep.setOrientation(Orientation.VERTICAL);
 		sep.setValignment(VPos.CENTER);
@@ -102,82 +112,67 @@ public class Interface extends Application {
 		sep.setMinHeight(300);
 		sep.setStyle("-fx-padding : 0 0 0 30;");
 		dessin.getChildren().add(sep);
-		
+
 		corps.getChildren().add(menu);
 		corps.getChildren().add(dessin);
-		
+
 		Canvas canv = new Canvas(1100,600);
 		GraphicsContext gc = canv.getGraphicsContext2D();
-		
-		Group objetComplet = dessin(gc);
-		
+
+		dessin(gc, file, g, l);
+
 		tournerX.setOnMouseDragged(e-> {
-			objetComplet.setRotate(tournerX.getValue());
+			Rotation r = new Rotation();
+			try {
+				file.setPoints(r.CreerPointrotate(tournerX.getValue(), file.getPoints()));
+			} catch (MatriceNullException | MatriceFormatException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				file.getBr().reset();
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			try {
+				file.CreerFaces();
+			} catch (IOException | WrongFaceLineFormatException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			l.CreerFigure(g);
 		});
-		tournerX.setOnMouseClicked(e-> {
-			objetComplet.setRotate(tournerX.getValue());
+
+		tournerX.setOnMouseClicked(e ->{
+			System.out.println(tournerX.getValue());
 		});
-		
-		tournerY.setOnMouseDragged(e-> {
-			// on créé un objet rotation et on parcours l'objet pour recuperer chaque triangle
-			// t.executer retourne trois nouveaux points avec de nouvelles coordonnées pour chaque triangle
-			/**
-			RotationObjet t = new RotationObjet(objetComplet, tournerY.getValue());
-			for(int index = 0; index < objetComplet.getChildren().size(); index++) {
-				Polygon tmp = (Polygon) objetComplet.getChildren().get(index);
-				for(int i = 0; i < 3; i++) {
-					tmp.getPoints().setAll(t.executer(index));
-				}
-			} REFAIRE L'AFFICHAGE, problème au niveau de la translation Y*/
-		});
-		
-		
-		corps.getChildren().add(objetComplet);
-		
+
+
+		corps.getChildren().add(g);
+
 		Scene scene = new Scene(corps, 1280, 600);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("i3D");
 		primaryStage.setResizable(true);
 		primaryStage.show();
 	}
-	
+
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
-	
-	public Group dessin(GraphicsContext gc){
-	      gc.setLineWidth(1); //epaisseur des lignes
-	      LoadFile file;
-	      Group g = new Group();
+
+	public void dessin(GraphicsContext gc, LoadFile file, Group g, Initialisation l) throws IOException{
+		gc.setLineWidth(1); //epaisseur des lignes
 		try {
-			file = new LoadFile();
-			try {
-				file.CreerPoints();
-				file.CreerFaces();
-			} catch (WrongPointLineFormatException | WrongFaceLineFormatException e) {
-				// TODO Auto-generated catch block
-				System.exit(1);
-			}
-			Initialisation l = new Initialisation();
-			Face[] faces = l.getFaces();
-			for (int i = 0; i < faces.length; i++) {
-				Polygon triangle = new Polygon();
-				triangle.getPoints().setAll(
-						(double)faces[i].getPoints()[0].getX()*-1, (double)faces[i].getPoints()[0].getZ()*-1,
-						(double)faces[i].getPoints()[1].getX()*-1, (double)faces[i].getPoints()[1].getZ()*-1,
-						(double)faces[i].getPoints()[2].getX()*-1, (double)faces[i].getPoints()[2].getZ()*-1
-				);
-				triangle.setStroke(Color.BLACK);
-				triangle.setFill(Color.GRAY);
-				g.getChildren().add(triangle);
-				
-			}
-		} catch (IOException e) {
+			file.CreerPoints();
+			file.CreerFaces();
+		} catch (WrongPointLineFormatException | WrongFaceLineFormatException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.exit(1);
 		}
+		l = new Initialisation();
+		l.CreerFigure(g);
 		g.setTranslateX(100);
 		g.setTranslateY(150);
-		return g;
 	}
 }

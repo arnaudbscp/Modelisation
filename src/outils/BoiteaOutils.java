@@ -19,13 +19,13 @@ public class BoiteaOutils {
         return tab;
 	}
 	
-//	public double[][] CreerHomothÃ©tie() {
-//		
-//		double[][] tab = new double[][] {{1 , 0 , x1 },
-//                                         {0 , 1 , x2 },
-//                                         {0,0,1}};
-//                                         
-//        return tab;
-//	}
+	public double[][] CreerHomothétie(double k) {
+		
+		double[][] tab = new double[][] {{k , 0 , 0 },
+                                         {0 , k , 0 },
+                                         {0 , 0 , 1}};
+                                         
+        return tab;
+	}
 }
 

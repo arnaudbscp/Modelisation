@@ -4,6 +4,9 @@ import java.io.IOException;
 
 import exception.WrongFaceLineFormatException;
 import exception.WrongPointLineFormatException;
+import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 
 /**
  * Classe permettant la création des tableaux de points et de faces grâce à LoadFile, qui calcule le centre de gravité des faces et qui trie les faces.
@@ -68,5 +71,19 @@ public class Initialisation {
 	 */
 	public Face[] getFaces() {
 		return faces;
+	}
+
+	public void CreerFigure(Group g) {
+		for (int i = 0; i < faces.length; i++) {
+			Polygon triangle = new Polygon();
+			triangle.getPoints().setAll(
+					(double)faces[i].getPoints()[0].getX()*-1, (double)faces[i].getPoints()[0].getZ()*-1,
+					(double)faces[i].getPoints()[1].getX()*-1, (double)faces[i].getPoints()[1].getZ()*-1,
+					(double)faces[i].getPoints()[2].getX()*-1, (double)faces[i].getPoints()[2].getZ()*-1
+			);
+			triangle.setStroke(Color.BLACK);
+			triangle.setFill(Color.GRAY);
+			g.getChildren().add(triangle);
+		}
 	}
 }
