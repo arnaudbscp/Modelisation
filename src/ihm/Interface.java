@@ -36,16 +36,20 @@ public class Interface extends Application {
 	LoadFile file;
 
 	public void start(Stage primaryStage) throws Exception {
-		try {
+		//Déplacement dans l'action du bouton importer
+		/*try {
 			file = new LoadFile();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Initialisation l = new Initialisation();
+		Initialisation l = new Initialisation();*/
 		Group g = new Group();
 		HBox corps = new HBox();
 
 		VBox menu = new VBox();
+		
+		Canvas canv = new Canvas(1100,600);
+		GraphicsContext gc = canv.getGraphicsContext2D();
 
 		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		menu.setMinWidth(150);
@@ -56,6 +60,22 @@ public class Interface extends Application {
 		FileChooser importer = new FileChooser();
 		importer.setTitle("Selectionner un fichier 3D");
 		b1.setOnAction(e -> {
+			try {
+				file = new LoadFile();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			Initialisation l = null;
+			try {
+				l = new Initialisation();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				dessin(gc, file, g, l);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			importer.showOpenDialog(primaryStage);
 		});
 
@@ -116,10 +136,9 @@ public class Interface extends Application {
 		corps.getChildren().add(menu);
 		corps.getChildren().add(dessin);
 
-		Canvas canv = new Canvas(1100,600);
-		GraphicsContext gc = canv.getGraphicsContext2D();
-
-		dessin(gc, file, g, l);
+	
+		//Déplacement dans l'action du bouton importer
+		//dessin(gc, file, g, l);
 
 		tournerX.setOnMouseDragged(e-> {
 			Rotation r = new Rotation();
@@ -140,7 +159,7 @@ public class Interface extends Application {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			l.CreerFigure(g);
+			//l.CreerFigure(g);
 		});
 
 		tournerX.setOnMouseClicked(e ->{
