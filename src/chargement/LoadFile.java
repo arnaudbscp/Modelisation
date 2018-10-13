@@ -103,11 +103,8 @@ public class LoadFile {
 			int pt2 = Integer.parseInt(ligne_face.substring(ligne_face.indexOf("a")+1, ligne_face.indexOf("a", ligne_face.indexOf("a")+1)));
 			int pt3 = Integer.parseInt(ligne_face.substring(ligne_face.indexOf("a", ligne_face.indexOf("a")+1)+1));
 			faces[j] = new Face(points[pt1],points[pt2],points[pt3]);
+			faces[j].setPosition(new int[] {pt1,pt2,pt3});
 		}
-	}
-	
-	public BufferedReader getBr() {
-		return br;
 	}
 
 	public void setPoints(Point[] points) {

@@ -124,27 +124,15 @@ public class Interface extends Application {
 		tournerX.setOnMouseDragged(e-> {
 			Rotation r = new Rotation();
 			try {
-				file.setPoints(r.CreerPointrotate(tournerX.getValue(), file.getPoints()));
+				file.setPoints(r.CreerPointrotate(90, file.getPoints()));
 			} catch (MatriceNullException | MatriceFormatException e1) {
 				e1.printStackTrace();
 			}
-			try {
-				file.getBr().reset();
-			} catch (IOException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
-			try {
-				file.CreerFaces();
-			} catch (IOException | WrongFaceLineFormatException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			r.RecopiePoint(file.getFaces(), file.getPoints());
 			l.CreerFigure(g);
 		});
 
 		tournerX.setOnMouseClicked(e ->{
-			System.out.println(tournerX.getValue());
 		});
 
 

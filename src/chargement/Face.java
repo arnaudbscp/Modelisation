@@ -20,6 +20,9 @@ public class Face {
 	/**
 	 * Centre de gravité de la face triangulaire. Il s'agit du Point situé à l'intersection des 3 médianes.
 	 */
+	
+	private int[] position;
+	
 	private Point centre_gravite;
 	
 	/**
@@ -33,8 +36,29 @@ public class Face {
 		this.pt1 = pt1;
 		this.pt2 = pt2;
 		this.pt3 = pt3;
+		this.position = new int[3];
 	}
 	
+	public int[] getPosition() {
+		return position;
+	}
+
+	public void setPosition(int[] position) {
+		this.position = position;
+	}
+
+	public void setPt1(Point pt1) {
+		this.pt1 = pt1;
+	}
+
+	public void setPt2(Point pt2) {
+		this.pt2 = pt2;
+	}
+
+	public void setPt3(Point pt3) {
+		this.pt3 = pt3;
+	}
+
 	/**
 	 * Retourne les 3 Point de la Face, sous forme d'un tableau.
 	 * @return

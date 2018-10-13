@@ -1,5 +1,6 @@
 package ihm;
 
+import chargement.Face;
 import chargement.LoadFile;
 import chargement.Matrice;
 import chargement.Point;
@@ -16,7 +17,8 @@ public class Rotation {
 		double[][] matricerotate = bo.CreerRotation(angle);
 		double[][] matricefigure = m.CreerMatrice(p);
 		double[][] matriceres = m.MultiplierMatrice(matricerotate, matricefigure);
-		return CreerTabPoint(matriceres,p);
+		Point[] tabp = CreerTabPoint(matriceres, p);
+		return tabp;
 	}
 
 	private Point[] CreerTabPoint(double[][] matrice, Point[] p) {
@@ -31,12 +33,21 @@ public class Rotation {
 					tabp[j].setX((float)matrice[i][j]);
 				}else if(i == 1) {
 					tabp[j].setY((float)matrice[i][j]);
-				}else if(i == 2) {
-					tabp[j].setZ(p[i].getZ());
 				}
 			}
 			premiertour = false;
 		}
+		for(int idx = 0; idx<p.length;idx++) {
+			tabp[idx].setZ(p[idx].getZ());
+		}
 		return tabp;
+	}
+	
+	public void RecopiePoint(Face[] faces, Point[] points) {
+		for(int i = 0; i<faces.length; i++) {
+			faces[i].setPt1(points[faces[i].getPosition()[0]]);
+			faces[i].setPt2(points[faces[i].getPosition()[1]]);
+			faces[i].setPt3(points[faces[i].getPosition()[2]]);
+		}
 	}
 }
