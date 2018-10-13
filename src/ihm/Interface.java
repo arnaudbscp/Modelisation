@@ -63,8 +63,17 @@ public class Interface extends Application {
 		importer.setTitle("Selectionner un fichier 3D");
 		b1.setOnAction(e -> {
 			filePly = importer.showOpenDialog(primaryStage);
+			String extension = "";
+			int i=0;
+			while (filePly.getPath().charAt(i) != '.')
+				i++;
+			extension = filePly.getPath().substring(i, filePly.getPath().length());	
+			
 			try {
-				file = new LoadFile(filePly);
+				if (extension.equals(".ply"))
+					file = new LoadFile(filePly);
+				else 
+					System.out.println("/!\\ Veuillez choisir un fichier .ply ! \n");
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -79,6 +88,7 @@ public class Interface extends Application {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
+			System.out.println("*********************************"+filePly.getPath());
 			
 		});
 
