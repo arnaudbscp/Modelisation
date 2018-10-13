@@ -1,5 +1,6 @@
 package chargement;
 
+import java.io.File;
 import java.io.IOException;
 
 import exception.WrongFaceLineFormatException;
@@ -22,8 +23,8 @@ public class Initialisation {
 	 * @param args
 	 * @throws IOException
 	 */
-	public Initialisation() throws IOException{
-		LoadFile file = new LoadFile();
+	public Initialisation(File f) throws IOException{
+		LoadFile file = new LoadFile(f);
 		try {
 			file.CreerPoints();
 		} catch (WrongPointLineFormatException e1) {

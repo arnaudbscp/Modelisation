@@ -1,5 +1,6 @@
 package ihm;
 
+import java.io.File;
 import java.io.IOException;
 
 import chargement.Face;
@@ -34,6 +35,7 @@ import javafx.stage.Stage;
  */
 public class Interface extends Application {
 	LoadFile file;
+	File filePly;
 
 	public void start(Stage primaryStage) throws Exception {
 		//Déplacement dans l'action du bouton importer
@@ -60,14 +62,15 @@ public class Interface extends Application {
 		FileChooser importer = new FileChooser();
 		importer.setTitle("Selectionner un fichier 3D");
 		b1.setOnAction(e -> {
+			filePly = importer.showOpenDialog(primaryStage);
 			try {
-				file = new LoadFile();
+				file = new LoadFile(filePly);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 			Initialisation l = null;
 			try {
-				l = new Initialisation();
+				l = new Initialisation(filePly);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -76,7 +79,7 @@ public class Interface extends Application {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			importer.showOpenDialog(primaryStage);
+			
 		});
 
 		Slider zoom = new Slider();
@@ -176,6 +179,14 @@ public class Interface extends Application {
 		primaryStage.show();
 	}
 
+	public File getFichier() {
+		return filePly;
+	}
+
+	public void setFichier(File fichier) {
+		this.filePly = fichier;
+	}
+
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
@@ -189,7 +200,7 @@ public class Interface extends Application {
 			// TODO Auto-generated catch block
 			System.exit(1);
 		}
-		l = new Initialisation();
+		l = new Initialisation(filePly);
 		l.CreerFigure(g);
 		g.setTranslateX(100);
 		g.setTranslateY(150);
