@@ -6,6 +6,7 @@ import java.io.IOException;
 import exception.WrongFaceLineFormatException;
 import exception.WrongPointLineFormatException;
 import javafx.scene.Group;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
@@ -74,17 +75,15 @@ public class Initialisation {
 		return faces;
 	}
 
-	public void CreerFigure(Group g) {
+	public void CreerFigure(GraphicsContext gc) {
+		double[] px;
+		double[] py;
 		for (int i = 0; i < faces.length; i++) {
-			Polygon triangle = new Polygon();
-			triangle.getPoints().setAll(
-					(double)faces[i].getPoints()[0].getX()*-1, (double)faces[i].getPoints()[0].getZ()*-1,
-					(double)faces[i].getPoints()[1].getX()*-1, (double)faces[i].getPoints()[1].getZ()*-1,
-					(double)faces[i].getPoints()[2].getX()*-1, (double)faces[i].getPoints()[2].getZ()*-1
-			);
-			triangle.setStroke(Color.BLACK);
-			triangle.setFill(Color.GRAY);
-			g.getChildren().add(triangle);
+			
+					px = new double[] {faces[i].getPoints()[0].getX()*-1,faces[i].getPoints()[1].getX()*-1,faces[i].getPoints()[2].getX()*-1};
+					py = new double[] {faces[i].getPoints()[0].getZ(),faces[i].getPoints()[1].getZ(),faces[i].getPoints()[2].getZ()};
+			gc.fillPolygon(px, py, 3);
+			gc.strokePolygon(px, py, 3);
 		}
 	}
 }

@@ -45,7 +45,6 @@ public class Interface extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}*/
-		Group g = new Group();
 		HBox corps = new HBox();
 
 		VBox menu = new VBox();
@@ -84,7 +83,7 @@ public class Interface extends Application {
 				e1.printStackTrace();
 			}
 			try {
-				dessin(gc, file, g, l);
+				dessin(gc, file, l);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -161,14 +160,14 @@ public class Interface extends Application {
 				e1.printStackTrace();
 			}
 			r.RecopiePoint(file.getFaces(), file.getPoints());
-			l.CreerFigure(g);
+			l.CreerFigure(gc);
 		});
 
 		tournerX.setOnMouseClicked(e ->{
 		});
 
 
-		corps.getChildren().add(g);
+		corps.getChildren().add(canv);
 
 		Scene scene = new Scene(corps, 1280, 600);
 		primaryStage.setScene(scene);
@@ -189,7 +188,7 @@ public class Interface extends Application {
 		Application.launch(args);
 	}
 
-	public void dessin(GraphicsContext gc, LoadFile file, Group g, Initialisation l) throws IOException{
+	public void dessin(GraphicsContext gc, LoadFile file, Initialisation l) throws IOException{
 		gc.setLineWidth(1); //epaisseur des lignes
 		try {
 			file.CreerPoints();
@@ -199,8 +198,6 @@ public class Interface extends Application {
 			System.exit(1);
 		}
 		l = new Initialisation(filePly);
-		l.CreerFigure(g);
-		g.setTranslateX(100);
-		g.setTranslateY(150);
+		l.CreerFigure(gc);
 	}
 }

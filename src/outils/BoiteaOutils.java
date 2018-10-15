@@ -19,7 +19,7 @@ public class BoiteaOutils {
         return tab;
 	}
 	
-	public double[][] CreerHomothétie(double k) {
+	public double[][] CreerHomothetie(double k) {
 		
 		double[][] tab = new double[][] {{k , 0 , 0 },
                                          {0 , k , 0 },
