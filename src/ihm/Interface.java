@@ -6,6 +6,7 @@ import java.io.IOException;
 import chargement.Face;
 import chargement.Initialisation;
 import chargement.LoadFile;
+import chargement.Point;
 import exception.MatriceFormatException;
 import exception.MatriceNullException;
 import exception.WrongFaceLineFormatException;
@@ -151,19 +152,22 @@ public class Interface extends Application {
 	
 		//Déplacement dans l'action du bouton importer
 		//dessin(gc, file, g, l);
-
+		Rotation r = new Rotation();
 		tournerX.setOnMouseDragged(e-> {
-			Rotation r = new Rotation();
 			try {
-				file.setPoints(r.CreerPointrotate(90, file.getPoints()));
+				Point[] tabp = r.CreerPointrotate(90, file.getPoints());
+				file.setPoints(tabp);
 			} catch (MatriceNullException | MatriceFormatException e1) {
 				e1.printStackTrace();
 			}
 			r.RecopiePoint(file.getFaces(), file.getPoints());
-			l.CreerFigure(gc);
+			gc.clearRect(0, 0, 1100, 600);
+			l.CreerFigure(gc, file.getFaces());
+			
 		});
 
 		tournerX.setOnMouseClicked(e ->{
+			
 		});
 
 
@@ -198,6 +202,6 @@ public class Interface extends Application {
 			System.exit(1);
 		}
 		l = new Initialisation(filePly);
-		l.CreerFigure(gc);
+		l.CreerFigure(gc, file.getFaces());
 	}
 }

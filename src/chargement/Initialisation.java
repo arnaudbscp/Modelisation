@@ -17,7 +17,6 @@ import javafx.scene.shape.Polygon;
  */
 public class Initialisation {
 
-	protected Face[] faces;
 
 	/**
 	 * Constructeur, créé les 2 tableaux de la longueur adéquate et les remplit, calcule le centre de gravité de chaque face et les trie.
@@ -38,7 +37,7 @@ public class Initialisation {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		faces = file.getFaces();
+		Face[] faces = file.getFaces();
 		for(int i=0;i<faces.length;++i) {
 			faces[i].setCentre_gravite(faces[i].calculCentreGravite());
 		}
@@ -71,20 +70,18 @@ public class Initialisation {
 	 * Retourne un tableau contenant toutes les faces.
 	 * @return
 	 */
-	public Face[] getFaces() { 
-		return faces;
-	}
 
-	public void CreerFigure(GraphicsContext gc) {
+
+	public void CreerFigure(GraphicsContext gc, Face[] faces) {
 		double[] px;
 		double[] py;
 		for (int i = 0; i < faces.length; i++) {
-
 			px = new double[] {faces[i].getPoints()[0].getX()*-1,faces[i].getPoints()[1].getX()*-1,faces[i].getPoints()[2].getX()*-1};
 			py = new double[] {faces[i].getPoints()[0].getZ()*-1,faces[i].getPoints()[1].getZ()*-1,faces[i].getPoints()[2].getZ()*-1};
 			gc.fillPolygon(px, py, 3);
 			gc.strokePolygon(px, py, 3);
 			gc.setFill(Color.GRAY);
+
 		}
 	}
 }
