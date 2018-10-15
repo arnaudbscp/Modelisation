@@ -1,7 +1,6 @@
 package ihm;
 
 import chargement.Face;
-import chargement.LoadFile;
 import chargement.Matrice;
 import chargement.Point;
 import exception.MatriceFormatException;
@@ -26,20 +25,17 @@ public class Rotation {
 		boolean premiertour = true;
 		for (int i = 0; i < matrice.length; i++) {
 			for (int j = 0; j < matrice[0].length; j++) {
-				if(premiertour) {
+				if(premiertour)
 					tabp[j] = new Point(0, 0, 0);
-				}
-				if(i == 0) {
+				if(i == 0)
 					tabp[j].setX((float)matrice[i][j]);
-				}else if(i == 1) {
+				else if(i == 1)
 					tabp[j].setY((float)matrice[i][j]);
-				}
 			}
 			premiertour = false;
 		}
-		for(int idx = 0; idx<p.length;idx++) {
+		for(int idx = 0; idx<p.length;idx++)
 			tabp[idx].setZ(p[idx].getZ());
-		}
 		return tabp;
 	}
 	

@@ -5,10 +5,8 @@ import java.io.IOException;
 
 import exception.WrongFaceLineFormatException;
 import exception.WrongPointLineFormatException;
-import javafx.scene.Group;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 
 /**
  * Classe permettant la création des tableaux de points et de faces grâce à LoadFile, qui calcule le centre de gravité des faces et qui trie les faces.
@@ -42,9 +40,6 @@ public class Initialisation {
 			faces[i].setCentre_gravite(faces[i].calculCentreGravite());
 		}
 		trierFaces(faces,1);
-		for(int i=0;i<faces.length;++i) {
-			System.out.println(faces[i]);
-		}
 	}
 
 	/**
@@ -66,12 +61,6 @@ public class Initialisation {
 		}while(!trie);
 	}
 
-	/**
-	 * Retourne un tableau contenant toutes les faces.
-	 * @return
-	 */
-
-
 	public void CreerFigure(GraphicsContext gc, Face[] faces) {
 		double[] px;
 		double[] py;
@@ -82,7 +71,6 @@ public class Initialisation {
 			gc.fillPolygon(px, py, 3);
 			gc.strokePolygon(px, py, 3);
 			gc.setFill(Color.PINK);
-			
 		}
 	}
 }

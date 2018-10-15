@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -24,7 +25,7 @@ class TestFace {
 	 */
 	@Test
 	void test() throws IOException {
-		LoadFile f = new LoadFile();
+		LoadFile f = new LoadFile(new File("ressources/dolphin.ply"));
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"element vertex 3\n" + 

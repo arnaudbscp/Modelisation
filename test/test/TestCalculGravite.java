@@ -19,5 +19,4 @@ class TestCalculGravite {
 		assertEquals((float) 5, face.calculCentreGravite().getY());
 		assertEquals((float) 6, face.calculCentreGravite().getZ());
 	}
-
 }

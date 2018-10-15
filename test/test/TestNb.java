@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -13,7 +14,7 @@ class TestNb {
 
 	@Test 
 	public void testNbPoints() throws IOException {
-		LoadFile f = new LoadFile();
+		LoadFile f = new LoadFile(new File("ressources/dolphin.ply"));
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"element vertex 855\n" + 
@@ -29,7 +30,7 @@ class TestNb {
 
 	@Test
 	public void testNbFaces() throws IOException {
-		LoadFile f = new LoadFile();
+		LoadFile f = new LoadFile(new File("ressources/dolphin.ply"));
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"element vertex 855\n" + 
