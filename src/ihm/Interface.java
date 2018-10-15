@@ -178,7 +178,7 @@ public class Interface extends Application {
 		
 		Scene scene = new Scene(corps, 1280, 600);
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("i3D");
+		primaryStage.setTitle("i3D"); 
 		primaryStage.setResizable(true);
 		primaryStage.show();
 	}
