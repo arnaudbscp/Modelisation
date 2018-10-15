@@ -51,6 +51,7 @@ class TestExceptions {
 				"13.6601e-5 0 548.364 ";
 		assertThrows(WrongPointLineFormatException.class, () -> {
 			lf.lireStream(new StringReader(model));
+			@SuppressWarnings("unused")
 			Initialisation i = new Initialisation(f);
 		});
 	}
@@ -75,6 +76,7 @@ class TestExceptions {
 				"3 0 1a 2 ";
 		assertThrows(WrongFaceLineFormatException.class, () -> {
 			lf.lireStream(new StringReader(model));
+			@SuppressWarnings("unused")
 			Initialisation i = new Initialisation(f);
 		});
 	}

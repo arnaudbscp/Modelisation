@@ -7,12 +7,18 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
 public class RotationObjet {
+	@SuppressWarnings("unused")
 	private double valeur;
 	private Group objet;
+	@SuppressWarnings("unused")
 	private double idxX;
+	@SuppressWarnings("unused")
 	private double idxY;
+	@SuppressWarnings("unused")
 	private double idxZ;
+	@SuppressWarnings("unused")
 	private Rotate rotateGroup;
+	@SuppressWarnings("unused")
 	private Translate translateGroup;
 	
 	public RotationObjet(Group o, double v) {
