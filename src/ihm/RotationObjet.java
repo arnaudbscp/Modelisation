@@ -29,7 +29,6 @@ public class RotationObjet {
 		idxY = tmp.getPoints().get(1);
 		idxZ = tmp.getPoints().get(2);
 		
-		
 		return res;
 		
 	}

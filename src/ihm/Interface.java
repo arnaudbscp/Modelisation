@@ -3,7 +3,8 @@ package ihm;
 import java.io.File;
 import java.io.IOException;
 
-import chargement.Face;
+import javax.swing.JOptionPane;
+
 import chargement.Initialisation;
 import chargement.LoadFile;
 import chargement.Point;
@@ -16,7 +17,6 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.VPos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -26,8 +26,6 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -73,7 +71,7 @@ public class Interface extends Application {
 				if (extension.equals(".ply"))
 					file = new LoadFile(filePly);
 				else 
-					System.out.println("/!\\ Veuillez choisir un fichier .ply ! \n");
+					JOptionPane.showMessageDialog(null,"/!\\ Veuillez choisir un fichier .ply ! \n","Erreur format fichier",JOptionPane.ERROR_MESSAGE);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -87,9 +85,7 @@ public class Interface extends Application {
 				dessin(gc, file, l);
 			} catch (IOException e1) {
 				e1.printStackTrace();
-			}
-			System.out.println("*********************************"+filePly.getPath());
-			
+			}			
 		});
 
 		Slider zoom = new Slider();

@@ -5,18 +5,16 @@ import exception.MatriceNullException;
 
 public class Matrice {
 
-
 	public double[][] CreerMatrice(Point[] p) {
 		double[][] tab = new double[3][p.length];
 		for(int i = 0; i < 4; i++) {
 			for(int j = 0; j < p.length; j++) {
-				if(i == 0) {
+				if(i == 0)
 					tab[i][j] = p[j].getX();
-				}else if(i == 1) {
+				else if(i == 1)
 					tab[i][j] = p[j].getY();
-				}else if(i == 2) {
+				else if(i == 2)
 					tab[i][j] = 1;
-				}
 			}
 		}
 		return tab;
@@ -26,14 +24,12 @@ public class Matrice {
 		double[][] MC;
 		int l,c;
 
-		if(MA == null || MB == null){
+		if(MA == null || MB == null)
 			throw new MatriceNullException();
-		}
 
 
-		if(MA[0].length != MB.length){
+		if(MA[0].length != MB.length)
 			throw new MatriceFormatException();
-		}
 
 		if(MA.length * MA[0].length < MB.length * MB[0].length){
 			l= MB.length;
@@ -51,10 +47,8 @@ public class Matrice {
 			for (int n = 0;n < MB[0].length;n++){
 
 				int calcul= 0;
-				for (int m = 0;m < MB.length;m++){
+				for (int m = 0;m < MB.length;m++)
 					calcul += MA[i][m] * MB[m][n];
-				}
-
 				MC[l][c] = calcul;
 				c++;
 			}

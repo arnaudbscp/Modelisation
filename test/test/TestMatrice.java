@@ -29,9 +29,8 @@ class TestMatrice {
 					Matrice m = new Matrice();
 					double[][] multiplier = m.MultiplierMatrice(tab, tab2);
 					for(int i = 0; i<multiplier.length; i++) {
-						for(int j = 0; j<multiplier[0].length; j++) {
+						for(int j = 0; j<multiplier[0].length; j++)
 							assertEquals(multiplier[i][j], res[i][j]);
-						}
 					}	
 	}
 
@@ -46,16 +45,15 @@ class TestMatrice {
 		tabp[2] = p3;
 
 		double[][] tabres = new double[][] {{10,15,35},
-											{5 ,3 ,42},
-											{3 ,8 ,10},
-											{1 ,1 ,1 }};
+			{5 ,3 ,42},
+			{3 ,8 ,10},
+			{1 ,1 ,1 }};
 
 			Matrice m = new Matrice();
 			double[][] creer = m.CreerMatrice(tabp);
 			for(int i = 0; i<creer.length; i++) {
-				for(int j = 0; j<creer[0].length; j++) {
+				for(int j = 0; j<creer[0].length; j++)
 					assertEquals(tabres[i][j], creer[i][j]);
-				}
 			}	
 	}
 }
