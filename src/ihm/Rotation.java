@@ -44,6 +44,7 @@ public class Rotation {
 	}
 	
 	public void RecopiePoint(Face[] faces, Point[] points) {
+		
 		for(int i = 0; i<faces.length; i++) {
 			faces[i].setPt1(points[faces[i].getPosition()[0]]);
 			faces[i].setPt2(points[faces[i].getPosition()[1]]);

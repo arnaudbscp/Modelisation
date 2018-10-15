@@ -75,13 +75,14 @@ public class Initialisation {
 	public void CreerFigure(GraphicsContext gc, Face[] faces) {
 		double[] px;
 		double[] py;
+	
 		for (int i = 0; i < faces.length; i++) {
-			px = new double[] {faces[i].getPoints()[0].getX()*-1,faces[i].getPoints()[1].getX()*-1,faces[i].getPoints()[2].getX()*-1};
-			py = new double[] {faces[i].getPoints()[0].getZ()*-1,faces[i].getPoints()[1].getZ()*-1,faces[i].getPoints()[2].getZ()*-1};
+			px = new double[] {faces[i].getPoints()[0].getX()*-1+400,faces[i].getPoints()[1].getX()*-1+400,faces[i].getPoints()[2].getX()*-1+400};
+			py = new double[] {faces[i].getPoints()[0].getZ()*-1+400,faces[i].getPoints()[1].getZ()*-1+400,faces[i].getPoints()[2].getZ()*-1+400};
 			gc.fillPolygon(px, py, 3);
 			gc.strokePolygon(px, py, 3);
-			gc.setFill(Color.GRAY);
-
+			gc.setFill(Color.PINK);
+			
 		}
 	}
 }

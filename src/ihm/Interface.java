@@ -24,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
+import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -52,7 +53,7 @@ public class Interface extends Application {
 		
 		Canvas canv = new Canvas(1100,600);
 		GraphicsContext gc = canv.getGraphicsContext2D();
-
+		
 		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		menu.setMinWidth(150);
 		Button b1 = new Button("Importer");
@@ -155,14 +156,19 @@ public class Interface extends Application {
 		Rotation r = new Rotation();
 		tournerX.setOnMouseDragged(e-> {
 			try {
-				Point[] tabp = r.CreerPointrotate(90, file.getPoints());
+				// PROBLEME : les dauphins s'enroulent
+				Point[] tabp = r.CreerPointrotate(tournerX.getValue(), file.getPoints());
 				file.setPoints(tabp);
 			} catch (MatriceNullException | MatriceFormatException e1) {
 				e1.printStackTrace();
 			}
 			r.RecopiePoint(file.getFaces(), file.getPoints());
-			gc.clearRect(0, 0, 1100, 600);
+			gc.clearRect(0, 0, 1280, 600);
 			l.CreerFigure(gc, file.getFaces());
+			
+		});
+		
+		zoom.setOnMouseDragged(e-> {
 			
 		});
 
@@ -170,9 +176,10 @@ public class Interface extends Application {
 			
 		});
 
-
+		
+		
 		corps.getChildren().add(canv);
-
+		
 		Scene scene = new Scene(corps, 1280, 600);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("i3D");
