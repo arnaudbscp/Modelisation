@@ -71,7 +71,7 @@ public class Initialisation {
 	 * Retourne un tableau contenant toutes les faces.
 	 * @return
 	 */
-	public Face[] getFaces() {
+	public Face[] getFaces() { 
 		return faces;
 	}
 
