@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import chargement.Face;
 import chargement.Point;
 
-class TestCalculGravité {
+class TestCalculGravite {
 
 	@Test
 	void test() {

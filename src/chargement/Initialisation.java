@@ -79,11 +79,12 @@ public class Initialisation {
 		double[] px;
 		double[] py;
 		for (int i = 0; i < faces.length; i++) {
-			
-					px = new double[] {faces[i].getPoints()[0].getX()*-1,faces[i].getPoints()[1].getX()*-1,faces[i].getPoints()[2].getX()*-1};
-					py = new double[] {faces[i].getPoints()[0].getZ(),faces[i].getPoints()[1].getZ(),faces[i].getPoints()[2].getZ()};
+
+			px = new double[] {faces[i].getPoints()[0].getX()*-1,faces[i].getPoints()[1].getX()*-1,faces[i].getPoints()[2].getX()*-1};
+			py = new double[] {faces[i].getPoints()[0].getZ()*-1,faces[i].getPoints()[1].getZ()*-1,faces[i].getPoints()[2].getZ()*-1};
 			gc.fillPolygon(px, py, 3);
 			gc.strokePolygon(px, py, 3);
+			gc.setFill(Color.GRAY);
 		}
 	}
 }
