@@ -2,10 +2,11 @@ package chargement;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+
+import javax.swing.JOptionPane;
 
 import exception.WrongFaceLineFormatException;
 import exception.WrongHeaderException;
@@ -30,13 +31,16 @@ public class LoadFile {
 	 * Tableau stockant toutes les Face de la figure.
 	 */
 	private Face[] faces;
+	
+	/**
+	 * Constructeur vide pour les tests.
+	 */
+	public LoadFile() {}
+	
 	/**
 	 * Constructeur appelant la méthode lireStream(Reader in).
 	 * @throws IOException
 	 */
-	public LoadFile() {
-	}
-	
 	public LoadFile(File f) throws IOException{
 		lireStream(new FileReader(new File(f.getPath())));
 	}
@@ -54,11 +58,17 @@ public class LoadFile {
 			for(int i=0;i<3;i++)
 				br.readLine();
 			faces = new Face[recupNb(br.readLine())];
-		} catch (FileNotFoundException e) {
-			System.out.println("Le fichier n'a pas été trouvé...");
-			e.printStackTrace();
 		} catch (WrongHeaderException e) {
-			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "L'en-tête du fichier n'est pas écrit correctement... Il doit être écrit de cette manière: (i et j sont respectivement le nombre de points et le nombre de faces de la figure):\n"+
+					"ply\n"+
+					"format ascii 1.0\n"+
+					"element vertex i\n"+
+					"property float32 x\n"+
+					"property float32 y\n"+
+					"property float32 z\n"+
+					"element face j\n"+
+					"property list uint8 int32 vertex_indices\n"+
+					"end_header","Erreur format entête",JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
 	}
