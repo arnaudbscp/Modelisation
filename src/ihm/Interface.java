@@ -167,7 +167,19 @@ public class Interface extends Application {
 			
 			
 		});
-	
+		
+		zoom.setOnMouseDragged(e -> {
+			Point[] pZoom = new Point[file.getPoints().length];
+			for (int i=0; i<file.getPoints().length; i++) {
+				Point p = new Point((float)(file.getPoints()[i].getX()*zoom.getValue()), (float)(file.getPoints()[i].getY()*zoom.getValue()), (float)(file.getPoints()[i].getZ()*zoom.getValue()));
+				pZoom[i] = p;
+			}
+			Face[] tabf = file.getFaces();
+			r.recopiePoint(tabf, pZoom);
+			gc.clearRect(0, 0, 1280, 600);
+			l.creerFigure(gc, tabf);
+		});
+		
 		corps.getChildren().add(canv);
 		
 		Scene scene = new Scene(corps, 1280, 600);
