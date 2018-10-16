@@ -41,8 +41,8 @@ class TestFace {
 				"3 0 1 2 ";
 		f.lireStream(new StringReader(model));
 		try {
-			f.CreerPoints();
-			f.CreerFaces();
+			f.creerPoints();
+			f.creerFaces();
 		} catch (WrongPointLineFormatException | WrongFaceLineFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

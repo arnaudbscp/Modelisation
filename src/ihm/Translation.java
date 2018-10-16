@@ -12,13 +12,13 @@ public class Translation {
 		BoiteaOutils bo = new BoiteaOutils(); 
 		Matrice m = new Matrice();
 		double[][] matrice_de_translation = bo.CreerTranslation(x1, x2);
-		double[][] matrice_de_figure = m.CreerMatrice(p);
+		double[][] matrice_de_figure = m.creerMatrice(p);
 		double[][] matrice_resultat = m.multiplierMatrice(matrice_de_translation, matrice_de_figure);
-		Point[] tab_points_res = CreerTabPoint(matrice_resultat, p);
+		Point[] tab_points_res = creerTabPoint(matrice_resultat, p);
 		return tab_points_res;
 	}
 	
-	private Point[] CreerTabPoint(double[][] matrice, Point[] p) {
+	private Point[] creerTabPoint(double[][] matrice, Point[] p) {
 		Point[] tabp = new Point[matrice[0].length];
 		boolean premiertour = true;
 		for (int i = 0; i < matrice.length; i++) {
@@ -37,7 +37,7 @@ public class Translation {
 		return tabp;
 	}
 	
-	public void RecopiePoint(Face[] faces, Point[] points) {
+	public void recopiePoint(Face[] faces, Point[] points) {
 		
 		for(int i = 0; i<faces.length; i++) {
 			faces[i].setPt1(points[faces[i].getPosition()[0]]);

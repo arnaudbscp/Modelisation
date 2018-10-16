@@ -9,18 +9,18 @@ import outils.BoiteaOutils;
 
 public class Rotation {
 
-	public Point[] CreerPointrotate(double angle, Point[] p) throws MatriceNullException, MatriceFormatException {
+	public Point[] creerPointrotate(double angle, Point[] p) throws MatriceNullException, MatriceFormatException {
 
 		BoiteaOutils bo = new BoiteaOutils(); 
 		Matrice m = new Matrice();
 		double[][] matricerotate = bo.CreerRotation(angle);
-		double[][] matricefigure = m.CreerMatrice(p);
+		double[][] matricefigure = m.creerMatrice(p);
 		double[][] matriceres = m.multiplierMatrice(matricerotate, matricefigure);
-		Point[] tabp = CreerTabPoint(matriceres, p);
+		Point[] tabp = creerTabPoint(matriceres, p);
 		return tabp;
 	}
 
-	private Point[] CreerTabPoint(double[][] matrice, Point[] p) {
+	private Point[] creerTabPoint(double[][] matrice, Point[] p) {
 		Point[] tabp = new Point[matrice[0].length];
 		boolean premiertour = true;
 		for (int i = 0; i < matrice.length; i++) {
@@ -39,7 +39,7 @@ public class Rotation {
 		return tabp;
 	}
 	
-	public void RecopiePoint(Face[] faces, Point[] points) {
+	public void recopiePoint(Face[] faces, Point[] points) {
 		
 		for(int i = 0; i<faces.length; i++) {
 			faces[i].setPt1(points[faces[i].getPosition()[0]]);

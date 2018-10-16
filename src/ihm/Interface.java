@@ -25,7 +25,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
-import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -156,12 +155,12 @@ public class Interface extends Application {
 		tournerX.setOnMouseDragged(e-> {
 			try {
 				// PROBLEME : les dauphins s'enroulent
-				Point[] tabp = r.CreerPointrotate(tournerX.getValue(), file.getPoints());
+				Point[] tabp = r.creerPointrotate(tournerX.getValue(), file.getPoints());
 				Face[] tabf = file.getFaces();
 				
-				r.RecopiePoint(tabf, tabp);
+				r.recopiePoint(tabf, tabp);
 				gc.clearRect(0, 0, 1280, 600);
-				l.CreerFigure(gc, tabf);
+				l.creerFigure(gc, tabf);
 			} catch (MatriceNullException | MatriceFormatException e1) {
 				e1.printStackTrace();
 			}
@@ -193,13 +192,13 @@ public class Interface extends Application {
 	public void dessin(GraphicsContext gc, LoadFile file, Initialisation l) throws IOException{
 		gc.setLineWidth(1); //epaisseur des lignes
 		try {
-			file.CreerPoints();
-			file.CreerFaces();
+			file.creerPoints();
+			file.creerFaces();
 		} catch (WrongPointLineFormatException | WrongFaceLineFormatException e) {
 			// TODO Auto-generated catch block
 			System.exit(1);
 		}
 		l = new Initialisation(filePly);
-		l.CreerFigure(gc, file.getFaces());
+		l.creerFigure(gc, file.getFaces());
 	}
 }

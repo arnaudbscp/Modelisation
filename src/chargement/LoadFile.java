@@ -50,10 +50,10 @@ public class LoadFile {
 			br = new BufferedReader(in);
 			br.readLine();
 			br.readLine();
-			points = new Point[RecupNb(br.readLine())];
+			points = new Point[recupNb(br.readLine())];
 			for(int i=0;i<3;i++)
 				br.readLine();
-			faces = new Face[RecupNb(br.readLine())];
+			faces = new Face[recupNb(br.readLine())];
 		} catch (FileNotFoundException e) {
 			System.out.println("Le fichier n'a pas été trouvé...");
 			e.printStackTrace();
@@ -68,7 +68,7 @@ public class LoadFile {
 	 * @throws IOException
 	 * @throws WrongPointLineFormatException 
 	 */
-	public void CreerPoints() throws IOException, WrongPointLineFormatException {
+	public void creerPoints() throws IOException, WrongPointLineFormatException {
 		br.readLine();
 		br.readLine();
 		for(int i=0;i<points.length;i++) {
@@ -92,7 +92,7 @@ public class LoadFile {
 	 * @throws IOException
 	 * @throws WrongFaceLineFormatException 
 	 */
-	public void CreerFaces() throws IOException, WrongFaceLineFormatException {
+	public void creerFaces() throws IOException, WrongFaceLineFormatException {
 		for(int j=0;j<faces.length;j++) {
 			br.mark(faces.length);
 			String ligne_face = br.readLine();
@@ -119,7 +119,7 @@ public class LoadFile {
 	 * @param ligne
 	 * @return
 	 */
-	public int RecupNb(String ligne) throws WrongHeaderException{
+	public int recupNb(String ligne) throws WrongHeaderException{
 		if(!ligne.substring(ligne.indexOf(" ", ligne.indexOf(" ")+1)+1, ligne.length()).matches("[0-9]+")) 
 			throw new WrongHeaderException();
 		return Integer.parseInt(ligne.substring(ligne.indexOf(" ", ligne.indexOf(" ")+1)+1, ligne.length()));

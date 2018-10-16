@@ -5,7 +5,7 @@ import exception.MatriceNullException;
 
 public class Matrice {
 
-	public double[][] CreerMatrice(Point[] p) {
+	public double[][] creerMatrice(Point[] p) {
 		double[][] tab = new double[3][p.length];
 		for(int i = 0; i < 4; i++) {
 			for(int j = 0; j < p.length; j++) {

@@ -24,13 +24,13 @@ public class Initialisation {
 	public Initialisation(File f) throws IOException{
 		LoadFile file = new LoadFile(f);
 		try {
-			file.CreerPoints();
+			file.creerPoints();
 		} catch (WrongPointLineFormatException e1) {
 			// TODO Auto-generated catch block
 			System.exit(1);
 		}
 		try {
-			file.CreerFaces();
+			file.creerFaces();
 		} catch (WrongFaceLineFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,7 +61,7 @@ public class Initialisation {
 		}while(!trie);
 	}
 
-	public void CreerFigure(GraphicsContext gc, Face[] faces) {
+	public void creerFigure(GraphicsContext gc, Face[] faces) {
 		double[] px;
 		double[] py;
 	

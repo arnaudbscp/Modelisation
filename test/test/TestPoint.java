@@ -38,7 +38,7 @@ class TestPoint {
 				"13.6601 0 548.364 ";
 		f.lireStream(new StringReader(model));
 		try {
-			f.CreerPoints();
+			f.creerPoints();
 		} catch (WrongPointLineFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
