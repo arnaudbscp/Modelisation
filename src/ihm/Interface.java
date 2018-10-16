@@ -70,8 +70,10 @@ public class Interface extends Application {
 			extension = filePly.getPath().substring(i, filePly.getPath().length());	
 			
 			try {
-				if (extension.equals(".ply"))
+				if (extension.equals(".ply")) {
+					gc.clearRect(0, 0, 1600, 800);
 					file = new LoadFile(filePly);
+				}
 				else 
 					JOptionPane.showMessageDialog(null,"/!\\ Veuillez choisir un fichier .ply ! \n","Erreur format fichier",JOptionPane.ERROR_MESSAGE);
 			} catch (IOException e1) {
