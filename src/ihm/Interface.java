@@ -37,6 +37,7 @@ public class Interface extends Application {
 	LoadFile file;
 	File filePly;
 	Initialisation l;
+	int cpt_translate=0;
 
 	public void start(Stage primaryStage) throws Exception {
 		//Déplacement dans l'action du bouton importer
@@ -146,7 +147,7 @@ public class Interface extends Application {
 		hb_gauche_droite.getChildren().addAll(gauche,droite);
 		hb_bas.getChildren().add(bas);
 		menu.getChildren().addAll(ltranslation,hb_haut,hb_gauche_droite,hb_bas);
-		
+
 
 
 		VBox dessin = new VBox();
@@ -192,15 +193,23 @@ public class Interface extends Application {
 			gc.clearRect(0, 0, 1280, 600);
 			l.creerFigure(gc, tabf);
 		});
-		
-		Translation t = new Translation();
-		//Valou est dessus
-		int cpt_translate=0;
-		haut.setOnAction(e->{
-			try {
-				Point[] tabp = t.creerPointsTranslate(100, 0, file.getPoints());
-				Face[] tabf = file.getFaces();
 
+		Translation t = new Translation();
+		gauche.setOnAction(e->{
+			try {
+				Point[] tabp = t.creerPointsTranslate(++cpt_translate,0, file.getPoints());
+				Face[] tabf = file.getFaces();
+				r.recopiePoint(tabf, tabp);
+				gc.clearRect(0, 0, 1280, 600);
+				l.creerFigure(gc, tabf);
+			} catch (MatriceNullException | MatriceFormatException e1) {
+				e1.printStackTrace();
+			}
+		});
+		droite.setOnAction(e->{
+			try {
+				Point[] tabp = t.creerPointsTranslate(--cpt_translate, 0, file.getPoints());
+				Face[] tabf = file.getFaces();
 				r.recopiePoint(tabf, tabp);
 				gc.clearRect(0, 0, 1280, 600);
 				l.creerFigure(gc, tabf);
