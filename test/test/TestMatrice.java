@@ -24,7 +24,7 @@ class TestMatrice {
 		double[][] multiplier = m.multiplierMatrice(tab, tab2);
 		for(int i = 0; i<multiplier.length; i++) {
 			for(int j = 0; j<multiplier[0].length; j++)
-				assertEquals(multiplier[i][j], res[i][j]);
+				assertEquals(multiplier[i][j], res[i][j]); 
 		}	
 	}
 
