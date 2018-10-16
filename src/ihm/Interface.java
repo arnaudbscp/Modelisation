@@ -48,10 +48,10 @@ public class Interface extends Application {
 		HBox corps = new HBox();
 
 		VBox menu = new VBox();
-		
+
 		Canvas canv = new Canvas(1100,600);
 		GraphicsContext gc = canv.getGraphicsContext2D();
-		
+
 		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		menu.setMinWidth(150);
 		Button b1 = new Button("Importer");
@@ -67,7 +67,7 @@ public class Interface extends Application {
 			while (filePly.getPath().charAt(i) != '.')
 				i++;
 			extension = filePly.getPath().substring(i, filePly.getPath().length());	
-			
+
 			try {
 				if (extension.equals(".ply")) {
 					gc.clearRect(0, 0, 1600, 800);
@@ -134,6 +134,20 @@ public class Interface extends Application {
 		tournerZ.setShowTickLabels(true);
 		menu.getChildren().addAll(lTournerZ, tournerZ);
 
+		Label ltranslation = new Label("Translation");
+		HBox hb_haut = new HBox();
+		HBox hb_gauche_droite = new HBox();
+		HBox hb_bas = new HBox();
+		Button haut = new Button("^");
+		Button gauche = new Button("<");
+		Button droite = new Button(">");
+		Button bas = new Button("v");
+		hb_haut.getChildren().add(haut);
+		hb_gauche_droite.getChildren().addAll(gauche,droite);
+		hb_bas.getChildren().add(bas);
+		menu.getChildren().addAll(ltranslation,hb_haut,hb_gauche_droite,hb_bas);
+		
+
 
 		VBox dessin = new VBox();
 
@@ -148,26 +162,25 @@ public class Interface extends Application {
 		corps.getChildren().add(menu);
 		corps.getChildren().add(dessin);
 
-	
+
 		//Déplacement dans l'action du bouton importer
 		//dessin(gc, file, g, l);
 		Rotation r = new Rotation();
 		tournerX.setOnMouseDragged(e-> {
 			try {
-				// PROBLEME : les dauphins s'enroulent
 				Point[] tabp = r.creerPointrotate(tournerX.getValue(), file.getPoints());
 				Face[] tabf = file.getFaces();
-				
+
 				r.recopiePoint(tabf, tabp);
 				gc.clearRect(0, 0, 1280, 600);
 				l.creerFigure(gc, tabf);
 			} catch (MatriceNullException | MatriceFormatException e1) {
 				e1.printStackTrace();
 			}
-			
-			
+
+
 		});
-		
+
 		zoom.setOnMouseDragged(e -> {
 			Point[] pZoom = new Point[file.getPoints().length];
 			for (int i=0; i<file.getPoints().length; i++) {
@@ -180,8 +193,24 @@ public class Interface extends Application {
 			l.creerFigure(gc, tabf);
 		});
 		
+		Translation t = new Translation();
+		//Valou est dessus
+		int cpt_translate=0;
+		haut.setOnAction(e->{
+			try {
+				Point[] tabp = t.creerPointsTranslate(100, 0, file.getPoints());
+				Face[] tabf = file.getFaces();
+
+				r.recopiePoint(tabf, tabp);
+				gc.clearRect(0, 0, 1280, 600);
+				l.creerFigure(gc, tabf);
+			} catch (MatriceNullException | MatriceFormatException e1) {
+				e1.printStackTrace();
+			}
+		});
+
 		corps.getChildren().add(canv);
-		
+
 		Scene scene = new Scene(corps, 1280, 600);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("i3D"); 

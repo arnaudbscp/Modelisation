@@ -13,7 +13,7 @@ public class Rotation {
 
 		BoiteaOutils bo = new BoiteaOutils(); 
 		Matrice m = new Matrice();
-		double[][] matricerotate = bo.CreerRotation(angle);
+		double[][] matricerotate = bo.creerRotation(angle);
 		double[][] matricefigure = m.creerMatrice(p);
 		double[][] matriceres = m.multiplierMatrice(matricerotate, matricefigure);
 		Point[] tabp = creerTabPoint(matriceres, p);

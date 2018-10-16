@@ -11,7 +11,7 @@ public class Translation {
 	public Point[] creerPointsTranslate(double x1,double x2, Point[] p) throws MatriceNullException, MatriceFormatException {
 		BoiteaOutils bo = new BoiteaOutils(); 
 		Matrice m = new Matrice();
-		double[][] matrice_de_translation = bo.CreerTranslation(x1, x2);
+		double[][] matrice_de_translation = bo.creerTranslation(x1, x2);
 		double[][] matrice_de_figure = m.creerMatrice(p);
 		double[][] matrice_resultat = m.multiplierMatrice(matrice_de_translation, matrice_de_figure);
 		Point[] tab_points_res = creerTabPoint(matrice_resultat, p);
