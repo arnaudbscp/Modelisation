@@ -34,6 +34,9 @@ public class LoadFile {
 	 * Constructeur appelant la méthode lireStream(Reader in).
 	 * @throws IOException
 	 */
+	public LoadFile() {
+	}
+	
 	public LoadFile(File f) throws IOException{
 		lireStream(new FileReader(new File(f.getPath())));
 	}

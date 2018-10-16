@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
+import chargement.Face;
 import chargement.Initialisation;
 import chargement.LoadFile;
 import chargement.Point;
@@ -154,26 +155,18 @@ public class Interface extends Application {
 			try {
 				// PROBLEME : les dauphins s'enroulent
 				Point[] tabp = r.CreerPointrotate(tournerX.getValue(), file.getPoints());
-				file.setPoints(tabp);
+				Face[] tabf = file.getFaces();
+				
+				r.RecopiePoint(tabf, tabp);
+				gc.clearRect(0, 0, 1280, 600);
+				l.CreerFigure(gc, tabf);
 			} catch (MatriceNullException | MatriceFormatException e1) {
 				e1.printStackTrace();
 			}
-			r.RecopiePoint(file.getFaces(), file.getPoints());
-			gc.clearRect(0, 0, 1280, 600);
-			l.CreerFigure(gc, file.getFaces());
+			
 			
 		});
-		
-		zoom.setOnMouseDragged(e-> {
-			
-		});
-
-		tournerX.setOnMouseClicked(e ->{
-			
-		});
-
-		
-		
+	
 		corps.getChildren().add(canv);
 		
 		Scene scene = new Scene(corps, 1280, 600);

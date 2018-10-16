@@ -18,7 +18,6 @@ class TestExceptions {
 
 	@Test
 	void testWrongHeader() throws IOException {
-		LoadFile f = new LoadFile(new File("ressources/dolphin.ply"));
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"comment by genartv\n" +
@@ -29,9 +28,9 @@ class TestExceptions {
 				"element face 1689\n" + 
 				"property list uint8 int32 vertex_indices\n" + 
 				"end_header";
-		assertThrows(WrongHeaderException.class, () -> {
-			f.lireStream(new StringReader(model));
-		});
+		LoadFile f = new LoadFile();
+		
+		assertThrows(WrongHeaderException.class, () -> f.lireStream(new StringReader(model)) );
 	}
 	
 	@Test

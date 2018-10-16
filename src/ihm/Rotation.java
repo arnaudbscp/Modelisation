@@ -15,7 +15,7 @@ public class Rotation {
 		Matrice m = new Matrice();
 		double[][] matricerotate = bo.CreerRotation(angle);
 		double[][] matricefigure = m.CreerMatrice(p);
-		double[][] matriceres = m.MultiplierMatrice(matricerotate, matricefigure);
+		double[][] matriceres = m.multiplierMatrice(matricerotate, matricefigure);
 		Point[] tabp = CreerTabPoint(matriceres, p);
 		return tabp;
 	}

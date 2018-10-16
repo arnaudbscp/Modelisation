@@ -20,7 +20,7 @@ public class Matrice {
 		return tab;
 	}
 
-	public double[][] MultiplierMatrice(double[][] MA , double[][] MB) throws MatriceNullException, MatriceFormatException {
+	public double[][] multiplierMatrice(double[][] MA , double[][] MB) throws MatriceNullException, MatriceFormatException {
 		double[][] MC;
 		int l,c;
 
@@ -31,15 +31,7 @@ public class Matrice {
 		if(MA[0].length != MB.length)
 			throw new MatriceFormatException();
 
-		if(MA.length * MA[0].length < MB.length * MB[0].length){
-			l= MB.length;
-			c= MB[0].length;
-		}else{
-			l= MA.length;
-			c= MA[0].length;
-		}
-
-		MC = new double[l][c];
+		MC = new double[MA.length][MB[0].length];
 
 		l = 0;
 		for (int i = 0;i < MA.length;i++){
