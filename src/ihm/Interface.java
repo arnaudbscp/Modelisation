@@ -36,7 +36,7 @@ import javafx.stage.Stage;
  * @author bascopa & clarissa
  */
 public class Interface extends Application {
-	
+
 	LoadFile file;
 	File filePly;
 	Initialisation l;
@@ -154,11 +154,11 @@ public class Interface extends Application {
 
 		Label lcolor = new Label("Couleur");
 		ColorPicker cp = new ColorPicker();
-		
+
 		menu.getChildren().addAll(lcolor,cp);
-		
-		cp.setOnAction(e->{
-			c=cp.getValue();
+
+		cp.setOnAction(e ->{
+			c = cp.getValue();
 			l.creerFigure(gc, file.getFaces(), c);
 		});
 
@@ -178,67 +178,22 @@ public class Interface extends Application {
 
 		//Déplacement dans l'action du bouton importer
 		//dessin(gc, file, g, l);
-		Rotation r = new Rotation();
 		tournerX.setOnMouseDragged(e-> {
-			try {
-				Point[] tabp = r.creerPointrotate(tournerX.getValue(), file.getPoints());
-				Face[] tabf = file.getFaces();
-
-				r.recopiePoint(tabf, tabp);
-				gc.clearRect(0, 0, 1280, 600);
-			
-				l.creerFigure(gc, tabf,c);
-				r.setPoint(tabp);
-				
-			} catch (MatriceNullException | MatriceFormatException e1) {
-				e1.printStackTrace();
-			}
-		
-		});
-		
-		tournerX.setOnDragDone(e-> {
-			file.setPoints(r.getPoint());
-			r.recopiePoint(file.getFaces(), r.getPoint());
+			Miseajourvue(gc, tournerX.getValue(), zoom.getValue());
 		});
 
 		zoom.setOnMouseDragged(e -> {
-			Point[] pZoom = new Point[file.getPoints().length];
-			for (int i=0; i<file.getPoints().length; i++) {
-				Point p = new Point((float)(file.getPoints()[i].getX()*(zoom.getValue()/100)), (float)(file.getPoints()[i].getY()*(zoom.getValue()/100)), (float)(file.getPoints()[i].getZ()*zoom.getValue()/100));
-				pZoom[i] = p;
-			}
-			Face[] tabf = file.getFaces();
-			r.recopiePoint(tabf, pZoom);
-			gc.clearRect(0, 0, 1280, 600);
-			l.creerFigure(gc, tabf,c);
+			Miseajourvue(gc, tournerX.getValue(), zoom.getValue());
 		});
 
-		Translation t = new Translation();
+
+
 		gauche.setOnAction(e->{
-			try {
-				Point[] tabp = t.creerPointsTranslate(cpt_translate++,0, file.getPoints());
-				Face[] tabf = file.getFaces();
-				
-				r.recopiePoint(tabf, tabp);
-				gc.clearRect(0, 0, 1280, 600);
-				
-				l.creerFigure(gc, tabf,c);
-			} catch (MatriceNullException | MatriceFormatException e1) {
-				e1.printStackTrace();
-			}
-			
+			Miseajourvue(gc, tournerX.getValue(), zoom.getValue());
 		});
-		
+
 		droite.setOnAction(e->{
-			try {
-				Point[] tabp = t.creerPointsTranslate(cpt_translate--, 0, file.getPoints());
-				Face[] tabf = file.getFaces();
-				r.recopiePoint(tabf, tabp);
-				gc.clearRect(0, 0, 1280, 600);
-				l.creerFigure(gc, tabf,c);
-			} catch (MatriceNullException | MatriceFormatException e1) {
-				e1.printStackTrace();
-			}
+			Miseajourvue(gc, tournerX.getValue(), zoom.getValue());
 		});
 
 		corps.getChildren().add(canv);
@@ -272,5 +227,51 @@ public class Interface extends Application {
 			System.exit(1);
 		}
 		l.creerFigure(gc, file.getFaces(),c);
+	}
+
+	public void Miseajourvue(GraphicsContext gc, double xvalue, double zoomvalue) {
+		Translation t = new Translation();
+		Rotation r = new Rotation();
+		Face[] tabf = file.getFaces();
+		Point[] tabp = null;
+		try {
+			tabp = r.creerPointrotate(xvalue, file.getPoints());
+		} catch (MatriceNullException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MatriceFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		r.recopiePoint(tabf, tabp);
+		for (int i=0; i<file.getPoints().length; i++) {
+			Point p = new Point((float)(file.getPoints()[i].getX()*(zoomvalue/100)), (float)(file.getPoints()[i].getY()*(zoomvalue/100)), (float)(file.getPoints()[i].getZ()*zoomvalue/100));
+			tabp[i] = p;
+		}
+		r.recopiePoint(tabf, tabp);
+		/*try {
+			tabp = t.creerPointsTranslate(cpt_translate++,0, tabp);
+		} catch (MatriceNullException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MatriceFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		r.recopiePoint(tabf, tabp);
+		try {
+			tabp = t.creerPointsTranslate(cpt_translate--, 0, tabp);
+		} catch (MatriceNullException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MatriceFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		r.recopiePoint(tabf, tabp);*/
+		gc.clearRect(0, 0, 1280, 600);
+		l.creerFigure(gc, tabf,c);
+
+
 	}
 }
