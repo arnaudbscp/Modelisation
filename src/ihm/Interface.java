@@ -40,7 +40,8 @@ public class Interface extends Application {
 	LoadFile file;
 	File filePly;
 	Initialisation l;
-	int cpt_translate=0;
+	int cpt_translate_gd=0;
+	int cpt_translate_hb=0;
 	Color c = Color.WHITE;
 
 	public void start(Stage primaryStage) throws Exception {
@@ -143,13 +144,20 @@ public class Interface extends Application {
 		HBox hb_haut = new HBox();
 		HBox hb_gauche_droite = new HBox();
 		HBox hb_bas = new HBox();
-		Button haut = new Button("^");
-		Button gauche = new Button("<");
-		Button droite = new Button(">");
-		Button bas = new Button("v");
+		Button haut = new Button("↑");
+		Button gauche = new Button("←");
+		Button droite = new Button("→");
+		Button bas = new Button("↓");
 		hb_haut.getChildren().add(haut);
 		hb_gauche_droite.getChildren().addAll(gauche,droite);
 		hb_bas.getChildren().add(bas);
+		haut.setPrefWidth(20);
+		bas.setPrefWidth(20);
+		droite.setPrefWidth(20);
+		gauche.setPrefWidth(20);
+		hb_bas.setPadding(new Insets(0, 0, 0, 27));
+		hb_haut.setPadding(new Insets(0, 0, 0, 27));
+		hb_gauche_droite.setSpacing(25);
 		menu.getChildren().addAll(ltranslation,hb_haut,hb_gauche_droite,hb_bas);
 
 		Label lcolor = new Label("Couleur");
@@ -216,7 +224,7 @@ public class Interface extends Application {
 		Translation t = new Translation();
 		gauche.setOnAction(e->{
 			try {
-				Point[] tabp = t.creerPointsTranslate(cpt_translate++,0, file.getPoints());
+				Point[] tabp = t.creerPointsTranslate(cpt_translate_gd+=10,0, file.getPoints());
 				Face[] tabf = file.getFaces();
 				
 				r.recopiePoint(tabf, tabp);
@@ -231,7 +239,7 @@ public class Interface extends Application {
 		
 		droite.setOnAction(e->{
 			try {
-				Point[] tabp = t.creerPointsTranslate(cpt_translate--, 0, file.getPoints());
+				Point[] tabp = t.creerPointsTranslate(cpt_translate_gd-=10, 0, file.getPoints());
 				Face[] tabf = file.getFaces();
 				r.recopiePoint(tabf, tabp);
 				gc.clearRect(0, 0, 1280, 600);
@@ -240,6 +248,30 @@ public class Interface extends Application {
 				e1.printStackTrace();
 			}
 		});
+		
+//		haut.setOnAction(e->{
+//			try {
+//				Point[] tabp = t.creerPointsTranslate(0, cpt_translate_hb+=10, file.getPoints());
+//				Face[] tabf = file.getFaces();
+//				r.recopiePoint(tabf, tabp);
+//				gc.clearRect(0, 0, 1280, 600);
+//				l.creerFigure(gc, tabf,c);
+//			} catch (MatriceNullException | MatriceFormatException e1) {
+//				e1.printStackTrace();
+//			}
+//		});
+//		
+//		bas.setOnAction(e->{
+//			try {
+//				Point[] tabp = t.creerPointsTranslate(0, cpt_translate_hb-=10, file.getPoints());
+//				Face[] tabf = file.getFaces();
+//				r.recopiePoint(tabf, tabp);
+//				gc.clearRect(0, 0, 1280, 600);
+//				l.creerFigure(gc, tabf,c);
+//			} catch (MatriceNullException | MatriceFormatException e1) {
+//				e1.printStackTrace();
+//			}
+//		});
 
 		corps.getChildren().add(canv);
 
