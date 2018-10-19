@@ -22,11 +22,13 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -39,6 +41,7 @@ public class Interface extends Application {
 	File filePly;
 	Initialisation l;
 	int cpt_translate=0;
+	Color c = Color.WHITE;
 
 	public void start(Stage primaryStage) throws Exception {
 		//Déplacement dans l'action du bouton importer
@@ -87,7 +90,7 @@ public class Interface extends Application {
 				e1.printStackTrace();
 			}
 			try {
-				dessin(gc, file, l);
+				dessin(gc, file);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}			
@@ -149,7 +152,15 @@ public class Interface extends Application {
 		hb_bas.getChildren().add(bas);
 		menu.getChildren().addAll(ltranslation,hb_haut,hb_gauche_droite,hb_bas);
 
-
+		Label lcolor = new Label("Couleur");
+		ColorPicker cp = new ColorPicker();
+		
+		menu.getChildren().addAll(lcolor,cp);
+		
+		cp.setOnAction(e->{
+			c=cp.getValue();
+			l.creerFigure(gc, file.getFaces(), c);
+		});
 
 		VBox dessin = new VBox();
 
@@ -176,7 +187,7 @@ public class Interface extends Application {
 				r.recopiePoint(tabf, tabp);
 				gc.clearRect(0, 0, 1280, 600);
 			
-				l.creerFigure(gc, tabf);
+				l.creerFigure(gc, tabf,c);
 				r.setPoint(tabp);
 				
 			} catch (MatriceNullException | MatriceFormatException e1) {
@@ -199,7 +210,7 @@ public class Interface extends Application {
 			Face[] tabf = file.getFaces();
 			r.recopiePoint(tabf, pZoom);
 			gc.clearRect(0, 0, 1280, 600);
-			l.creerFigure(gc, tabf);
+			l.creerFigure(gc, tabf,c);
 		});
 
 		Translation t = new Translation();
@@ -211,7 +222,7 @@ public class Interface extends Application {
 				r.recopiePoint(tabf, tabp);
 				gc.clearRect(0, 0, 1280, 600);
 				
-				l.creerFigure(gc, tabf);
+				l.creerFigure(gc, tabf,c);
 			} catch (MatriceNullException | MatriceFormatException e1) {
 				e1.printStackTrace();
 			}
@@ -224,7 +235,7 @@ public class Interface extends Application {
 				Face[] tabf = file.getFaces();
 				r.recopiePoint(tabf, tabp);
 				gc.clearRect(0, 0, 1280, 600);
-				l.creerFigure(gc, tabf);
+				l.creerFigure(gc, tabf,c);
 			} catch (MatriceNullException | MatriceFormatException e1) {
 				e1.printStackTrace();
 			}
@@ -251,7 +262,7 @@ public class Interface extends Application {
 		Application.launch(args);
 	}
 
-	public void dessin(GraphicsContext gc, LoadFile file, Initialisation l) throws IOException{
+	public void dessin(GraphicsContext gc, LoadFile file) throws IOException{
 		gc.setLineWidth(1); //epaisseur des lignes
 		try {
 			file.creerPoints();
@@ -260,7 +271,6 @@ public class Interface extends Application {
 			// TODO Auto-generated catch block
 			System.exit(1);
 		}
-		l = new Initialisation(filePly);
-		l.creerFigure(gc, file.getFaces());
+		l.creerFigure(gc, file.getFaces(),c);
 	}
 }
