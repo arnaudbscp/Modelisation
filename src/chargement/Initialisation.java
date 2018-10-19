@@ -39,7 +39,7 @@ public class Initialisation {
 		for(int i=0;i<faces.length;++i) {
 			faces[i].setCentre_gravite(faces[i].calculCentreGravite());
 		}
-		trierFaces(faces,1);
+		//trierFaces(faces,1);
 	}
 
 	/**

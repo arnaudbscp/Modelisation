@@ -245,7 +245,7 @@ public class Interface extends Application {
 		}
 		r.recopiePoint(tabf, tabp);
 		for (int i=0; i<file.getPoints().length; i++) {
-			Point p = new Point((float)(file.getPoints()[i].getX()*(zoomvalue/100)), (float)(file.getPoints()[i].getY()*(zoomvalue/100)), (float)(file.getPoints()[i].getZ()*zoomvalue/100));
+			Point p = new Point((float)(file.getPoints()[i].getX()*(zoomvalue/file.getCoordMax(0))*10), (float)(file.getPoints()[i].getY()*(zoomvalue/file.getCoordMax(1))*10), (float)(file.getPoints()[i].getZ()*(zoomvalue/file.getCoordMax(2))*10));
 			tabp[i] = p;
 		}
 		r.recopiePoint(tabf, tabp);

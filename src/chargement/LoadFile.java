@@ -151,31 +151,31 @@ public class LoadFile {
 		return faces;
 	}
 	
-//	/**
-//	 * Récupère la plus petite des coordonnées de la dimension passée en paramètre de la figure pour adapter la taille du canvas.
-//	 * @param dimension
-//	 * @return
-//	 */
-//	public float getCoordMin(int dimension) {
-//		float min = points[0].getCoordonnees()[dimension];
-//		for(int i=1;i<points.length;++i) {
-//			if(points[i].getCoordonnees()[dimension]<min)
-//				min=points[i].getCoordonnees()[dimension];
-//		}
-//		return min;
-//	}
-//	
-//	/**
-//	 * Récupère la plus grande des coordonnées de la dimension passée en paramètre de la figure pour adapter la taille du canvas.
-//	 * @param dimension
-//	 * @return
-//	 */
-//	public float getCoordMax(int dimension) {
-//		float max = points[0].getCoordonnees()[dimension];
-//		for(int i=1;i<points.length;++i) {
-//			if(points[i].getCoordonnees()[dimension]>max)
-//				max=points[i].getCoordonnees()[dimension];
-//		}
-//		return max;
-//	}
+	/**
+	 * Récupère la plus petite des coordonnées de la dimension passée en paramètre de la figure pour adapter la taille du canvas.
+	 * @param dimension
+	 * @return
+	 */
+	public float getCoordMin(int dimension) {
+		float min = points[0].getCoordonnees()[dimension];
+		for(int i=1;i<points.length;++i) {
+			if(points[i].getCoordonnees()[dimension]<min)
+				min=points[i].getCoordonnees()[dimension];
+		}
+		return min;
+	}
+	
+	/**
+	 * Récupère la plus grande des coordonnées de la dimension passée en paramètre de la figure pour adapter la taille du canvas.
+	 * @param dimension
+	 * @return
+	 */
+	public float getCoordMax(int dimension) {
+		float max = points[0].getCoordonnees()[dimension];
+		for(int i=1;i<points.length;++i) {
+			if(points[i].getCoordonnees()[dimension]>max)
+				max=points[i].getCoordonnees()[dimension];
+		}
+		return max;
+	}
 }
