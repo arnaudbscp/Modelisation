@@ -5,28 +5,31 @@ package chargement;
  *
  */
 public class Face {
+	
 	/**
 	 * Point 1 de la Face.
 	 */
 	private Point pt1;
+	
 	/**
 	 * Point 2 de la Face.
 	 */
 	private Point pt2;
+	
 	/**
 	 * Point 3 de la Face.
 	 */
 	private Point pt3;
+	
 	/**
 	 * Centre de gravité de la face triangulaire. Il s'agit du Point situé à l'intersection des 3 médianes.
 	 */
+	private Point centre_gravite;
 	
 	private int[] position;
 	
-	private Point centre_gravite;
-	
 	/**
-	 * Constructeur.
+	 * Constructeur créant une face à partir des 3 points spécifiés.
 	 * @param pt1
 	 * @param pt2
 	 * @param pt3
