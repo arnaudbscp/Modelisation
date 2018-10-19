@@ -34,6 +34,7 @@ import javafx.stage.Stage;
  * @author bascopa & clarissa
  */
 public class Interface extends Application {
+	
 	LoadFile file;
 	File filePly;
 	Initialisation l;
@@ -174,18 +175,25 @@ public class Interface extends Application {
 
 				r.recopiePoint(tabf, tabp);
 				gc.clearRect(0, 0, 1280, 600);
+			
 				l.creerFigure(gc, tabf);
+				r.setPoint(tabp);
+				
 			} catch (MatriceNullException | MatriceFormatException e1) {
 				e1.printStackTrace();
 			}
-
-
+		
+		});
+		
+		tournerX.setOnDragDone(e-> {
+			file.setPoints(r.getPoint());
+			r.recopiePoint(file.getFaces(), r.getPoint());
 		});
 
 		zoom.setOnMouseDragged(e -> {
 			Point[] pZoom = new Point[file.getPoints().length];
 			for (int i=0; i<file.getPoints().length; i++) {
-				Point p = new Point((float)(file.getPoints()[i].getX()*zoom.getValue()), (float)(file.getPoints()[i].getY()*zoom.getValue()), (float)(file.getPoints()[i].getZ()*zoom.getValue()));
+				Point p = new Point((float)(file.getPoints()[i].getX()*(zoom.getValue()/100)), (float)(file.getPoints()[i].getY()*(zoom.getValue()/100)), (float)(file.getPoints()[i].getZ()*zoom.getValue()/100));
 				pZoom[i] = p;
 			}
 			Face[] tabf = file.getFaces();
@@ -197,18 +205,22 @@ public class Interface extends Application {
 		Translation t = new Translation();
 		gauche.setOnAction(e->{
 			try {
-				Point[] tabp = t.creerPointsTranslate(++cpt_translate,0, file.getPoints());
+				Point[] tabp = t.creerPointsTranslate(cpt_translate++,0, file.getPoints());
 				Face[] tabf = file.getFaces();
+				
 				r.recopiePoint(tabf, tabp);
 				gc.clearRect(0, 0, 1280, 600);
+				
 				l.creerFigure(gc, tabf);
 			} catch (MatriceNullException | MatriceFormatException e1) {
 				e1.printStackTrace();
 			}
+			
 		});
+		
 		droite.setOnAction(e->{
 			try {
-				Point[] tabp = t.creerPointsTranslate(--cpt_translate, 0, file.getPoints());
+				Point[] tabp = t.creerPointsTranslate(cpt_translate--, 0, file.getPoints());
 				Face[] tabf = file.getFaces();
 				r.recopiePoint(tabf, tabp);
 				gc.clearRect(0, 0, 1280, 600);

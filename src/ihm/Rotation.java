@@ -9,6 +9,16 @@ import outils.BoiteaOutils;
 
 public class Rotation {
 
+	Point[] p;
+	
+	public void setPoint(Point[] p) {
+		this.p = p;
+	}
+	
+	public Point[] getPoint() {
+		return p;
+	}
+	
 	public Point[] creerPointrotate(double angle, Point[] p) throws MatriceNullException, MatriceFormatException {
 
 		BoiteaOutils bo = new BoiteaOutils(); 
