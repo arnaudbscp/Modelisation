@@ -17,7 +17,7 @@ public class Translation {
 		Point[] tab_points_res = creerTabPoint(matrice_resultat, p);
 		return tab_points_res;
 	}
-	
+
 	private Point[] creerTabPoint(double[][] matrice, Point[] p) {
 		Point[] tabp = new Point[matrice[0].length];
 		boolean premiertour = true;
@@ -36,7 +36,7 @@ public class Translation {
 			tabp[idx].setZ(p[idx].getZ());
 		return tabp;
 	}
-	
+
 	public void recopiePoint(Face[] faces, Point[] points) {
 		for(int i = 0; i<faces.length; i++) {
 			faces[i].setPt1(points[faces[i].getPosition()[0]]);

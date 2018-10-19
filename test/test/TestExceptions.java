@@ -29,10 +29,9 @@ class TestExceptions {
 				"property list uint8 int32 vertex_indices\n" + 
 				"end_header";
 		LoadFile f = new LoadFile();
-		
 		assertThrows(WrongHeaderException.class, () -> f.lireStream(new StringReader(model)) );
 	}
-	
+
 	@Test
 	void testWrongPointLine() throws IOException {
 		File f = new File("ressources/dolphin.ply");
@@ -54,7 +53,7 @@ class TestExceptions {
 			Initialisation i = new Initialisation(f);
 		});
 	}
-	
+
 	@Test
 	void testWrongFaceLine() throws IOException {
 		File f = new File("ressources/dolphin.ply");

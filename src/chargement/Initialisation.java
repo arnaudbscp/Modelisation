@@ -3,6 +3,8 @@ package chargement;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import exception.WrongFaceLineFormatException;
 import exception.WrongPointLineFormatException;
 import javafx.scene.canvas.GraphicsContext;
@@ -15,7 +17,6 @@ import javafx.scene.paint.Color;
  */
 public class Initialisation {
 
-
 	/**
 	 * Constructeur, créé les 2 tableaux de la longueur adéquate et les remplit, calcule le centre de gravité de chaque face et les trie.
 	 * @param args
@@ -25,21 +26,21 @@ public class Initialisation {
 		LoadFile file = new LoadFile(f);
 		try {
 			file.creerPoints();
-		} catch (WrongPointLineFormatException e1) {
-			// TODO Auto-generated catch block
+		} catch (WrongPointLineFormatException e) {
+			JOptionPane.showMessageDialog(null, e.toString(),"Erreur Format Ligne Point",JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
 		try {
 			file.creerFaces();
 		} catch (WrongFaceLineFormatException e) {
-			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, e.toString(),"Erreur Format Ligne Face",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 		Face[] faces = file.getFaces();
 		for(int i=0;i<faces.length;++i) {
 			faces[i].setCentre_gravite(faces[i].calculCentreGravite());
 		}
-		//trierFaces(faces,1);
+		trierFaces(faces,1);
 	}
 
 	/**

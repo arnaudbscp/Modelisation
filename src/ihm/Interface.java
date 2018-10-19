@@ -12,6 +12,7 @@ import chargement.Point;
 import exception.MatriceFormatException;
 import exception.MatriceNullException;
 import exception.WrongFaceLineFormatException;
+import exception.WrongFormatFileException;
 import exception.WrongPointLineFormatException;
 
 import javafx.application.Application;
@@ -33,6 +34,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
+ * Classe représentant la fenêtre graphique et tous les éléments graphiques contenus dedans.
  * @author bascopa & clarissa
  */
 public class Interface extends Application {
@@ -50,9 +52,15 @@ public class Interface extends Application {
 	 */
 	private Initialisation l;
 	/**
-	 * Compteur de translation gauche-droite. On l'incrémente lors de l'appui sur le bouton droite et on le décrémente lors de l'appui sur le bouton gauche pour déplacer la figure latéralement.
+	 * Compteur de translation gauche-droite. On l'incrémente lors de l'appui sur le bouton droite et on le décrémente lors de l'appui sur le bouton gauche pour déplacer la figure horizontalement.
 	 */
+	@SuppressWarnings("unused")
 	private int cpt_translate_gd=0;
+	/**
+	 * Compteur de translation haut-bas. On l'incrémente lors de l'appui sur le bouton haut et on le décrémente lors de l'appui sur le bouton bas pour déplacer la figure verticalement.
+	 */
+	@SuppressWarnings("unused")
+	private int cpt_translate_hb=0;
 	/**
 	 * Couleur de la figure initialisée à blanche. Elle sera modifiée grâce au colorpicker par l'utilisateur.
 	 */
@@ -62,8 +70,9 @@ public class Interface extends Application {
 	 * Méthode d'affichage de l'interface graphique.
 	 */
 	public void start(Stage primaryStage) throws Exception {
-		//ELEMENTS
+		//ELEMENTS GRAPHIQUES
 		HBox corps = new HBox();
+		Scene scene = new Scene(corps, 1280, 600);
 		VBox menu = new VBox();
 		menu.setMinWidth(150);
 		Button b1 = new Button("Importer");
@@ -159,9 +168,9 @@ public class Interface extends Application {
 		menu.getChildren().addAll(lcolor,cp);
 
 
-		//---------------------GESTION DES EVENEMENTS-----------------
-		
-		
+		//---------------------GESTION DES EVENEMENTS------------------
+
+
 		importer.setTitle("Selectionner un fichier 3D");
 		b1.setOnAction(e -> {
 			filePly = importer.showOpenDialog(primaryStage);
@@ -172,14 +181,17 @@ public class Interface extends Application {
 			extension = filePly.getPath().substring(i, filePly.getPath().length());	
 
 			try {
-				if (extension.equals(".ply")) {
+				if (!extension.equals(".ply"))
+					throw new WrongFormatFileException();
+				else {
 					gc.clearRect(0, 0, 1600, 800);
 					file = new LoadFile(filePly);
 				}
-				else 
-					JOptionPane.showMessageDialog(null,"/!\\ Veuillez choisir un fichier .ply ! \n","Erreur format fichier",JOptionPane.ERROR_MESSAGE);
 			} catch (IOException e1) {
 				e1.printStackTrace();
+			} catch (WrongFormatFileException e2) {
+				JOptionPane.showMessageDialog(null, e2.toString(), "Erreur Format Fichier", JOptionPane.ERROR_MESSAGE);
+				System.exit(1);
 			}
 			l = null;
 			try {
@@ -224,10 +236,9 @@ public class Interface extends Application {
 		});
 
 		//----AFFICHAGE FENETRE------
-		Scene scene = new Scene(corps, 1280, 600);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("i3D"); 
-		primaryStage.setResizable(true);
+		primaryStage.setResizable(false);
 		primaryStage.show();
 	}
 
@@ -280,6 +291,7 @@ public class Interface extends Application {
 	 * @param zoomvalue
 	 */
 	public void miseAJourVue(GraphicsContext gc, double xvalue, double zoomvalue) {
+		@SuppressWarnings("unused")
 		Translation t = new Translation();
 		Rotation r = new Rotation();
 		Face[] tabf = file.getFaces();
