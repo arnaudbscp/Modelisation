@@ -37,33 +37,131 @@ import javafx.stage.Stage;
  */
 public class Interface extends Application {
 
-	LoadFile file;
-	File filePly;
-	Initialisation l;
-	int cpt_translate=0;
-	Color c = Color.WHITE;
+	/**
+	 * Permet de charger le fichier, de le lire séquentiellement afin de ranger les points et les faces dans des tableaux.
+	 */
+	private LoadFile file;
+	/**
+	 * le fichier .ply contenant les points et les faces à dessiner.
+	 */
+	private File filePly;
+	/**
+	 * Interprète le LoadFile pour créer les points et les faces, trier les faces et ainsi créer la figure.
+	 */
+	private Initialisation l;
+	/**
+	 * Compteur de translation gauche-droite. On l'incrémente lors de l'appui sur le bouton droite et on le décrémente lors de l'appui sur le bouton gauche pour déplacer la figure latéralement.
+	 */
+	private int cpt_translate_gd=0;
+	/**
+	 * Couleur de la figure initialisée à blanche. Elle sera modifiée grâce au colorpicker par l'utilisateur.
+	 */
+	private Color c = Color.WHITE;
 
+	/**
+	 * Méthode d'affichage de l'interface graphique.
+	 */
 	public void start(Stage primaryStage) throws Exception {
-		//Déplacement dans l'action du bouton importer
-		/*try {
-			file = new LoadFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
+		//ELEMENTS
 		HBox corps = new HBox();
-
 		VBox menu = new VBox();
-
-		Canvas canv = new Canvas(1100,600);
-		GraphicsContext gc = canv.getGraphicsContext2D();
-
-		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		menu.setMinWidth(150);
 		Button b1 = new Button("Importer");
 		b1.setMinWidth(150);
 		menu.getChildren().add(b1);
-
+		Canvas canv = new Canvas(1100,600);
+		GraphicsContext gc = canv.getGraphicsContext2D();
+		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		FileChooser importer = new FileChooser();
+		VBox dessin = new VBox();
+		Separator sep = new Separator();
+		dessin.getChildren().add(sep);
+		corps.getChildren().add(menu);
+		corps.getChildren().add(dessin);
+		sep.setOrientation(Orientation.VERTICAL);
+		sep.setValignment(VPos.CENTER);
+		//A modifier
+		sep.setMinHeight(300);
+		sep.setStyle("-fx-padding : 0 0 0 30;");
+		corps.getChildren().add(canv);
+
+		//SLIDER ZOOM
+		Slider zoom = new Slider();
+		Label lZoom = new Label();
+		lZoom.setText("Zoomer");
+		lZoom.setStyle("-fx-padding : 20 0 0 50;");
+		zoom.setMin(0);
+		zoom.setMax(100);
+		zoom.setValue(50);
+		zoom.setShowTickLabels(true);
+		menu.getChildren().addAll(lZoom, zoom);
+
+		//SLIDER TRANSLATION X
+		Slider tournerX = new Slider();
+		Label lTournerX = new Label();
+		lTournerX.setText("Tourner X");
+		lTournerX.setStyle("-fx-padding : 20 0 0 50;");
+		tournerX.setMin(0);
+		tournerX.setMax(360);
+		tournerX.setMajorTickUnit(90);
+		tournerX.setValue(0);
+		tournerX.setShowTickLabels(true);
+		menu.getChildren().addAll(lTournerX, tournerX);
+
+		//SLIDER TRANSLATION Y
+		Slider tournerY = new Slider();
+		Label lTournerY = new Label();
+		lTournerY.setText("Tourner Y");
+		lTournerY.setStyle("-fx-padding : 20 0 0 50;");
+		tournerY.setMin(0);
+		tournerY.setMax(360);
+		tournerY.setMajorTickUnit(90);
+		tournerY.setValue(0);
+		tournerY.setShowTickLabels(true);
+		menu.getChildren().addAll(lTournerY, tournerY);
+
+		//SLIDER TRANSLATION Z
+		Slider tournerZ = new Slider();
+		Label lTournerZ = new Label();
+		lTournerZ.setText("Tourner Z");
+		lTournerZ.setStyle("-fx-padding : 20 0 0 50;");
+		tournerZ.setMin(-180);
+		tournerZ.setMax(180);
+		tournerZ.setMajorTickUnit(90);
+		tournerZ.setValue(0);
+		tournerZ.setShowTickLabels(true);
+		menu.getChildren().addAll(lTournerZ, tournerZ);
+
+		//CROIX DIRECTIONNELLE TRANSLATION
+		Label ltranslation = new Label("Translation");
+		HBox hb_haut = new HBox();
+		HBox hb_gauche_droite = new HBox();
+		HBox hb_bas = new HBox();
+		Button haut = new Button("↑");
+		Button gauche = new Button("←");
+		Button droite = new Button("→");
+		Button bas = new Button("↓");
+		hb_haut.setPadding(new Insets(0,0,0,28));
+		hb_bas.setPadding(new Insets(0,0,0,28));
+		hb_gauche_droite.setSpacing(28);
+		haut.setPrefWidth(25);
+		bas.setPrefWidth(25);
+		droite.setPrefWidth(25);
+		gauche.setPrefWidth(25);
+		hb_haut.getChildren().add(haut);
+		hb_gauche_droite.getChildren().addAll(gauche,droite);
+		hb_bas.getChildren().add(bas);
+		menu.getChildren().addAll(ltranslation,hb_haut,hb_gauche_droite,hb_bas);
+
+		//CHOIX COULEURS
+		Label lcolor = new Label("Couleur");
+		ColorPicker cp = new ColorPicker();
+		menu.getChildren().addAll(lcolor,cp);
+
+
+		//---------------------GESTION DES EVENEMENTS-----------------
+		
+		
 		importer.setTitle("Selectionner un fichier 3D");
 		b1.setOnAction(e -> {
 			filePly = importer.showOpenDialog(primaryStage);
@@ -96,108 +194,36 @@ public class Interface extends Application {
 			}			
 		});
 
-		Slider zoom = new Slider();
-		Label lZoom = new Label();
-		lZoom.setText("Zoomer");
-		lZoom.setStyle("-fx-padding : 20 0 0 50;");
-		zoom.setMin(0);
-		zoom.setMax(100);
-		zoom.setValue(50);
-		zoom.setShowTickLabels(true);
-		menu.getChildren().addAll(lZoom, zoom);
-
-		Slider tournerX = new Slider();
-		Label lTournerX = new Label();
-		lTournerX.setText("Tourner X");
-		lTournerX.setStyle("-fx-padding : 20 0 0 50;");
-		tournerX.setMin(0);
-		tournerX.setMax(360);
-		tournerX.setMajorTickUnit(90);
-		tournerX.setValue(0);
-		tournerX.setShowTickLabels(true);
-		menu.getChildren().addAll(lTournerX, tournerX);
-
-		Slider tournerY = new Slider();
-		Label lTournerY = new Label();
-		lTournerY.setText("Tourner Y");
-		lTournerY.setStyle("-fx-padding : 20 0 0 50;");
-		tournerY.setMin(0);
-		tournerY.setMax(360);
-		tournerY.setMajorTickUnit(90);
-		tournerY.setValue(0);
-		tournerY.setShowTickLabels(true);
-		menu.getChildren().addAll(lTournerY, tournerY);
-
-		Slider tournerZ = new Slider();
-		Label lTournerZ = new Label();
-		lTournerZ.setText("Tourner Z");
-		lTournerZ.setStyle("-fx-padding : 20 0 0 50;");
-		tournerZ.setMin(-180);
-		tournerZ.setMax(180);
-		tournerZ.setMajorTickUnit(90);
-		tournerZ.setValue(0);
-		tournerZ.setShowTickLabels(true);
-		menu.getChildren().addAll(lTournerZ, tournerZ);
-
-		Label ltranslation = new Label("Translation");
-		HBox hb_haut = new HBox();
-		HBox hb_gauche_droite = new HBox();
-		HBox hb_bas = new HBox();
-		Button haut = new Button("^");
-		Button gauche = new Button("<");
-		Button droite = new Button(">");
-		Button bas = new Button("v");
-		hb_haut.getChildren().add(haut);
-		hb_gauche_droite.getChildren().addAll(gauche,droite);
-		hb_bas.getChildren().add(bas);
-		menu.getChildren().addAll(ltranslation,hb_haut,hb_gauche_droite,hb_bas);
-
-		Label lcolor = new Label("Couleur");
-		ColorPicker cp = new ColorPicker();
-
-		menu.getChildren().addAll(lcolor,cp);
-
 		cp.setOnAction(e ->{
-			c = cp.getValue();
-			l.creerFigure(gc, file.getFaces(), c);
+			if(filePly!=null) {
+				c = cp.getValue();
+				l.creerFigure(gc, file.getFaces(), c);
+			}
 		});
-
-		VBox dessin = new VBox();
-
-		Separator sep = new Separator();
-		sep.setOrientation(Orientation.VERTICAL);
-		sep.setValignment(VPos.CENTER);
-		//A modifier
-		sep.setMinHeight(300);
-		sep.setStyle("-fx-padding : 0 0 0 30;");
-		dessin.getChildren().add(sep);
-
-		corps.getChildren().add(menu);
-		corps.getChildren().add(dessin);
-
 
 		//Déplacement dans l'action du bouton importer
 		//dessin(gc, file, g, l);
 		tournerX.setOnMouseDragged(e-> {
-			Miseajourvue(gc, tournerX.getValue(), zoom.getValue());
+			if(filePly!=null)
+				miseAJourVue(gc, tournerX.getValue(), zoom.getValue());
 		});
 
 		zoom.setOnMouseDragged(e -> {
-			Miseajourvue(gc, tournerX.getValue(), zoom.getValue());
+			if(filePly!=null)
+				miseAJourVue(gc, tournerX.getValue(), zoom.getValue());
 		});
 
-
-
 		gauche.setOnAction(e->{
-			Miseajourvue(gc, tournerX.getValue(), zoom.getValue());
+			if(filePly!=null)
+				miseAJourVue(gc, tournerX.getValue(), zoom.getValue());
 		});
 
 		droite.setOnAction(e->{
-			Miseajourvue(gc, tournerX.getValue(), zoom.getValue());
+			if(filePly!=null)
+				miseAJourVue(gc, tournerX.getValue(), zoom.getValue());
 		});
 
-		corps.getChildren().add(canv);
-
+		//----AFFICHAGE FENETRE------
 		Scene scene = new Scene(corps, 1280, 600);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("i3D"); 
@@ -205,18 +231,36 @@ public class Interface extends Application {
 		primaryStage.show();
 	}
 
+	/**
+	 * Retourne le fichier .ply
+	 * @return
+	 */
 	public File getFichier() {
 		return filePly;
 	}
 
+	/**
+	 * Définit le fichier .ply à utiliser
+	 * @param fichier
+	 */
 	public void setFichier(File fichier) {
 		this.filePly = fichier;
 	}
 
+	/**
+	 * Méthode lançant le programme.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
 
+	/**
+	 * Dessine la figure à partir de la création dans Initialisation.
+	 * @param gc
+	 * @param file
+	 * @throws IOException
+	 */
 	public void dessin(GraphicsContext gc, LoadFile file) throws IOException{
 		gc.setLineWidth(1); //epaisseur des lignes
 		try {
@@ -229,7 +273,13 @@ public class Interface extends Application {
 		l.creerFigure(gc, file.getFaces(),c);
 	}
 
-	public void Miseajourvue(GraphicsContext gc, double xvalue, double zoomvalue) {
+	/**
+	 * 
+	 * @param gc
+	 * @param xvalue
+	 * @param zoomvalue
+	 */
+	public void miseAJourVue(GraphicsContext gc, double xvalue, double zoomvalue) {
 		Translation t = new Translation();
 		Rotation r = new Rotation();
 		Face[] tabf = file.getFaces();
@@ -250,7 +300,7 @@ public class Interface extends Application {
 		}
 		r.recopiePoint(tabf, tabp);
 		/*try {
-			tabp = t.creerPointsTranslate(cpt_translate++,0, tabp);
+			tabp = t.creerPointsTranslate(cpt_translate_gd+=10,0, tabp);
 		} catch (MatriceNullException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -260,7 +310,7 @@ public class Interface extends Application {
 		}
 		r.recopiePoint(tabf, tabp);
 		try {
-			tabp = t.creerPointsTranslate(cpt_translate--, 0, tabp);
+			tabp = t.creerPointsTranslate(cpt_translate_gd-=10, 0, tabp);
 		} catch (MatriceNullException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -271,7 +321,5 @@ public class Interface extends Application {
 		r.recopiePoint(tabf, tabp);*/
 		gc.clearRect(0, 0, 1280, 600);
 		l.creerFigure(gc, tabf,c);
-
-
 	}
 }
