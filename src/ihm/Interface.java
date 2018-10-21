@@ -34,40 +34,40 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- * Classe représentant la fenêtre graphique et tous les éléments graphiques contenus dedans.
+ * Classe reprÃ©sentant la fenÃªtre graphique et tous les Ã©lÃ©ments graphiques contenus dedans.
  * @author bascopa & clarissa
  */
 public class Interface extends Application {
 
 	/**
-	 * Permet de charger le fichier, de le lire séquentiellement afin de ranger les points et les faces dans des tableaux.
+	 * Permet de charger le fichier, de le lire sÃ©quentiellement afin de ranger les points et les faces dans des tableaux.
 	 */
 	private LoadFile file;
 	/**
-	 * le fichier .ply contenant les points et les faces à dessiner.
+	 * le fichier .ply contenant les points et les faces Ã  dessiner.
 	 */
 	private File filePly;
 	/**
-	 * Interprète le LoadFile pour créer les points et les faces, trier les faces et ainsi créer la figure.
+	 * InterprÃ¨te le LoadFile pour crÃ©er les points et les faces, trier les faces et ainsi crÃ©er la figure.
 	 */
 	private Initialisation l;
 	/**
-	 * Compteur de translation gauche-droite. On l'incrémente lors de l'appui sur le bouton droite et on le décrémente lors de l'appui sur le bouton gauche pour déplacer la figure horizontalement.
+	 * Compteur de translation gauche-droite. On l'incrÃ©mente lors de l'appui sur le bouton droite et on le dÃ©crÃ©mente lors de l'appui sur le bouton gauche pour dÃ©placer la figure horizontalement.
 	 */
 	@SuppressWarnings("unused")
 	private int cpt_translate_gd=0;
 	/**
-	 * Compteur de translation haut-bas. On l'incrémente lors de l'appui sur le bouton haut et on le décrémente lors de l'appui sur le bouton bas pour déplacer la figure verticalement.
+	 * Compteur de translation haut-bas. On l'incrÃ©mente lors de l'appui sur le bouton haut et on le dÃ©crÃ©mente lors de l'appui sur le bouton bas pour dÃ©placer la figure verticalement.
 	 */
 	@SuppressWarnings("unused")
 	private int cpt_translate_hb=0;
 	/**
-	 * Couleur de la figure initialisée à blanche. Elle sera modifiée grâce au colorpicker par l'utilisateur.
+	 * Couleur de la figure initialisÃ©e Ã  blanche. Elle sera modifiÃ©e grÃ¢ce au colorpicker par l'utilisateur.
 	 */
 	private Color c = Color.WHITE;
 
 	/**
-	 * Méthode d'affichage de l'interface graphique.
+	 * MÃ©thode d'affichage de l'interface graphique.
 	 */
 	public void start(Stage primaryStage) throws Exception {
 		//ELEMENTS GRAPHIQUES
@@ -146,10 +146,10 @@ public class Interface extends Application {
 		HBox hb_haut = new HBox();
 		HBox hb_gauche_droite = new HBox();
 		HBox hb_bas = new HBox();
-		Button haut = new Button("↑");
-		Button gauche = new Button("←");
-		Button droite = new Button("→");
-		Button bas = new Button("↓");
+		Button haut = new Button("â†‘");
+		Button gauche = new Button("â†�");
+		Button droite = new Button("â†’");
+		Button bas = new Button("â†“");
 		hb_haut.setPadding(new Insets(0,0,0,28));
 		hb_bas.setPadding(new Insets(0,0,0,28));
 		hb_gauche_droite.setSpacing(28);
@@ -213,26 +213,26 @@ public class Interface extends Application {
 			}
 		});
 
-		//Déplacement dans l'action du bouton importer
+		//DÃ©placement dans l'action du bouton importer
 		//dessin(gc, file, g, l);
 		tournerX.setOnMouseDragged(e-> {
 			if(filePly!=null)
-				miseAJourVue(gc, tournerX.getValue(), zoom.getValue());
+				miseAJourVue(gc, tournerX.getValue(), zoom.getValue(), -1);
 		});
 
 		zoom.setOnMouseDragged(e -> {
 			if(filePly!=null)
-				miseAJourVue(gc, tournerX.getValue(), zoom.getValue());
+				miseAJourVue(gc, tournerX.getValue(), zoom.getValue(), -1);
 		});
 
 		gauche.setOnAction(e->{
 			if(filePly!=null)
-				miseAJourVue(gc, tournerX.getValue(), zoom.getValue());
+				miseAJourVue(gc, tournerX.getValue(), zoom.getValue(), 0);
 		});
 
 		droite.setOnAction(e->{
 			if(filePly!=null)
-				miseAJourVue(gc, tournerX.getValue(), zoom.getValue());
+				miseAJourVue(gc, tournerX.getValue(), zoom.getValue(), 1);
 		});
 
 		//----AFFICHAGE FENETRE------
@@ -251,7 +251,7 @@ public class Interface extends Application {
 	}
 
 	/**
-	 * Définit le fichier .ply à utiliser
+	 * DÃ©finit le fichier .ply Ã  utiliser
 	 * @param fichier
 	 */
 	public void setFichier(File fichier) {
@@ -259,7 +259,7 @@ public class Interface extends Application {
 	}
 
 	/**
-	 * Méthode lançant le programme.
+	 * MÃ©thode lanÃ§ant le programme.
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -267,7 +267,7 @@ public class Interface extends Application {
 	}
 
 	/**
-	 * Dessine la figure à partir de la création dans Initialisation.
+	 * Dessine la figure Ã  partir de la crÃ©ation dans Initialisation.
 	 * @param gc
 	 * @param file
 	 * @throws IOException
@@ -290,14 +290,14 @@ public class Interface extends Application {
 	 * @param xvalue
 	 * @param zoomvalue
 	 */
-	public void miseAJourVue(GraphicsContext gc, double xvalue, double zoomvalue) {
+	public void miseAJourVue(GraphicsContext gc, double xvalue, double zoomvalue, int trans) {
 		@SuppressWarnings("unused")
 		Translation t = new Translation();
 		Rotation r = new Rotation();
 		Face[] tabf = file.getFaces();
-		Point[] tabp = null;
+		Point[] tabp = file.getPoints();
 		try {
-			tabp = r.creerPointrotate(xvalue, file.getPoints());
+			tabp = r.creerPointrotate(xvalue, tabp);
 		} catch (MatriceNullException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -307,11 +307,12 @@ public class Interface extends Application {
 		}
 		r.recopiePoint(tabf, tabp);
 		for (int i=0; i<file.getPoints().length; i++) {
-			Point p = new Point((float)(file.getPoints()[i].getX()*(zoomvalue/file.getCoordMax(0))*10), (float)(file.getPoints()[i].getY()*(zoomvalue/file.getCoordMax(1))*10), (float)(file.getPoints()[i].getZ()*(zoomvalue/file.getCoordMax(2))*10));
+			Point p = new Point((float)(tabp[i].getX()*(zoomvalue/file.getCoordMax(0))*10), (float)(tabp[i].getY()*(zoomvalue/file.getCoordMax(1))*10), (float)(tabp[i].getZ()*(zoomvalue/file.getCoordMax(2))*10));
 			tabp[i] = p;
 		}
 		r.recopiePoint(tabf, tabp);
-		/*try {
+		if(trans == 0) {
+		try {
 			tabp = t.creerPointsTranslate(cpt_translate_gd+=10,0, tabp);
 		} catch (MatriceNullException e) {
 			// TODO Auto-generated catch block
@@ -321,6 +322,8 @@ public class Interface extends Application {
 			e.printStackTrace();
 		}
 		r.recopiePoint(tabf, tabp);
+		}
+		if(trans == 1) {
 		try {
 			tabp = t.creerPointsTranslate(cpt_translate_gd-=10, 0, tabp);
 		} catch (MatriceNullException e) {
@@ -330,7 +333,8 @@ public class Interface extends Application {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		r.recopiePoint(tabf, tabp);*/
+		r.recopiePoint(tabf, tabp);
+		}
 		gc.clearRect(0, 0, 1280, 600);
 		l.creerFigure(gc, tabf,c);
 	}
