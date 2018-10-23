@@ -31,12 +31,12 @@ public class LoadFile {
 	 * Tableau stockant toutes les Face de la figure.
 	 */
 	private Face[] faces;
-	
+
 	/**
 	 * Constructeur vide pour les tests.
 	 */
 	public LoadFile() {}
-	
+
 	/**
 	 * Constructeur appelant la méthode lireStream(Reader in).
 	 * @throws IOException
@@ -63,7 +63,7 @@ public class LoadFile {
 			System.exit(1);
 		}
 	}
-	
+
 	/**
 	 * Création de tous les points de la figure et stockage dans un tableau de Point.
 	 * @throws IOException
@@ -76,18 +76,47 @@ public class LoadFile {
 			String ligne_point = br.readLine();
 			//Je remplace les espaces par des a car je n'arrive pas à gérer les espaces dans la regex.
 			ligne_point=ligne_point.replace(" ", "a");
-			if(!ligne_point.matches("^(-?[0-9]+\\.?[0-9]*a){3}$"))
+			if(!ligne_point.matches("^(-?[0-9]+\\.?[0-9]*(e-?[0-9]+)?a){3}$"))
 				throw new WrongPointLineFormatException(i+10);
-			//On supprime le dernier a (espace) inutile.
-			ligne_point=ligne_point.substring(0,ligne_point.length()-1);
-			//Pour chaque ligne, on récupère les 3 coordonnées en repérant les espaces dans la ligne.
-			float x = Float.parseFloat(ligne_point.substring(0, ligne_point.indexOf("a")));
-			float y = Float.parseFloat(ligne_point.substring(ligne_point.indexOf("a")+1, ligne_point.indexOf("a", ligne_point.indexOf("a")+1)));
-			float z = Float.parseFloat(ligne_point.substring(ligne_point.indexOf("a", ligne_point.indexOf("a")+1)+1));
-			points[i] = new Point(x, y, z);
+			else if(ligne_point.contains("e")) {
+				ligne_point=ligne_point.substring(0,ligne_point.length()-1);
+				creerPointsExposant(ligne_point,i);
+			}else {
+				//On supprime le dernier a (espace) inutile.
+				ligne_point=ligne_point.substring(0,ligne_point.length()-1);
+				//Pour chaque ligne, on récupère les 3 coordonnées en repérant les espaces dans la ligne.
+				float x = Float.parseFloat(ligne_point.substring(0, ligne_point.indexOf("a")));
+				float y = Float.parseFloat(ligne_point.substring(ligne_point.indexOf("a")+1, ligne_point.indexOf("a", ligne_point.indexOf("a")+1)));
+				float z = Float.parseFloat(ligne_point.substring(ligne_point.indexOf("a", ligne_point.indexOf("a")+1)+1));
+				points[i] = new Point(x, y, z);
+			}
 		}
 	}
-	
+
+	/**
+	 * Création d'un Point dans le cas où ses coordonnées contiennent une puissance de 10.
+	 * @param ligne_point
+	 */
+	private void creerPointsExposant(String ligne_point, int idx) {
+		// TODO Auto-generated method stub
+		System.out.println(ligne_point);
+		String c1 = ligne_point.substring(0, ligne_point.indexOf("a"));
+		String c2 = ligne_point.substring(ligne_point.indexOf("a")+1, ligne_point.indexOf("a", ligne_point.indexOf("a")+1));
+		String c3 = ligne_point.substring(ligne_point.indexOf("a", ligne_point.indexOf("a")+1)+1);
+		String[] StringCoords = new String[] {c1,c2,c3};
+		float[] floatCoords = new float[StringCoords.length];
+		for(int i=0;i<StringCoords.length;i++) {
+			if(StringCoords[i].contains("e")) {
+				String nb = StringCoords[i].substring(0, StringCoords[i].indexOf("e"));
+				String expo = StringCoords[i].substring(StringCoords[i].indexOf("e")+1);
+				floatCoords[i] = Float.parseFloat(nb)*(float)Math.pow(10.0, Integer.parseInt(expo));
+			}else {
+				floatCoords[i] = Float.parseFloat(StringCoords[i]);
+			}
+		}
+		points[idx] = new Point(floatCoords[0], floatCoords[1], floatCoords[2]);
+	}
+
 	/**
 	 * Création des faces.
 	 * @throws IOException
@@ -133,7 +162,7 @@ public class LoadFile {
 	public Point[] getPoints() {
 		return points;
 	}
-	
+
 	/**
 	 * Retourne le tableau contenant l'ensemble des Face de la figure.
 	 * @return
@@ -141,7 +170,7 @@ public class LoadFile {
 	public Face[] getFaces() {
 		return faces;
 	}
-	
+
 	/**
 	 * Récupère la plus petite des coordonnées de la dimension passée en paramètre de la figure pour adapter la taille du canvas.
 	 * @param dimension
@@ -155,7 +184,7 @@ public class LoadFile {
 		}
 		return min;
 	}
-	
+
 	/**
 	 * Récupère la plus grande des coordonnées de la dimension passée en paramètre de la figure pour adapter la taille du canvas.
 	 * @param dimension
