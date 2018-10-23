@@ -4,8 +4,14 @@ import exception.MatriceFormatException;
 import exception.MatriceNullException;
 
 public class Matrice {
+	
+	double[][] MA;
+	
+	public Matrice(double[][] MA) {
+		this.MA = MA;
+	}
 
-	public double[][] creerMatrice(Point[] p) {
+	public double[][] creerMatriceY(Point[] p) {
 		double[][] tab = new double[3][p.length];
 		for(int i = 0; i < 4; i++) {
 			for(int j = 0; j < p.length; j++) {
@@ -19,8 +25,37 @@ public class Matrice {
 		}
 		return tab;
 	}
+	
+	public double[][] creerMatriceX(Point[] p) {
+		double[][] tab = new double[3][p.length];
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < p.length; j++) {
+				if(i == 0)
+					tab[i][j] = p[j].getY();
+				else if(i == 1)
+					tab[i][j] = p[j].getZ();
+				else if(i == 2)
+					tab[i][j] = 1;
+			}
+		}
+		return tab;
+	}
 
-	public double[][] multiplierMatrice(double[][] MA , double[][] MB) throws MatriceNullException, MatriceFormatException {
+	public double[][] creerMatriceZ(Point[] p) {
+		double[][] tab = new double[3][p.length];
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < p.length; j++) {
+				if(i == 0)
+					tab[i][j] = p[j].getX();
+				else if(i == 1)
+					tab[i][j] = p[j].getZ();
+				else if(i == 2)
+					tab[i][j] = 1;
+			}
+		}
+		return tab;
+	}
+	public double[][] multiplierMatrice(double[][] MB) throws MatriceNullException, MatriceFormatException {
 		double[][] MC;
 		int l,c;
 

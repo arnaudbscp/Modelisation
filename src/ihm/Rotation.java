@@ -9,33 +9,52 @@ import outils.BoiteaOutils;
 
 public class Rotation {
 
-	public Point[] creerPointrotate(double angle, Point[] p) throws MatriceNullException, MatriceFormatException {
+	public Point[] creerPointrotate(double angle, Point[] p, int axe) throws MatriceNullException, MatriceFormatException {
 
 		BoiteaOutils bo = new BoiteaOutils(); 
-		Matrice m = new Matrice();
 		double[][] matricerotate = bo.creerRotation(angle);
-		double[][] matricefigure = m.creerMatrice(p);
-		double[][] matriceres = m.multiplierMatrice(matricerotate, matricefigure);
-		Point[] tabp = creerTabPoint(matriceres, p);
+		Matrice m = new Matrice(matricerotate);
+		double[][] matricefigure;
+		if(axe == 0) {
+			matricefigure = m.creerMatriceY(p);
+		}else if(axe == 1) {
+			matricefigure = m.creerMatriceX(p);
+		}else {
+			matricefigure = m.creerMatriceZ(p);
+		}
+		double[][] matriceres = m.multiplierMatrice(matricefigure);
+		Point[] tabp = creerTabPoint(matriceres, p,axe);
 		return tabp;
 	}
 
-	private Point[] creerTabPoint(double[][] matrice, Point[] p) {
+	private Point[] creerTabPoint(double[][] matrice, Point[] p, int axe) {
 		Point[] tabp = new Point[matrice[0].length];
 		boolean premiertour = true;
 		for (int i = 0; i < matrice.length; i++) {
 			for (int j = 0; j < matrice[0].length; j++) {
 				if(premiertour)
 					tabp[j] = new Point(0, 0, 0);
-				if(i == 0)
-					tabp[j].setX((float)matrice[i][j]);
-				else if(i == 1)
-					tabp[j].setY((float)matrice[i][j]);
+				if(i == 0) {
+					if(axe == 0 || axe == 2)
+						tabp[j].setX((float)matrice[i][j]);
+					else if(axe == 1)
+						tabp[j].setY((float)matrice[i][j]);
+				} else if(i == 1) {
+					if(axe == 0) 
+						tabp[j].setY((float)matrice[i][j]);
+					else if(axe == 1 || axe == 2)
+						tabp[j].setZ((float)matrice[i][j]);
+				}
 			}
 			premiertour = false;
 		}
 		for(int idx = 0; idx<p.length;idx++)
-			tabp[idx].setZ(p[idx].getZ());
+			if(axe == 0)
+				tabp[idx].setZ(p[idx].getZ());
+			else if(axe == 1)
+				tabp[idx].setX(p[idx].getX());
+			else if(axe == 2)
+				tabp[idx].setY(p[idx].getY());
 		return tabp;
 	}
 
