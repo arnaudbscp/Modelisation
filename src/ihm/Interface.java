@@ -186,12 +186,8 @@ public class Interface extends Application {
 			try {
 				if (!extension.equals(".ply"))
 					throw new WrongFormatFileException();
-				else {
+				else 
 					gc.clearRect(0, 0, 1600, 800);
-					file = new LoadFile(filePly);
-				}
-			} catch (IOException e1) {
-				e1.printStackTrace();
 			} catch (WrongFormatFileException e2) {
 				JOptionPane.showMessageDialog(null, e2.toString(), "Erreur Format Fichier", JOptionPane.ERROR_MESSAGE);
 				System.exit(1);
@@ -199,6 +195,7 @@ public class Interface extends Application {
 			l = null;
 			try {
 				l = new Initialisation(filePly);
+				file = l.getLoadFile();
 				tabp = file.getPoints();
 				tabf = file.getFaces();
 			} catch (IOException e1) {

@@ -1,7 +1,9 @@
 package chargement;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 
 import javax.swing.JOptionPane;
 
@@ -16,14 +18,27 @@ import javafx.scene.paint.Color;
  *
  */
 public class Initialisation {
+	
+	/**
+	 * Le tableau de faces.
+	 */
+	private Face[] faces;
+	private LoadFile file;
+	
+	public Initialisation(){}
+	
+	public Initialisation(File f) throws IOException{
+		lireStream(new FileReader(new File(f.getPath())));
+	}
 
 	/**
 	 * Constructeur, créé les 2 tableaux de la longueur adéquate et les remplit, calcule le centre de gravité de chaque face et les trie.
 	 * @param args
 	 * @throws IOException
 	 */
-	public Initialisation(File f) throws IOException{
-		LoadFile file = new LoadFile(f);
+	public void lireStream(Reader in) throws IOException{
+		file = new LoadFile();
+		file.lireStream(in);
 		try {
 			file.creerPoints();
 		} catch (WrongPointLineFormatException e) {
@@ -36,23 +51,23 @@ public class Initialisation {
 			JOptionPane.showMessageDialog(null, e.toString(),"Erreur Format Ligne Face",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
-		Face[] faces = file.getFaces();
+		faces = file.getFaces();
 		for(int i=0;i<faces.length;++i) {
 			faces[i].setCentre_gravite(faces[i].calculCentreGravite());
 		}
-		trierFaces(faces,1);
+		trierFaces();
 	}
 
 	/**
 	 * Trie les faces de la plus éloignée à la plus éloignée en fonction de l'axe depuis lequel on visualise la figure.
-	 * @param axe: 0 pour l'axe x, 1 pour l'axe y et 2 pour l'axe z.
+	 * 
 	 */
-	public void trierFaces(Face[] faces,int axe){ //TRI A BULLE PEU EFFICACE, IMPLEMENTER UN ALGORITHME DE TRI PLUS PERFORMANT.
+	public void trierFaces(){ //TRI A BULLE PEU EFFICACE, IMPLEMENTER UN ALGORITHME DE TRI PLUS PERFORMANT.
 		boolean trie;
 		do {
 			trie=true;
 			for(int i=0;i<faces.length-1;++i) {
-				if(faces[i].getCentre_gravite().getCoordonnees()[axe]>faces[i+1].getCentre_gravite().getCoordonnees()[axe]) {
+				if(faces[i].getCentre_gravite().getCoordonnees()[2]>faces[i+1].getCentre_gravite().getCoordonnees()[2]) {
 					trie=false;
 					Face tmp = faces[i];
 					faces[i] = faces[i+1];
@@ -62,6 +77,12 @@ public class Initialisation {
 		}while(!trie);
 	}
 
+	/**
+	 * Créer la figure en interprétant les différentes coordonnées de points et en les reliant entre eux, puis en colorant la figure.
+	 * @param gc
+	 * @param faces
+	 * @param c
+	 */
 	public void creerFigure(GraphicsContext gc, Face[] faces,Color c) {
 		double[] px;
 		double[] py;
@@ -73,5 +94,9 @@ public class Initialisation {
 			gc.strokePolygon(px, py, 3);
 			gc.setFill(c);
 		}
+	}
+
+	public LoadFile getLoadFile() {
+		return file;
 	}
 }

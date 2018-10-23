@@ -25,7 +25,7 @@ class TestFace {
 	 */
 	@Test
 	void test() throws IOException {
-		LoadFile f = new LoadFile(new File("ressources/dolphin.ply"));
+		LoadFile f = new LoadFile();
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"element vertex 3\n" + 
