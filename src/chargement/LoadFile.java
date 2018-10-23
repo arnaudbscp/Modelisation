@@ -38,6 +38,14 @@ public class LoadFile {
 	public LoadFile() {}
 
 	/**
+	 * Constructeur appelant la méthode lireStream(Reader in).
+	 * @throws IOException
+	 */
+	public LoadFile(File f) throws IOException{
+		lireStream(new FileReader(new File(f.getPath())));
+	}
+
+	/**
 	 * Méthode qui charge le fichier et créé les tableaux de Point et de Face de longueurs adéquates, sans les remplir.
 	 * @throws IOException
 	 */
@@ -91,6 +99,7 @@ public class LoadFile {
 	 */
 	private void creerPointsExposant(String ligne_point, int idx) {
 		// TODO Auto-generated method stub
+		System.out.println(ligne_point);
 		String c1 = ligne_point.substring(0, ligne_point.indexOf("a"));
 		String c2 = ligne_point.substring(ligne_point.indexOf("a")+1, ligne_point.indexOf("a", ligne_point.indexOf("a")+1));
 		String c3 = ligne_point.substring(ligne_point.indexOf("a", ligne_point.indexOf("a")+1)+1);

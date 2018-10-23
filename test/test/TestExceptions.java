@@ -34,7 +34,8 @@ class TestExceptions {
 
 	@Test
 	void testWrongPointLine() throws IOException {
-		LoadFile lf = new LoadFile();
+		File f = new File("ressources/dolphin.ply");
+		LoadFile lf = new LoadFile(f);
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"comment by genartv\n" +
@@ -55,7 +56,8 @@ class TestExceptions {
 
 	@Test
 	void testWrongFaceLine() throws IOException {
-		LoadFile lf = new LoadFile();
+		File f = new File("ressources/dolphin.ply");
+		LoadFile lf = new LoadFile(f);
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"comment by genartv\n" +

@@ -1,9 +1,7 @@
 package chargement;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 
 import javax.swing.JOptionPane;
 
@@ -19,26 +17,10 @@ import javafx.scene.paint.Color;
  */
 public class Initialisation {
 	
-	/**
-	 * Le tableau de faces.
-	 */
-	private Face[] faces;
-	private LoadFile file;
-	
-	public Initialisation(){}
+	Face[] faces;
 	
 	public Initialisation(File f) throws IOException{
-		lireStream(new FileReader(new File(f.getPath())));
-	}
-
-	/**
-	 * Constructeur, créé les 2 tableaux de la longueur adéquate et les remplit, calcule le centre de gravité de chaque face et les trie.
-	 * @param args
-	 * @throws IOException
-	 */
-	public void lireStream(Reader in) throws IOException{
-		file = new LoadFile();
-		file.lireStream(in);
+		LoadFile file = new LoadFile(f);
 		try {
 			file.creerPoints();
 		} catch (WrongPointLineFormatException e) {
@@ -94,9 +76,5 @@ public class Initialisation {
 			gc.strokePolygon(px, py, 3);
 			gc.setFill(c);
 		}
-	}
-
-	public LoadFile getLoadFile() {
-		return file;
 	}
 }
