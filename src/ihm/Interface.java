@@ -225,7 +225,7 @@ public class Interface extends Application {
 		tournerX.setOnMouseDragged(e-> {
 			if(filePly!=null) {
 				try {
-					tabp = r.creerPointrotate(tournerX.getValue(), file.getPoints(), 0);
+					tabp = r.creerPointrotate(tournerX.getValue(), file.getPoints(), 1);
 				} catch (MatriceNullException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -243,7 +243,7 @@ public class Interface extends Application {
 		tournerY.setOnMouseDragged(e ->{
 			if(filePly!=null) {
 				try {
-					tabp = r.creerPointrotate(tournerY.getValue(), file.getPoints(), 1);
+					tabp = r.creerPointrotate(tournerY.getValue(), file.getPoints(), 0);
 				} catch (MatriceNullException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -255,6 +255,7 @@ public class Interface extends Application {
 				gc.clearRect(0, 0, 1280, 600);
 				l.creerFigure(gc, tabf,c);
 			}
+			
 		});
 		
 		tournerZ.setOnMouseDragged(e -> {
