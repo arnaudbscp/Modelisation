@@ -11,6 +11,7 @@ import chargement.LoadFile;
 import chargement.Point;
 import exception.MatriceFormatException;
 import exception.MatriceNullException;
+import exception.NoFileSelectedException;
 import exception.WrongFaceLineFormatException;
 import exception.WrongFormatFileException;
 import exception.WrongPointLineFormatException;
@@ -43,24 +44,28 @@ public class Interface extends Application {
 	 * Permet de charger le fichier, de le lire sÃƒÂ©quentiellement afin de ranger les points et les faces dans des tableaux.
 	 */
 	private LoadFile file;
+
 	/**
 	 * le fichier .ply contenant les points et les faces ÃƒÂ  dessiner.
 	 */
 	private File filePly;
+
 	/**
 	 * InterprÃƒÂ¨te le LoadFile pour crÃƒÂ©er les points et les faces, trier les faces et ainsi crÃƒÂ©er la figure.
 	 */
 	private Initialisation l;
+
 	/**
 	 * Compteur de translation gauche-droite. On l'incrÃƒÂ©mente lors de l'appui sur le bouton droite et on le dÃƒÂ©crÃƒÂ©mente lors de l'appui sur le bouton gauche pour dÃƒÂ©placer la figure horizontalement.
 	 */
-	@SuppressWarnings("unused")
 	private int cpt_translate_gd=0;
+
 	/**
 	 * Compteur de translation haut-bas. On l'incrÃƒÂ©mente lors de l'appui sur le bouton haut et on le dÃƒÂ©crÃƒÂ©mente lors de l'appui sur le bouton bas pour dÃƒÂ©placer la figure verticalement.
 	 */
 	@SuppressWarnings("unused")
 	private int cpt_translate_hb=0;
+
 	/**
 	 * Couleur de la figure initialisÃƒÂ©e ÃƒÂ  blanche. Elle sera modifiÃƒÂ©e grÃƒÂ¢ce au colorpicker par l'utilisateur.
 	 */
@@ -69,10 +74,10 @@ public class Interface extends Application {
 	/**
 	 * MÃƒÂ©thode d'affichage de l'interface graphique.
 	 */
-	
+
 	Face[] tabf;
 	Point[] tabp;
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage){
 		//ELEMENTS GRAPHIQUES
 		HBox corps = new HBox();
 		Scene scene = new Scene(corps, 1280, 600);
@@ -177,6 +182,15 @@ public class Interface extends Application {
 		importer.setTitle("Selectionner un fichier 3D");
 		b1.setOnAction(e -> {
 			filePly = importer.showOpenDialog(primaryStage);
+			if(filePly==null) {
+				try {
+					throw new NoFileSelectedException();
+				} catch (NoFileSelectedException e1) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, e1.getMessage(),"Erreur Selection Fichier",JOptionPane.ERROR_MESSAGE);
+				}	
+			}
+
 			String extension = "";
 			int i=0;
 			while (filePly.getPath().charAt(i) != '.')
@@ -227,14 +241,14 @@ public class Interface extends Application {
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue(), -1);
 			}
 		});
-		
+
 		tournerY.setOnMouseDragged(e ->{
 			if(filePly!=null) {
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue(), -1);
 			}
-			
+
 		});
-		
+
 		tournerZ.setOnMouseDragged(e -> {
 			if(filePly!=null) {
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue(), -1);
@@ -311,12 +325,11 @@ public class Interface extends Application {
 	 * @param zoomvalue
 	 */
 	public void miseAJourVue(GraphicsContext gc, double xvalue, double yvalue, double zvalue, double zoomvalue, int trans) {
-		@SuppressWarnings("unused")
 		Translation t = new Translation();
 		Rotation r = new Rotation();
 		Face[] tabf = file.getFaces();
 		Point[] tabp = file.getPoints();
-		
+
 		try {
 			tabp = r.creerPointrotate(xvalue, file.getPoints(), 1);
 		} catch (MatriceNullException e1) {
@@ -327,7 +340,7 @@ public class Interface extends Application {
 			e1.printStackTrace();
 		}
 		r.recopiePoint(tabf, tabp);
-		
+
 		try {
 			tabp = r.creerPointrotate(yvalue, tabp, 0);
 		} catch (MatriceNullException e1) {
@@ -338,7 +351,7 @@ public class Interface extends Application {
 			e1.printStackTrace();
 		}
 		r.recopiePoint(tabf, tabp);
-		
+
 		try {
 			tabp = r.creerPointrotate(zvalue, tabp, 2);
 		} catch (MatriceNullException e1) {
@@ -349,35 +362,35 @@ public class Interface extends Application {
 			e1.printStackTrace();
 		}
 		r.recopiePoint(tabf, tabp);
-		
+
 		for (int i=0; i<file.getPoints().length; i++) {
 			Point p = new Point((float)(tabp[i].getX()*(zoomvalue/file.getCoordMax(0))*10), (float)(tabp[i].getY()*(zoomvalue/file.getCoordMax(1))*10), (float)(tabp[i].getZ()*(zoomvalue/file.getCoordMax(2))*10));
 			tabp[i] = p;
 		}
 		r.recopiePoint(tabf, tabp);
 		if(trans == 0) {
-		try {
-			tabp = t.creerPointsTranslate(cpt_translate_gd+=10,0, tabp);
-		} catch (MatriceNullException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MatriceFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		r.recopiePoint(tabf, tabp);
+			try {
+				tabp = t.creerPointsTranslate(cpt_translate_gd+=10,0, tabp);
+			} catch (MatriceNullException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MatriceFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			r.recopiePoint(tabf, tabp);
 		}
 		if(trans == 1) {
-		try {
-			tabp = t.creerPointsTranslate(cpt_translate_gd-=10, 0, tabp);
-		} catch (MatriceNullException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MatriceFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		r.recopiePoint(tabf, tabp);
+			try {
+				tabp = t.creerPointsTranslate(cpt_translate_gd-=10, 0, tabp);
+			} catch (MatriceNullException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MatriceFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			r.recopiePoint(tabf, tabp);
 		}
 		gc.clearRect(0, 0, 1280, 600);
 		l.creerFigure(gc, tabf,c);
