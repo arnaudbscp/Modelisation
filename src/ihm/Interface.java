@@ -190,7 +190,6 @@ public class Interface extends Application {
 					JOptionPane.showMessageDialog(null, e1.getMessage(),"Erreur Selection Fichier",JOptionPane.ERROR_MESSAGE);
 				}	
 			}
-
 			String extension = "";
 			int i=0;
 			while (filePly.getPath().charAt(i) != '.')
