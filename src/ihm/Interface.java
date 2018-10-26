@@ -260,12 +260,12 @@ public class Interface extends Application {
 		});
 
 		gauche.setOnAction(e->{
-			cpt_translate_gd -= 10;
+			cpt_translate_gd += 10;
 			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		droite.setOnAction(e->{
-			cpt_translate_gd += 10;
+			cpt_translate_gd -= 10;
 			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
@@ -363,7 +363,7 @@ public class Interface extends Application {
 			e1.printStackTrace();
 		}
 		r.recopiePoint(tabf, tabp);
-		
+
 		try {
 			tabp = z.creerPointZoom(zoomvalue, tabp);
 		} catch (MatriceNullException | MatriceFormatException e) {
@@ -371,18 +371,18 @@ public class Interface extends Application {
 			e.printStackTrace();
 		}
 		r.recopiePoint(tabf, tabp);
-		
-			try {
-				tabp = t.creerPointsTranslate(cpt_translate_gd,0, tabp);
-			} catch (MatriceNullException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (MatriceFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			r.recopiePoint(tabf, tabp);	
-		
+
+		try {
+			tabp = t.creerPointsTranslate(cpt_translate_gd,0, tabp);
+		} catch (MatriceNullException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MatriceFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		r.recopiePoint(tabf, tabp);
+
 		gc.clearRect(0, 0, 1280, 600);
 		l.creerFigure(gc, tabf,c);
 	}

@@ -26,15 +26,15 @@ public class Translation {
 				if(premiertour)
 					tabp[j] = new Point(0, 0, 0);
 				if(i == 0)
-					tabp[j].setY((float)matrice[i][j]);
+					tabp[j].setX((float)matrice[i][j]);
 					
 				else if(i == 1)
-					tabp[j].setZ((float)matrice[i][j]);
+					tabp[j].setY((float)matrice[i][j]);
 			}
 			premiertour = false;
 		}
 		for(int idx = 0; idx<p.length;idx++)
-			tabp[idx].setX(p[idx].getX());
+			tabp[idx].setZ(p[idx].getZ());
 		
 		return tabp;
 		
