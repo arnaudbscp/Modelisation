@@ -11,7 +11,6 @@ import chargement.LoadFile;
 import chargement.Point;
 import exception.MatriceFormatException;
 import exception.MatriceNullException;
-import exception.NoFileSelectedException;
 import exception.WrongFaceLineFormatException;
 import exception.WrongFormatFileException;
 import exception.WrongPointLineFormatException;
@@ -156,10 +155,10 @@ public class Interface extends Application {
 		HBox hb_haut = new HBox();
 		HBox hb_gauche_droite = new HBox();
 		HBox hb_bas = new HBox();
-		Button haut = new Button("Ã¢â€ â€˜");
-		Button gauche = new Button("Ã¢â€ ï¿½");
-		Button droite = new Button("Ã¢â€ â€™");
-		Button bas = new Button("Ã¢â€ â€œ");
+		Button haut = new Button("H");
+		Button gauche = new Button("G");
+		Button droite = new Button("D");
+		Button bas = new Button("B");
 		hb_haut.setPadding(new Insets(0,0,0,28));
 		hb_bas.setPadding(new Insets(0,0,0,28));
 		hb_gauche_droite.setSpacing(28);
@@ -184,46 +183,40 @@ public class Interface extends Application {
 		importer.setTitle("Selectionner un fichier 3D");
 		b1.setOnAction(e -> {
 			filePly = importer.showOpenDialog(primaryStage);
-			if(filePly==null) {
+			if(filePly!=null) {
+				String extension = "";
+				int i=0;
+				while (filePly.getPath().charAt(i) != '.')
+					i++;
+				extension = filePly.getPath().substring(i, filePly.getPath().length());	
+
 				try {
-					throw new NoFileSelectedException();
-				} catch (NoFileSelectedException e1) {
-					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, e1.getMessage(),"Erreur Selection Fichier",JOptionPane.ERROR_MESSAGE);
+					if (!extension.equals(".ply"))
+						throw new WrongFormatFileException();
+					else {
+						gc.clearRect(0, 0, 1600, 800);
+						file = new LoadFile(filePly);
+					}
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (WrongFormatFileException e2) {
+					JOptionPane.showMessageDialog(null, e2.toString(), "Erreur Format Fichier", JOptionPane.ERROR_MESSAGE);
+					System.exit(1);
+				}
+				l = null;
+				try {
+					l = new Initialisation(filePly);
+					tabp = file.getPoints();
+					tabf = file.getFaces();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				try {
+					dessin(gc, file);
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}	
 			}
-			String extension = "";
-			int i=0;
-			while (filePly.getPath().charAt(i) != '.')
-				i++;
-			extension = filePly.getPath().substring(i, filePly.getPath().length());	
-
-			try {
-				if (!extension.equals(".ply"))
-					throw new WrongFormatFileException();
-				else {
-					gc.clearRect(0, 0, 1600, 800);
-					file = new LoadFile(filePly);
-				}
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			} catch (WrongFormatFileException e2) {
-				JOptionPane.showMessageDialog(null, e2.toString(), "Erreur Format Fichier", JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			}
-			l = null;
-			try {
-				l = new Initialisation(filePly);
-				tabp = file.getPoints();
-				tabf = file.getFaces();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			try {
-				dessin(gc, file);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}			
 		});
 
 		cp.setOnAction(e ->{
@@ -260,13 +253,17 @@ public class Interface extends Application {
 		});
 
 		gauche.setOnAction(e->{
-			cpt_translate_gd += 10;
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			if(filePly!=null) {
+				cpt_translate_gd += 10;
+				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			}
 		});
 
 		droite.setOnAction(e->{
-			cpt_translate_gd -= 10;
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			if(filePly!=null) {
+				cpt_translate_gd -= 10;
+				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			}
 		});
 
 		//----AFFICHAGE FENETRE------
