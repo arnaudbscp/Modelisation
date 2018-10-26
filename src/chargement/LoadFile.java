@@ -85,7 +85,7 @@ public class LoadFile {
 				//Pour chaque ligne, on récupère les 3 coordonnées en repérant les espaces dans la ligne.
 				xyz = ligne_point.split("a");
 				points[i] = new Point(Float.parseFloat(xyz[0]), Float.parseFloat(xyz[1]), Float.parseFloat(xyz[2]));
-			}
+			} 
 		}
 	}
 
