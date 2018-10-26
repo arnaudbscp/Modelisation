@@ -237,35 +237,37 @@ public class Interface extends Application {
 		Translation t = new Translation();
 		tournerX.setOnMouseDragged(e-> {
 			if(filePly!=null) {
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue(), -1);
+				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 			}
 		});
 
 		tournerY.setOnMouseDragged(e ->{
 			if(filePly!=null) {
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue(), -1);
+				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 			}
 
 		});
 
 		tournerZ.setOnMouseDragged(e -> {
 			if(filePly!=null) {
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue(), -1);
+				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 			}
 		});
 
 		zoom.setOnMouseDragged(e -> {
 			if(filePly!=null) {
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue(), -1);
+				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 			}
 		});
 
 		gauche.setOnAction(e->{
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue(), 0);
+			cpt_translate_gd -= 10;
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		droite.setOnAction(e->{
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue(), 1);
+			cpt_translate_gd += 10;
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		//----AFFICHAGE FENETRE------
@@ -323,14 +325,14 @@ public class Interface extends Application {
 	 * @param xvalue
 	 * @param zoomvalue
 	 */
-	public void miseAJourVue(GraphicsContext gc, double xvalue, double yvalue, double zvalue, double zoomvalue, int trans) {
+	public void miseAJourVue(GraphicsContext gc, double xvalue, double yvalue, double zvalue, double zoomvalue) {
 		Translation t = new Translation();
 		Rotation r = new Rotation();
 		Face[] tabf = file.getFaces();
 		Point[] tabp = file.getPoints();
 
 		try {
-			tabp = r.creerPointrotate(xvalue, file.getPoints(), 1);
+			tabp = r.creerPointrotate(xvalue, tabp, 1);
 		} catch (MatriceNullException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -339,7 +341,6 @@ public class Interface extends Application {
 			e1.printStackTrace();
 		}
 		r.recopiePoint(tabf, tabp);
-
 		try {
 			tabp = r.creerPointrotate(yvalue, tabp, 0);
 		} catch (MatriceNullException e1) {
@@ -367,9 +368,8 @@ public class Interface extends Application {
 			tabp[i] = p;
 		}
 		r.recopiePoint(tabf, tabp);
-		if(trans == 0) {
 			try {
-				tabp = t.creerPointsTranslate(cpt_translate_gd+=10,0, tabp);
+				tabp = t.creerPointsTranslate(cpt_translate_gd,0, tabp);
 			} catch (MatriceNullException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -378,19 +378,6 @@ public class Interface extends Application {
 				e.printStackTrace();
 			}
 			r.recopiePoint(tabf, tabp);
-		}
-		if(trans == 1) {
-			try {
-				tabp = t.creerPointsTranslate(cpt_translate_gd-=10, 0, tabp);
-			} catch (MatriceNullException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (MatriceFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			r.recopiePoint(tabf, tabp);
-		}
 		gc.clearRect(0, 0, 1280, 600);
 		l.creerFigure(gc, tabf,c);
 	}
