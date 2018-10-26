@@ -11,6 +11,21 @@ public class Matrice {
 		this.MA = MA;
 	}
 
+	public double[][] creerMatrice(Point[] p) {
+		double[][] tab = new double[3][p.length];
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < p.length; j++) {
+				if(i == 0)
+					tab[i][j] = p[j].getX();
+				else if(i == 1)
+					tab[i][j] = p[j].getY();
+				else if(i == 2)
+					tab[i][j] = p[j].getZ();
+			}
+		}
+		return tab;
+	}
+	
 	public double[][] creerMatriceY(Point[] p) {
 		double[][] tab = new double[3][p.length];
 		for(int i = 0; i < 4; i++) {

@@ -108,8 +108,10 @@ public class Interface extends Application {
 		lZoom.setText("Zoomer");
 		lZoom.setStyle("-fx-padding : 20 0 0 50;");
 		zoom.setMin(0);
-		zoom.setMax(100);
-		zoom.setValue(50);
+		zoom.setMax(5);
+		zoom.setValue(1);
+		zoom.setMajorTickUnit(1);
+		zoom.setBlockIncrement(0.2);
 		zoom.setShowTickLabels(true);
 		menu.getChildren().addAll(lZoom, zoom);
 
@@ -328,6 +330,7 @@ public class Interface extends Application {
 		Rotation r = new Rotation();
 		Face[] tabf = file.getFaces();
 		Point[] tabp = file.getPoints();
+		Zoom z = new Zoom();
 
 		try {
 			tabp = r.creerPointrotate(xvalue, file.getPoints(), 1);
@@ -361,12 +364,7 @@ public class Interface extends Application {
 			e1.printStackTrace();
 		}
 		r.recopiePoint(tabf, tabp);
-
-		for (int i=0; i<file.getPoints().length; i++) {
-			Point p = new Point((float)(tabp[i].getX()*(zoomvalue/file.getCoordMax(0))*10), (float)(tabp[i].getY()*(zoomvalue/file.getCoordMax(1))*10), (float)(tabp[i].getZ()*(zoomvalue/file.getCoordMax(2))*10));
-			tabp[i] = p;
-		}
-		r.recopiePoint(tabf, tabp);
+		
 		if(trans == 0) {
 			try {
 				tabp = t.creerPointsTranslate(cpt_translate_gd+=10,0, tabp);
@@ -391,6 +389,16 @@ public class Interface extends Application {
 			}
 			r.recopiePoint(tabf, tabp);
 		}
+		
+		try {
+			tabp = z.creerPointZoom(zoomvalue, tabp);
+		} catch (MatriceNullException | MatriceFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		r.recopiePoint(tabf, tabp);
+		
+		
 		gc.clearRect(0, 0, 1280, 600);
 		l.creerFigure(gc, tabf,c);
 	}

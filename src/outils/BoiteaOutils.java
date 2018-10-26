@@ -48,5 +48,17 @@ public class BoiteaOutils {
 
 			return tab;
 	}
+	
+	/**
+	 * Retourne la matrice Zoom.
+	 * @param z
+	 * @return
+	 */
+	public double[][] creerZoom(double z) {
+		double[][] tab = new double[][] {{z,0,0},
+			{0,z,0},
+			{0,0,z}};
+		return tab;
+	}
 }
 
