@@ -73,22 +73,18 @@ public class LoadFile {
 		br.readLine();
 		br.readLine();
 		for(int i=0;i<points.length;i++) {
-			String ligne_point = br.readLine();
+			String ligne_point = br.readLine()+"a";
 			//Je remplace les espaces par des a car je n'arrive pas à gérer les espaces dans la regex.
 			ligne_point=ligne_point.replace(" ", "a");
-			if(!ligne_point.matches("^(-?[0-9]+\\.?[0-9]*(e-?[0-9]+)?a){3}$"))
+			if(!ligne_point.matches("^(-?[0-9]+\\.?[0-9]*(e-?[0-9]+)?a){3}a*$"))
 				throw new WrongPointLineFormatException(i+10);
 			else if(ligne_point.contains("e")) {
-				ligne_point=ligne_point.substring(0,ligne_point.length()-1);
 				creerPointsExposant(ligne_point,i);
 			}else {
-				//On supprime le dernier a (espace) inutile.
-				ligne_point=ligne_point.substring(0,ligne_point.length()-1);
+				String[] xyz = new String[4];
 				//Pour chaque ligne, on récupère les 3 coordonnées en repérant les espaces dans la ligne.
-				float x = Float.parseFloat(ligne_point.substring(0, ligne_point.indexOf("a")));
-				float y = Float.parseFloat(ligne_point.substring(ligne_point.indexOf("a")+1, ligne_point.indexOf("a", ligne_point.indexOf("a")+1)));
-				float z = Float.parseFloat(ligne_point.substring(ligne_point.indexOf("a", ligne_point.indexOf("a")+1)+1));
-				points[i] = new Point(x, y, z);
+				xyz = ligne_point.split("a");
+				points[i] = new Point(Float.parseFloat(xyz[0]), Float.parseFloat(xyz[1]), Float.parseFloat(xyz[2]));
 			}
 		}
 	}
@@ -99,11 +95,9 @@ public class LoadFile {
 	 */
 	private void creerPointsExposant(String ligne_point, int idx) {
 		// TODO Auto-generated method stub
-		System.out.println(ligne_point);
-		String c1 = ligne_point.substring(0, ligne_point.indexOf("a"));
-		String c2 = ligne_point.substring(ligne_point.indexOf("a")+1, ligne_point.indexOf("a", ligne_point.indexOf("a")+1));
-		String c3 = ligne_point.substring(ligne_point.indexOf("a", ligne_point.indexOf("a")+1)+1);
-		String[] StringCoords = new String[] {c1,c2,c3};
+		String[] xyz = new String[3];
+		xyz = ligne_point.split("a");
+		String[] StringCoords = new String[] {xyz[0],xyz[1],xyz[2]};
 		float[] floatCoords = new float[StringCoords.length];
 		for(int i=0;i<StringCoords.length;i++) {
 			if(StringCoords[i].contains("e")) {
@@ -125,16 +119,17 @@ public class LoadFile {
 	public void creerFaces() throws IOException, WrongFaceLineFormatException {
 		for(int j=0;j<faces.length;j++) {
 			br.mark(faces.length);
-			String ligne_face = br.readLine();
+			String ligne_face = br.readLine()+"a";
 			//Je remplace les espaces par des a car je n'arrive pas à gérer les espaces dans la regex.
 			ligne_face=ligne_face.replace(" ", "a");
-			if(!ligne_face.matches("^3a([0-9]+a){3}$"))
+			if(!ligne_face.matches("^3a([0-9]+a){3}a*$"))
 				throw new WrongFaceLineFormatException(j+10+points.length);
 			ligne_face = ligne_face.substring(2,ligne_face.length()-1);//Supprime le 3 en début de chaque ligne.
-			//Pour chaque ligne, on récupère les 3 Point en repérant les espaces dans la ligne.
-			int pt1 = Integer.parseInt(ligne_face.substring(0, ligne_face.indexOf("a")));
-			int pt2 = Integer.parseInt(ligne_face.substring(ligne_face.indexOf("a")+1, ligne_face.indexOf("a", ligne_face.indexOf("a")+1)));
-			int pt3 = Integer.parseInt(ligne_face.substring(ligne_face.indexOf("a", ligne_face.indexOf("a")+1)+1));
+			String[] tabfaces = new String[3];
+			tabfaces = ligne_face.split("a");
+			int pt1 = Integer.parseInt(tabfaces[0]);
+			int pt2 = Integer.parseInt(tabfaces[1]);
+			int pt3 = Integer.parseInt(tabfaces[2]);
 			faces[j] = new Face(points[pt1],points[pt2],points[pt3]);
 			faces[j].setPosition(new int[] {pt1,pt2,pt3});
 		}
