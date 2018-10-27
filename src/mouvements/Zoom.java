@@ -14,7 +14,7 @@ import outils.BoiteaOutils;
  * @author bascopa
  *
  */
-public class Zoom {
+public class Zoom implements Recopie{
 	
 	public Point[] creerPointZoom(double z, Point[] p) throws MatriceNullException, MatriceFormatException {
 		BoiteaOutils bo = new BoiteaOutils();

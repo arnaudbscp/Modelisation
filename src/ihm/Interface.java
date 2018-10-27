@@ -98,11 +98,10 @@ public class Interface extends Application {
 		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		FileChooser importer = new FileChooser();
 		VBox dessin = new VBox();
-		Separator sep = new Separator();
+		Separator sep = new Separator(Orientation.VERTICAL);
 		dessin.getChildren().add(sep);
 		corps.getChildren().add(menu);
 		corps.getChildren().add(dessin);
-		sep.setOrientation(Orientation.VERTICAL);
 		sep.setValignment(VPos.CENTER);
 		//A modifier
 		sep.setMinHeight(300);
@@ -234,28 +233,43 @@ public class Interface extends Application {
 
 
 		tournerX.setOnMouseDragged(e-> {
-			if(filePly!=null) {
+			if(filePly!=null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-			}
+		});
+		
+		tournerX.setOnMouseClicked(e-> {
+			if(filePly!=null)
+				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		tournerY.setOnMouseDragged(e ->{
-			if(filePly!=null) {
+			if(filePly!=null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-			}
-
+		});
+		
+		tournerY.setOnMouseClicked(e ->{
+			if(filePly!=null)
+				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		tournerZ.setOnMouseDragged(e -> {
-			if(filePly!=null) {
+			if(filePly!=null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-			}
+		});
+		
+		tournerZ.setOnMouseClicked(e -> {
+			if(filePly!=null)
+				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		zoom.setOnMouseDragged(e -> {
-			if(filePly!=null) {
+			if(filePly!=null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-			}
+		});
+		
+		zoom.setOnMouseClicked(e -> {
+			if(filePly!=null)
+				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		gauche.setOnAction(e->{

@@ -4,11 +4,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import chargement.Face;
-import chargement.Point;
+import donnees.Face;
+import donnees.Point;
 
+/**
+ * Classe de test sur le calcul du barycentre d'une face triangulaire.
+ * @author Valentin
+ *
+ */
 class TestCalculGravite {
 
+	/**
+	 * Méthode testant si le résultat du calcul du barycentre d'une face triangulaire est correct.
+	 */
 	@Test
 	void test() {
 		Point p1 = new Point(1,2,3);

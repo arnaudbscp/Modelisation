@@ -9,7 +9,7 @@ import exception.MatriceNullException;
 
 import outils.BoiteaOutils;
 
-public class Translation {
+public class Translation implements Recopie{
 	
 	public Point[] creerPointsTranslate(double x1,double x2, Point[] p) throws MatriceNullException, MatriceFormatException {
 		BoiteaOutils bo = new BoiteaOutils(); 

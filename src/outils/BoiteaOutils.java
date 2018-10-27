@@ -13,7 +13,6 @@ public class BoiteaOutils {
 	 * @return
 	 */
 	public double[][] creerRotation(double angle) {
-
 		double[][] tab = new double[][] {{Math.cos(Math.toRadians(angle)), -Math.sin(Math.toRadians(angle)), 0 },
 			{Math.sin(Math.toRadians(angle)),  Math.cos(Math.toRadians(angle)), 0 },
 			{0,0,1}};
@@ -31,7 +30,6 @@ public class BoiteaOutils {
 		double[][] tab = new double[][] {{1 , 0 , x1 },
 			{0 , 1 , x2 },
 			{0 , 0 , 1  }};
-
 			return tab;
 	}
 
@@ -45,10 +43,9 @@ public class BoiteaOutils {
 		double[][] tab = new double[][] {{k , 0 , 0 },
 			{0 , k , 0 },
 			{0 , 0 , 1}};
-
 			return tab;
 	}
-	
+
 	/**
 	 * Retourne la matrice Zoom.
 	 * @param z
@@ -58,7 +55,7 @@ public class BoiteaOutils {
 		double[][] tab = new double[][] {{z,0,0},
 			{0,z,0},
 			{0,0,z}};
-		return tab;
+			return tab;
 	}
 }
 

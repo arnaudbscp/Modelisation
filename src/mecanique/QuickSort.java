@@ -15,11 +15,23 @@ public class QuickSort
 	private Face[] tab;
 	
 	/**
+	 * L'index de départ de tri.
+	 */
+	private int low;
+	
+	/**
+	 * L'index de fin de tri.
+	 */
+	private int high;
+	
+	/**
 	 * Constructeur spécifiant le tableau à trier.
 	 * @param tab
 	 */
 	public QuickSort(Face[] tab) {
-		this.tab=tab;
+		this.tab = tab;
+		low = 0;
+		high = tab.length - 1;
 	};
 
 	/**
@@ -80,7 +92,16 @@ public class QuickSort
 	 */
 	public void sort() {
 		// TODO Auto-generated method stub
-		sort(tab, 0, tab.length-1);
+		sort(tab, low, high);
+	}
+	
+	/**
+	 * Inverse l'ordre de tri.
+	 * @param tab
+	 */
+	public void inverserOrdre(Face[] tab) {
+		for(int i=0;i<tab.length/2;i++)
+			swap(tab, i, tab.length-1-i);
 	}
 
 	/**

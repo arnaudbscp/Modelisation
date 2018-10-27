@@ -47,14 +47,14 @@ public class Initialisation {
 	 * @param faces
 	 * @param c
 	 */
-	public void creerFigure(GraphicsContext gc, Face[] faces,Color c) {
+	public void creerFigure(GraphicsContext gc, Face[] faces, Color c) {
 		double[] px;
 		double[] py;
-		for (int i = 0; i < faces.length; i++) {
+		for (int i = 0; i < faces.length; i++)
 			faces[i].setCentreGravite(faces[i].calculCentreGravite());
-		}
 		QuickSort qs = new QuickSort(faces);
 		qs.sort();
+		//qs.inverserOrdre(faces);
 		for (int i = 0; i < faces.length; i++) {
 			px = new double[] {faces[i].getPoints()[0].getX()*-1+(gc.getCanvas().getWidth()/2),faces[i].getPoints()[1].getX()*-1+(gc.getCanvas().getWidth()/2),faces[i].getPoints()[2].getX()*-1+(gc.getCanvas().getWidth()/2)};
 			py = new double[] {faces[i].getPoints()[0].getZ()*-1+(gc.getCanvas().getHeight()/2),faces[i].getPoints()[1].getZ()*-1+(gc.getCanvas().getHeight()/2),faces[i].getPoints()[2].getZ()*-1+(gc.getCanvas().getHeight()/2)};
