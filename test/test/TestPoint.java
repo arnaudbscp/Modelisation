@@ -2,13 +2,13 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 
 import org.junit.jupiter.api.Test;
 
-import chargement.LoadFile;
+import mecanique.LoadFile;
+
 import exception.WrongPointLineFormatException;
 
 /**

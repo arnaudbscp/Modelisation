@@ -1,4 +1,4 @@
-package chargement;
+package donnees;
 
 /**
  * Représente un point dans un espace à 3 dimensions.
@@ -34,6 +34,19 @@ public class Point {
 		this.z = z;
 	}
 	
+	/**
+	 * Constructeur créant le point dans l'espace 3D à partir des 3 coordonnées X,Y et Z. Les paramètres sont castés en float.
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public Point(double d, double e, double f) {
+		// TODO Auto-generated constructor stub
+		this.x = (float) d;
+		this.y = (float) e;
+		this.z = (float) f;
+	}
+
 	/**
 	 * Définit la coordonnée X du point.
 	 * @param x
@@ -95,5 +108,14 @@ public class Point {
 	 */
 	public String toString() {
 		return "[Point: x="+x+" y="+y+" z="+z+"]";
+	}
+
+	/**
+	 * Teste si le point est égal au point passé en paramètre.
+	 * @param p
+	 * @return
+	 */
+	public boolean equals(Point p) {
+		return this.x == p.x && this.y == p.y && this.z == p.z;
 	}
 }

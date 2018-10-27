@@ -1,4 +1,4 @@
-package chargement;
+package mecanique;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.Reader;
 
 import javax.swing.JOptionPane;
+
+import donnees.Face;
+import donnees.Point;
 
 import exception.WrongFaceLineFormatException;
 import exception.WrongHeaderException;

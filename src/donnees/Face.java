@@ -1,10 +1,11 @@
-package chargement;
+package donnees;
+
 /**
  * Représente une face, composée de 3 Point et de segments les liant.
  * @author Valentin
  *
  */
-public class Face {
+public class Face implements Comparable<Face>{
 	
 	/**
 	 * Point 1 de la Face.
@@ -24,7 +25,7 @@ public class Face {
 	/**
 	 * Centre de gravité de la face triangulaire. Il s'agit du Point situé à l'intersection des 3 médianes.
 	 */
-	private Point centre_gravite;
+	private Point centreGravite;
 	
 	private int[] position;
 	
@@ -74,16 +75,16 @@ public class Face {
 	 * Retourne le centre de gravité de la face triangulaire.
 	 * @return
 	 */
-	public Point getCentre_gravite() {
-		return centre_gravite;
+	public Point getCentreGravite() {
+		return centreGravite;
 	}
 	
 	/**
 	 * Définit le centre de gravité de la face triangulaire.
 	 * @param centre_gravite
 	 */
-	public void setCentre_gravite(Point centre_gravite) {
-		this.centre_gravite = centre_gravite;
+	public void setCentreGravite(Point centreGravite) {
+		this.centreGravite = centreGravite;
 	}
 	
 	/**
@@ -102,6 +103,28 @@ public class Face {
 	 * Représentation textuelle d'une Face.
 	 */
 	public String toString() {
-		return "\n[Face:\nPoint 1:"+pt1.toString()+"\nPoint 2:"+pt2.toString()+"\nPoint 3:"+pt3.toString()+"\nBarycentre:"+centre_gravite+"]\n";
+		return "\n[Face:\nPoint 1:"+pt1.toString()+"\nPoint 2:"+pt2.toString()+"\nPoint 3:"+pt3.toString()+"\nBarycentre:"+centreGravite+"]\n";
+	}
+
+	/**
+	 * Compare la coordonnée Z du barycentre de la face avec celle de la face passée en paramètre.
+	 * Retourne 1 si la coordonnée Z du barycentre de la face est supérieure à celle de la face passée en paramètre.
+	 * Retourne 0 si la coordonnée Z du barycentre de la face est égale à celle de la face passée en paramètre.
+	 * Retourne -1 si la coordonnée Z du barycentre de la face est inférieure à celle de la face passée en paramètre.
+	 */
+	@Override
+	public int compareTo(Face arg0) {
+		// TODO Auto-generated method stub
+		float sub = this.getCentreGravite().getZ()-arg0.getCentreGravite().getZ();
+		if (sub<0) return -1;
+		if (sub>0) return 1;
+		return 0;
+	}
+
+	/**
+	 * Teste si la face est égale à celle passée en paramètre.
+	 */
+	public boolean equals(Face f) {
+		return this.pt1.equals(f.pt1) && this.pt2.equals(f.pt2) && this.pt3.equals(f.pt3) && this.centreGravite.equals(f.centreGravite);
 	}
 }

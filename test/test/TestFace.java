@@ -7,7 +7,8 @@ import java.io.StringReader;
 
 import org.junit.jupiter.api.Test;
 
-import chargement.LoadFile;
+import mecanique.LoadFile;
+
 import exception.WrongFaceLineFormatException;
 import exception.WrongPointLineFormatException;
 

@@ -4,13 +4,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import chargement.Matrice;
-import chargement.Point;
+import donnees.Matrice;
+import donnees.Point;
+
 import exception.MatriceFormatException;
 import exception.MatriceNullException;
 
+/**
+ * Classe de test sur les matrices, à savoir la création et la multiplication de matrices.
+ * @author Valentin
+ *
+ */
 class TestMatrice {
 
+	/**
+	 * Méthode testant que le résultat du produit de deux matrices est correct.
+	 * @throws MatriceNullException
+	 * @throws MatriceFormatException
+	 */
 	@Test
 	void testMultiplier() throws MatriceNullException, MatriceFormatException {
 
@@ -28,6 +39,7 @@ class TestMatrice {
 		}	
 	}
 
+	//NE PASSE PAS
 	@Test
 	void testMultiplierBis() throws MatriceNullException, MatriceFormatException {
 
@@ -45,6 +57,9 @@ class TestMatrice {
 		}	
 	}
 
+	/**
+	 * Méthode testant la création d'une matrice à partir de 3 points.
+	 */
 	@Test
 	void testCreerMatrice() {
 		Point[] tabp = new Point[3];
@@ -65,5 +80,3 @@ class TestMatrice {
 		}	
 	}
 }
-
-

@@ -2,16 +2,24 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 
 import org.junit.jupiter.api.Test;
 
-import chargement.LoadFile;
+import mecanique.LoadFile;
 
+/**
+ * Classe de test sur la récupération du nombre de points et de faces de la figure.
+ * @author Valentin
+ *
+ */
 class TestNb {
 
+	/**
+	 * Méthode testant la récupération du nombre de points de la figure dans l'en-tête du fichier.
+	 * @throws IOException
+	 */
 	@Test 
 	public void testNbPoints() throws IOException {
 		LoadFile f = new LoadFile();
@@ -28,6 +36,10 @@ class TestNb {
 		assertEquals(855, f.getPoints().length);
 	}
 
+	/**
+	 * Méthode testant la récupération du nombre de faces de la figure dans l'en-tête du fichier.
+	 * @throws IOException
+	 */
 	@Test
 	public void testNbFaces() throws IOException {
 		LoadFile f = new LoadFile();

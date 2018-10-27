@@ -8,14 +8,25 @@ import java.io.StringReader;
 
 import org.junit.jupiter.api.Test;
 
-import chargement.Initialisation;
-import chargement.LoadFile;
+import mecanique.Initialisation;
+import mecanique.LoadFile;
+
 import exception.WrongFaceLineFormatException;
 import exception.WrongHeaderException;
 import exception.WrongPointLineFormatException;
 
+/**
+ * Classe de test des différentes exceptions qui peuvent survenir.
+ * @author Valentin
+ *
+ */
 class TestExceptions {
 
+	/**
+	 * Méthode testant le bon renvoi d'une exception WrongHeaderException lorsque l'en-tête du fichier selectionné n'est pas
+	 * écrit dans le bon format.
+	 * @throws IOException
+	 */
 	@Test
 	void testWrongHeader() throws IOException {
 		String model = "ply\n" + 
@@ -32,6 +43,11 @@ class TestExceptions {
 		assertThrows(WrongHeaderException.class, () -> f.lireStream(new StringReader(model)) );
 	}
 
+	/**
+	 * Méthode testant le bon renvoi d'une exception WrongPointLineException lorsqu'une ligne désignant un point n'est pas écrite 
+	 * dans le bon format.
+	 * @throws IOException
+	 */
 	@Test
 	void testWrongPointLine() throws IOException {
 		File f = new File("ressources/dolphin.ply");
@@ -54,6 +70,11 @@ class TestExceptions {
 		});
 	}
 
+	/**
+	 * Méthode testant le bon renvoi d'une exception WrongPointFaceException lorsqu'une ligne désignant une face n'est pas écrite 
+	 * dans le bon format.
+	 * @throws IOException
+	 */
 	@Test
 	void testWrongFaceLine() throws IOException {
 		File f = new File("ressources/dolphin.ply");

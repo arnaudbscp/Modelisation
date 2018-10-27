@@ -1,4 +1,4 @@
-package chargement;
+package donnees;
 
 import exception.MatriceFormatException;
 import exception.MatriceNullException;

@@ -1,12 +1,15 @@
-package chargement;
+package mecanique;
 
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
+import donnees.Face;
+
 import exception.WrongFaceLineFormatException;
 import exception.WrongPointLineFormatException;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -34,29 +37,8 @@ public class Initialisation {
 			e.printStackTrace();
 		}
 		faces = file.getFaces();
-		for(int i=0;i<faces.length;++i) {
-			faces[i].setCentre_gravite(faces[i].calculCentreGravite());
-		}
-		trierFaces();
-	}
-
-	/**
-	 * Trie les faces de la plus éloignée à la plus éloignée en fonction de l'axe depuis lequel on visualise la figure.
-	 * 
-	 */
-	public void trierFaces(){ //TRI A BULLE PEU EFFICACE, IMPLEMENTER UN ALGORITHME DE TRI PLUS PERFORMANT.
-		boolean trie;
-		do {
-			trie=true;
-			for(int i=0;i<faces.length-1;++i) {
-				if(faces[i].getCentre_gravite().getCoordonnees()[2]>faces[i+1].getCentre_gravite().getCoordonnees()[2]) {
-					trie=false;
-					Face tmp = faces[i];
-					faces[i] = faces[i+1];
-					faces[i+1] = tmp;
-				}
-			}
-		}while(!trie);
+		for(int i=0;i<faces.length;++i)
+			faces[i].setCentreGravite(faces[i].calculCentreGravite());
 	}
 
 	/**
@@ -68,7 +50,11 @@ public class Initialisation {
 	public void creerFigure(GraphicsContext gc, Face[] faces,Color c) {
 		double[] px;
 		double[] py;
-	
+		for (int i = 0; i < faces.length; i++) {
+			faces[i].setCentreGravite(faces[i].calculCentreGravite());
+		}
+		QuickSort qs = new QuickSort(faces);
+		qs.sort();
 		for (int i = 0; i < faces.length; i++) {
 			px = new double[] {faces[i].getPoints()[0].getX()*-1+(gc.getCanvas().getWidth()/2),faces[i].getPoints()[1].getX()*-1+(gc.getCanvas().getWidth()/2),faces[i].getPoints()[2].getX()*-1+(gc.getCanvas().getWidth()/2)};
 			py = new double[] {faces[i].getPoints()[0].getZ()*-1+(gc.getCanvas().getHeight()/2),faces[i].getPoints()[1].getZ()*-1+(gc.getCanvas().getHeight()/2),faces[i].getPoints()[2].getZ()*-1+(gc.getCanvas().getHeight()/2)};

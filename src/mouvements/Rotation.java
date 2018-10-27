@@ -1,38 +1,40 @@
-package ihm;
+package mouvements;
 
-import chargement.Face;
-import chargement.Matrice;
-import chargement.Point;
+import donnees.Face;
+import donnees.Matrice;
+import donnees.Point;
+
 import exception.MatriceFormatException;
 import exception.MatriceNullException;
+
 import outils.BoiteaOutils;
 
 public class Rotation {
 
-	public Point[] creerPointrotate(double angle, Point[] p, int axe) throws MatriceNullException, MatriceFormatException {
+	public Point[] creerPointRotate(double angle, Point[] p, int axe) throws MatriceNullException, MatriceFormatException {
 
 		BoiteaOutils bo = new BoiteaOutils(); 
-		double[][] matricerotate = bo.creerRotation(angle);
-		Matrice m = new Matrice(matricerotate);
-		double[][] matricefigure;
+		double[][] matriceRotate = bo.creerRotation(angle);
+		Matrice m = new Matrice(matriceRotate);
+		double[][] matriceFigure;
 		if(axe == 0) {
-			matricefigure = m.creerMatriceY(p);
+			matriceFigure = m.creerMatriceY(p);
 		}else if(axe == 1) {
-			matricefigure = m.creerMatriceX(p);
+			matriceFigure = m.creerMatriceX(p);
 		}else {
-			matricefigure = m.creerMatriceZ(p);
+			matriceFigure = m.creerMatriceZ(p);
 		}
-		double[][] matriceres = m.multiplierMatrice(matricefigure);
-		Point[] tabp = creerTabPoint(matriceres, p,axe);
+		double[][] matriceRes = m.multiplierMatrice(matriceFigure);
+		Point[] tabp = creerTabPoint(matriceRes, p,axe);
 		return tabp;
 	}
 
 	private Point[] creerTabPoint(double[][] matrice, Point[] p, int axe) {
 		Point[] tabp = new Point[matrice[0].length];
-		boolean premiertour = true;
+		boolean premierTour = true;
 		for (int i = 0; i < matrice.length; i++) {
 			for (int j = 0; j < matrice[0].length; j++) {
-				if(premiertour)
+				if(premierTour)
 					tabp[j] = new Point(0, 0, 0);
 				if(i == 0) {
 					if(axe == 0 || axe == 2)
@@ -46,7 +48,7 @@ public class Rotation {
 						tabp[j].setZ((float)matrice[i][j]);
 				}
 			}
-			premiertour = false;
+			premierTour = false;
 		}
 		for(int idx = 0; idx<p.length;idx++)
 			if(axe == 0)

@@ -1,39 +1,41 @@
-package ihm;
+package mouvements;
 
-import chargement.Face;
-import chargement.Matrice;
-import chargement.Point;
+import donnees.Face;
+import donnees.Matrice;
+import donnees.Point;
+
 import exception.MatriceFormatException;
 import exception.MatriceNullException;
+
 import outils.BoiteaOutils;
+
 /**
  * 
  * @author bascopa
  *
  */
-
 public class Zoom {
 	
 	public Point[] creerPointZoom(double z, Point[] p) throws MatriceNullException, MatriceFormatException {
 		BoiteaOutils bo = new BoiteaOutils();
-		double[][] matricezoom = bo.creerZoom(z);
+		double[][] matriceZoom = bo.creerZoom(z);
 		
-		Matrice m = new Matrice(matricezoom);
+		Matrice m = new Matrice(matriceZoom);
 		
 		double[][] f = m.creerMatrice(p);
-		double[][] matricefigure = m.multiplierMatrice(f);
+		double[][] matriceFigure = m.multiplierMatrice(f);
 		
-		Point[] fp = creerTabPoint(matricefigure,p);
+		Point[] fp = creerTabPoint(matriceFigure,p);
 		
 		return fp;
 	}
 	
 	private Point[] creerTabPoint(double[][] matrice, Point[] p) {
 		Point[] tabp = new Point[matrice[0].length];
-		boolean premiertour = true;
+		boolean premierTour = true;
 		for (int i = 0; i < matrice.length; i++) {
 			for (int j = 0; j < matrice[0].length; j++) {
-				if(premiertour)
+				if(premierTour)
 					tabp[j] = new Point(0, 0, 0);
 				if(i == 0)
 					tabp[j].setX((float)matrice[i][j]);
@@ -42,7 +44,7 @@ public class Zoom {
 				else
 					tabp[j].setZ((float)matrice[i][j]);
 			}
-			premiertour = false;
+			premierTour = false;
 		}
 		return tabp;
 	}
