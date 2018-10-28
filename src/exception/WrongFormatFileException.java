@@ -19,7 +19,7 @@ public class WrongFormatFileException extends Exception {
 	private String title;
 	
 	/**
-	 * Constructeur affichant le message d'erreur.
+	 * Constructeur définissant le message d'erreur et son titre.
 	 */
 	public WrongFormatFileException() {
 		message = "Le format du fichier est incorrect. Vous devez choisir un fichier .ply";

@@ -8,7 +8,10 @@ import java.io.StringReader;
 import org.junit.jupiter.api.Test;
 
 import mecanique.LoadFile;
-
+import exception.MissingFaceLineException;
+import exception.MissingPointLineException;
+import exception.TooMuchFaceLineException;
+import exception.TooMuchPointLineException;
 import exception.WrongFaceLineFormatException;
 import exception.WrongPointLineFormatException;
 
@@ -43,7 +46,7 @@ class TestFace {
 		try {
 			lf.creerPoints();
 			lf.creerFaces();
-		} catch (WrongPointLineFormatException | WrongFaceLineFormatException e) {
+		} catch (WrongPointLineFormatException | WrongFaceLineFormatException | TooMuchPointLineException | MissingFaceLineException | TooMuchFaceLineException | MissingPointLineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

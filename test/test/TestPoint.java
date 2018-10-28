@@ -8,7 +8,7 @@ import java.io.StringReader;
 import org.junit.jupiter.api.Test;
 
 import mecanique.LoadFile;
-
+import exception.MissingPointLineException;
 import exception.WrongPointLineFormatException;
 
 /**
@@ -39,7 +39,7 @@ class TestPoint {
 		lf.readStream(new StringReader(model));
 		try {
 			lf.creerPoints();
-		} catch (WrongPointLineFormatException e) {
+		} catch (WrongPointLineFormatException | MissingPointLineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

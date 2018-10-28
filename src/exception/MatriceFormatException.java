@@ -21,7 +21,7 @@ public class MatriceFormatException extends Exception{
 	private String title;
 	
 	/**
-	 * Constructeur créant le message.
+	 * Constructeur définissant le message d'erreur et son titre.
 	 */
 	public MatriceFormatException() {
 		message = "La multiplication de deux matrices n'est possible que si le nombre de colonnes de la première est égal au nombre de lignes de la seconde.";

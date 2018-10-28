@@ -17,6 +17,10 @@ import mouvements.Zoom;
 
 import exception.MatriceFormatException;
 import exception.MatriceNullException;
+import exception.MissingFaceLineException;
+import exception.MissingPointLineException;
+import exception.TooMuchFaceLineException;
+import exception.TooMuchPointLineException;
 import exception.WrongFaceLineFormatException;
 import exception.WrongFormatFileException;
 import exception.WrongPointLineFormatException;
@@ -337,6 +341,18 @@ public class Interface extends Application {
 			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		} catch (WrongFaceLineFormatException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		} catch (MissingPointLineException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		} catch (TooMuchPointLineException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		} catch (MissingFaceLineException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		} catch (TooMuchFaceLineException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}

@@ -19,7 +19,7 @@ public class WrongHeaderException extends Exception {
 	private String title;
 	
 	/**
-	 * Constructeur créant le message.
+	 * Constructeur définissant le message d'erreur et son titre.
 	 */
 	public WrongHeaderException() {
 		message = "L'en-tête du fichier n'est pas écrit correctement... Il doit être écrit de cette manière: (i et j sont respectivement le nombre de points et le nombre de faces de la figure):\n" + 

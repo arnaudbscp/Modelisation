@@ -19,8 +19,8 @@ public class WrongFaceLineFormatException extends Exception {
 	private String title;
 	
 	/**
-	 * Constructeur affichant le message d'erreur.
-	 * @param i
+	 * Constructeur définissant le message d'erreur et son titre.
+	 * @param i : le numero de la ligne où il y a une erreur.
 	 */
 	public WrongFaceLineFormatException(int i) {
 		message = "Le format de la ligne "+i+" n'est pas correct.\nIl doit être de la forme \"3 i j k \" avec i, j et k 3 nombres entiers représentant les indices dans le tableau de Point des points composants la face.\n(Ex: \"3 0 1 2 \")";

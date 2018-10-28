@@ -6,7 +6,10 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 
 import donnees.Face;
-
+import exception.MissingFaceLineException;
+import exception.MissingPointLineException;
+import exception.TooMuchFaceLineException;
+import exception.TooMuchPointLineException;
 import exception.WrongFaceLineFormatException;
 import exception.WrongPointLineFormatException;
 
@@ -29,12 +32,24 @@ public class Initialisation {
 		} catch (WrongPointLineFormatException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
+		} catch (MissingPointLineException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		}
 		try {
 			lf.creerFaces();
 		} catch (WrongFaceLineFormatException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
+			System.exit(1);
+		} catch (TooMuchPointLineException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		} catch (MissingFaceLineException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		} catch (TooMuchFaceLineException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		}
 		faces = lf.getFaces();
 		for(int i=0;i<faces.length;++i)

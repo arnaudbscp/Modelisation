@@ -19,7 +19,7 @@ public class MatriceNullException extends Exception{
 	private String title;
 	
 	/**
-	 * Constructeur créant le message.
+	 * Constructeur définissant le message d'erreur et son titre.
 	 */
 	public MatriceNullException() {
 		message = "Une des deux matrices ne contient pas de données.";
