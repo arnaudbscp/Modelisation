@@ -93,7 +93,7 @@ public class Interface extends Application {
 		Button b1 = new Button("Importer");
 		b1.setMinWidth(150);
 		menu.getChildren().add(b1);
-		Canvas canv = new Canvas(1100,600);
+		Canvas canv = new Canvas(1100, 600);
 		GraphicsContext gc = canv.getGraphicsContext2D();
 		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		FileChooser importer = new FileChooser();
@@ -110,73 +110,73 @@ public class Interface extends Application {
 
 		//SLIDER ZOOM
 		Slider zoom = new Slider();
-		Label lZoom = new Label();
-		lZoom.setText("Zoomer");
-		lZoom.setStyle("-fx-padding : 20 0 0 50;");
+		Label lblZoom = new Label();
+		lblZoom.setText("Zoomer");
+		lblZoom.setStyle("-fx-padding : 20 0 0 50;");
 		zoom.setMin(0);
 		zoom.setMax(5);
 		zoom.setValue(1);
 		zoom.setMajorTickUnit(1);
 		zoom.setBlockIncrement(0.2);
 		zoom.setShowTickLabels(true);
-		menu.getChildren().addAll(lZoom, zoom);
+		menu.getChildren().addAll(lblZoom, zoom);
 
 		//SLIDER TRANSLATION X
 		Slider tournerX = new Slider();
-		Label lTournerX = new Label();
-		lTournerX.setText("Tourner X");
-		lTournerX.setStyle("-fx-padding : 20 0 0 50;");
+		Label lblTournerX = new Label();
+		lblTournerX.setText("Tourner X");
+		lblTournerX.setStyle("-fx-padding : 20 0 0 50;");
 		tournerX.setMin(0);
 		tournerX.setMax(360);
 		tournerX.setMajorTickUnit(90);
 		tournerX.setValue(0);
 		tournerX.setShowTickLabels(true);
-		menu.getChildren().addAll(lTournerX, tournerX);
+		menu.getChildren().addAll(lblTournerX, tournerX);
 
 		//SLIDER TRANSLATION Y
 		Slider tournerY = new Slider();
-		Label lTournerY = new Label();
-		lTournerY.setText("Tourner Y");
-		lTournerY.setStyle("-fx-padding : 20 0 0 50;");
+		Label lblTournerY = new Label();
+		lblTournerY.setText("Tourner Y");
+		lblTournerY.setStyle("-fx-padding : 20 0 0 50;");
 		tournerY.setMin(0);
 		tournerY.setMax(360);
 		tournerY.setMajorTickUnit(90);
 		tournerY.setValue(0);
 		tournerY.setShowTickLabels(true);
-		menu.getChildren().addAll(lTournerY, tournerY);
+		menu.getChildren().addAll(lblTournerY, tournerY);
 
 		//SLIDER TRANSLATION Z
 		Slider tournerZ = new Slider();
-		Label lTournerZ = new Label();
-		lTournerZ.setText("Tourner Z");
-		lTournerZ.setStyle("-fx-padding : 20 0 0 50;");
+		Label lblTournerZ = new Label();
+		lblTournerZ.setText("Tourner Z");
+		lblTournerZ.setStyle("-fx-padding : 20 0 0 50;");
 		tournerZ.setMin(-180);
 		tournerZ.setMax(180);
 		tournerZ.setMajorTickUnit(90);
 		tournerZ.setValue(0);
 		tournerZ.setShowTickLabels(true);
-		menu.getChildren().addAll(lTournerZ, tournerZ);
+		menu.getChildren().addAll(lblTournerZ, tournerZ);
 
 		//CROIX DIRECTIONNELLE TRANSLATION
-		Label ltranslation = new Label("Translation");
-		HBox hb_haut = new HBox();
-		HBox hb_gauche_droite = new HBox();
-		HBox hb_bas = new HBox();
+		Label lblTranslation = new Label("Translation");
+		HBox hbHaut = new HBox();
+		HBox hbGaucheDroite = new HBox();
+		HBox hbBas = new HBox();
 		Button haut = new Button("H");
 		Button gauche = new Button("G");
 		Button droite = new Button("D");
 		Button bas = new Button("B");
-		hb_haut.setPadding(new Insets(0,0,0,28));
-		hb_bas.setPadding(new Insets(0,0,0,28));
-		hb_gauche_droite.setSpacing(28);
+		hbHaut.setPadding(new Insets(0, 0, 0, 28));
+		hbBas.setPadding(new Insets(0, 0, 0, 28));
+		hbGaucheDroite.setSpacing(28);
 		haut.setPrefWidth(25);
 		bas.setPrefWidth(25);
 		droite.setPrefWidth(25);
 		gauche.setPrefWidth(25);
-		hb_haut.getChildren().add(haut);
-		hb_gauche_droite.getChildren().addAll(gauche,droite);
-		hb_bas.getChildren().add(bas);
-		menu.getChildren().addAll(ltranslation,hb_haut,hb_gauche_droite,hb_bas);
+		hbHaut.getChildren().add(haut);
+		hbGaucheDroite.getChildren().addAll(gauche, droite);
+		hbBas.getChildren().add(bas);
+		menu.getChildren().addAll(lblTranslation, hbHaut, hbGaucheDroite, hbBas);
 
 		//CHOIX COULEURS
 		Label lcolor = new Label("Couleur");
@@ -192,7 +192,7 @@ public class Interface extends Application {
 			filePly = importer.showOpenDialog(primaryStage);
 			if(filePly != null) {
 				String extension = "";
-				int i=0;
+				int i = 0;
 				while (filePly.getPath().charAt(i) != '.')
 					i++;
 				extension = filePly.getPath().substring(i, filePly.getPath().length());	
@@ -208,7 +208,8 @@ public class Interface extends Application {
 					JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
 					System.exit(1);
 				} catch (IOException e1) {
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erreur", "Erreur Fichier", JOptionPane.ERROR_MESSAGE);
+					System.exit(1);
 				}
 				init = null;
 				try {
@@ -333,11 +334,9 @@ public class Interface extends Application {
 			file.creerPoints();
 			file.creerFaces();
 		} catch (WrongPointLineFormatException e) {
-			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		} catch (WrongFaceLineFormatException e) {
-			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}

@@ -72,7 +72,7 @@ public class Matrice {
 	}
 	public double[][] multiplierMatrice(double[][] MB) throws MatriceNullException, MatriceFormatException {
 		double[][] MC;
-		int l,c;
+		int l, c;
 
 		if(MA == null || MB == null)
 			throw new MatriceNullException();
@@ -84,12 +84,12 @@ public class Matrice {
 		MC = new double[MA.length][MB[0].length];
 
 		l = 0;
-		for (int i = 0;i < MA.length;i++){
+		for (int i = 0; i < MA.length; i++){
 			c = 0;
-			for (int n = 0;n < MB[0].length;n++){
+			for (int n = 0; n < MB[0].length; n++){
 
-				int calcul= 0;
-				for (int m = 0;m < MB.length;m++)
+				int calcul = 0;
+				for (int m = 0; m < MB.length; m++)
 					calcul += MA[i][m] * MB[m][n];
 				MC[l][c] = calcul;
 				c++;
@@ -99,4 +99,3 @@ public class Matrice {
 		return MC;
 	}
 }
-

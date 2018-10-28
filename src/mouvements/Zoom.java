@@ -25,7 +25,7 @@ public class Zoom implements Recopie{
 		double[][] f = m.creerMatrice(p);
 		double[][] matriceFigure = m.multiplierMatrice(f);
 		
-		Point[] fp = creerTabPoint(matriceFigure,p);
+		Point[] fp = creerTabPoint(matriceFigure, p);
 		
 		return fp;
 	}
@@ -50,7 +50,7 @@ public class Zoom implements Recopie{
 	}
 
 	public void recopiePoint(Face[] faces, Point[] points) {
-		for(int i = 0; i<faces.length; i++) {
+		for(int i = 0; i < faces.length; i++) {
 			faces[i].setPt1(points[faces[i].getPosition()[0]]);
 			faces[i].setPt2(points[faces[i].getPosition()[1]]);
 			faces[i].setPt3(points[faces[i].getPosition()[2]]);

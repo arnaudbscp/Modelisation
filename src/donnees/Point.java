@@ -100,14 +100,14 @@ public class Point {
 	 * @return
 	 */
 	public float[] getCoordonnees() {
-		return new float[] {x,y,z};
+		return new float[] {x, y, z};
 	}
 	
 	/**
 	 * Représentation textuelle d'un Point.
 	 */
 	public String toString() {
-		return "[Point: x="+x+" y="+y+" z="+z+"]";
+		return "[Point: x=" + x + " y=" + y + " z=" + z + "]";
 	}
 
 	/**

@@ -17,15 +17,14 @@ public class Rotation implements Recopie{
 		double[][] matriceRotate = bo.creerRotation(angle);
 		Matrice m = new Matrice(matriceRotate);
 		double[][] matriceFigure;
-		if(axe == 0) {
+		if(axe == 0)
 			matriceFigure = m.creerMatriceY(p);
-		}else if(axe == 1) {
+		else if(axe == 1) 
 			matriceFigure = m.creerMatriceX(p);
-		}else {
+		else
 			matriceFigure = m.creerMatriceZ(p);
-		}
 		double[][] matriceRes = m.multiplierMatrice(matriceFigure);
-		Point[] tabp = creerTabPoint(matriceRes, p,axe);
+		Point[] tabp = creerTabPoint(matriceRes, p, axe);
 		return tabp;
 	}
 
@@ -50,7 +49,7 @@ public class Rotation implements Recopie{
 			}
 			premierTour = false;
 		}
-		for(int idx = 0; idx<p.length;idx++)
+		for(int idx = 0; idx<p.length; idx++)
 			if(axe == 0)
 				tabp[idx].setZ(p[idx].getZ());
 			else if(axe == 1)
@@ -61,7 +60,7 @@ public class Rotation implements Recopie{
 	}
 
 	public void recopiePoint(Face[] faces, Point[] points) {
-		for(int i = 0; i<faces.length; i++) {
+		for(int i = 0; i < faces.length; i++) {
 			faces[i].setPt1(points[faces[i].getPosition()[0]]);
 			faces[i].setPt2(points[faces[i].getPosition()[1]]);
 			faces[i].setPt3(points[faces[i].getPosition()[2]]);

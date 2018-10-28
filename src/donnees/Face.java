@@ -68,7 +68,7 @@ public class Face implements Comparable<Face>{
 	 * @return
 	 */
 	public Point[] getPoints() {
-		return new Point[] {pt1,pt2,pt3};
+		return new Point[] {pt1, pt2, pt3};
 	}
 	
 	/**
@@ -93,9 +93,9 @@ public class Face implements Comparable<Face>{
 	 * @return
 	 */
 	public Point calculCentreGravite() {
-		float x = (this.getPoints()[0].getX()+this.getPoints()[1].getX()+this.getPoints()[2].getX())/3;
-		float y = (this.getPoints()[0].getY()+this.getPoints()[1].getY()+this.getPoints()[2].getY())/3;
-		float z = (this.getPoints()[0].getZ()+this.getPoints()[1].getZ()+this.getPoints()[2].getZ())/3;
+		float x = (this.getPoints()[0].getX() + this.getPoints()[1].getX() + this.getPoints()[2].getX()) / 3;
+		float y = (this.getPoints()[0].getY() + this.getPoints()[1].getY() + this.getPoints()[2].getY()) / 3;
+		float z = (this.getPoints()[0].getZ() + this.getPoints()[1].getZ() + this.getPoints()[2].getZ()) / 3;
 		return new Point(x, y, z);
 	}
 
@@ -103,7 +103,7 @@ public class Face implements Comparable<Face>{
 	 * Représentation textuelle d'une Face.
 	 */
 	public String toString() {
-		return "\n[Face:\nPoint 1:"+pt1.toString()+"\nPoint 2:"+pt2.toString()+"\nPoint 3:"+pt3.toString()+"\nBarycentre:"+centreGravite+"]\n";
+		return "\n[Face:\nPoint 1:" + pt1.toString() + "\nPoint 2:" + pt2.toString() + "\nPoint 3:" + pt3.toString() + "\nBarycentre:" + centreGravite + "]\n";
 	}
 
 	/**
@@ -114,8 +114,7 @@ public class Face implements Comparable<Face>{
 	 */
 	@Override
 	public int compareTo(Face arg0) {
-		// TODO Auto-generated method stub
-		float sub = this.getCentreGravite().getZ()-arg0.getCentreGravite().getZ();
+		float sub = this.getCentreGravite().getZ() - arg0.getCentreGravite().getZ();
 		if (sub<0) return -1;
 		if (sub>0) return 1;
 		return 0;
