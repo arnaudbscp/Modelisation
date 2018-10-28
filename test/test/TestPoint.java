@@ -25,7 +25,6 @@ class TestPoint {
 	 */
 	@Test
 	void test() throws IOException {
-		LoadFile f = new LoadFile();
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"element vertex 1\n" + 
@@ -36,15 +35,16 @@ class TestPoint {
 				"property list uint8 int32 vertex_indices\n" + 
 				"end_header\n" +
 				"13.6601 0 548.364 ";
-		f.lireStream(new StringReader(model));
+		LoadFile lf = new LoadFile();
+		lf.readStream(new StringReader(model));
 		try {
-			f.creerPoints();
+			lf.creerPoints();
 		} catch (WrongPointLineFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertEquals((float)13.6601, (float)f.getPoints()[0].getX());
-		assertEquals((float)0, (float)f.getPoints()[0].getY());
-		assertEquals((float)548.364, (float)f.getPoints()[0].getZ());
+		assertEquals((float)13.6601, (float)lf.getPoints()[0].getX());
+		assertEquals((float)0, (float)lf.getPoints()[0].getY());
+		assertEquals((float)548.364, (float)lf.getPoints()[0].getZ());
 	}
 }

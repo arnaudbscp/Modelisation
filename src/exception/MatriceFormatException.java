@@ -16,16 +16,30 @@ public class MatriceFormatException extends Exception{
 	private String message;
 	
 	/**
+	 * Titre du message d'erreur.
+	 */
+	private String title;
+	
+	/**
 	 * Constructeur créant le message.
 	 */
 	public MatriceFormatException() {
-		message="La multiplication de deux matrices n'est possible que si le nombre de colonnes de la première est égal au nombre de lignes de la seconde.";
+		message = "La multiplication de deux matrices n'est possible que si le nombre de colonnes de la première est égal au nombre de lignes de la seconde.";
+		title = "Erreur Produit Matriciel";
 	}
 	
 	/**
 	 * Retourne le message d'erreur.
 	 */
-	public String toString() {
+	public String getMessage() {
 		return message;
+	}
+	
+	/**
+	 * Retourne le titre du message d'erreur.
+	 * @return
+	 */
+	public String getTitle() {
+		return title;
 	}
 }

@@ -39,8 +39,8 @@ class TestExceptions {
 				"element face 1689\n" + 
 				"property list uint8 int32 vertex_indices\n" + 
 				"end_header";
-		LoadFile f = new LoadFile();
-		assertThrows(WrongHeaderException.class, () -> f.lireStream(new StringReader(model)) );
+		LoadFile lf = new LoadFile();
+		assertThrows(WrongHeaderException.class, () -> lf.readStream(new StringReader(model)) );
 	}
 
 	/**
@@ -51,7 +51,6 @@ class TestExceptions {
 	@Test
 	void testWrongPointLine() throws IOException {
 		File f = new File("ressources/dolphin.ply");
-		LoadFile lf = new LoadFile(f);
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"comment by genartv\n" +
@@ -63,8 +62,9 @@ class TestExceptions {
 				"property list uint8 int32 vertex_indices\n" + 
 				"end_header\n" +
 				"13.6601e-5 0 548.364 ";
+		LoadFile lf = new LoadFile();
 		assertThrows(WrongPointLineFormatException.class, () -> {
-			lf.lireStream(new StringReader(model));
+			lf.readStream(new StringReader(model));
 			@SuppressWarnings("unused")
 			Initialisation i = new Initialisation(f);
 		});
@@ -78,7 +78,6 @@ class TestExceptions {
 	@Test
 	void testWrongFaceLine() throws IOException {
 		File f = new File("ressources/dolphin.ply");
-		LoadFile lf = new LoadFile(f);
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"comment by genartv\n" +
@@ -93,8 +92,9 @@ class TestExceptions {
 				"-24.9399 0 513.564 \n" + 
 				"-19.6099 -8.13 512.804 \n" +
 				"3 0 1a 2 ";
+		LoadFile lf = new LoadFile();
 		assertThrows(WrongFaceLineFormatException.class, () -> {
-			lf.lireStream(new StringReader(model));
+			lf.readStream(new StringReader(model));
 			@SuppressWarnings("unused")
 			Initialisation i = new Initialisation(f);
 		});

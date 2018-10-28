@@ -36,23 +36,25 @@ public class LoadFile {
 	private Face[] faces;
 
 	/**
-	 * Constructeur vide pour les tests.
+	 * Constructeur vide.
 	 */
 	public LoadFile() {}
-
+	
 	/**
-	 * Constructeur appelant la méthode lireStream(Reader in).
+	 * Constructeur permettant de lire un fichier passé en paramètre, appelant la méthode readStream(Reader in) 
+	 * qui va lire le stream du fichier.
 	 * @throws IOException
 	 */
 	public LoadFile(File f) throws IOException{
-		lireStream(new FileReader(new File(f.getPath())));
+		readStream(new FileReader(new File(f.getPath())));
 	}
 
 	/**
-	 * Méthode qui charge le fichier et créé les tableaux de Point et de Face de longueurs adéquates, sans les remplir.
+	 * Méthode permettant de lire un stream sans spécifier de fichier.
+	 * Création des tableaux de Point et de Face de longueurs adéquates, sans les remplir.
 	 * @throws IOException
 	 */
-	public void lireStream(Reader in) throws IOException {
+	public void readStream(Reader in) throws IOException {
 		try {
 			br = new BufferedReader(in);
 			br.readLine();
@@ -62,7 +64,7 @@ public class LoadFile {
 				br.readLine();
 			faces = new Face[recupNb(br.readLine())];
 		} catch (WrongHeaderException e) {
-			JOptionPane.showMessageDialog(null, e.toString(),"Erreur format entête",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
 	}
@@ -121,7 +123,6 @@ public class LoadFile {
 	 */
 	public void creerFaces() throws IOException, WrongFaceLineFormatException {
 		for(int j=0;j<faces.length;j++) {
-			br.mark(faces.length);
 			String ligne_face = br.readLine()+"a";
 			//Je remplace les espaces par des a car je n'arrive pas à gérer les espaces dans la regex.
 			ligne_face=ligne_face.replace(" ", "a");
@@ -136,6 +137,7 @@ public class LoadFile {
 			faces[j] = new Face(points[pt1],points[pt2],points[pt3]);
 			faces[j].setPosition(new int[] {pt1,pt2,pt3});
 		}
+		br.close();
 	}
 
 	public void setPoints(Point[] points) {

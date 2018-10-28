@@ -48,7 +48,7 @@ public class Interface extends Application {
 	/**
 	 * Permet de charger le fichier, de le lire séquentiellement afin de ranger les points et les faces dans des tableaux.
 	 */
-	private LoadFile file;
+	private LoadFile loadFile;
 
 	/**
 	 * le fichier .ply contenant les points et les faces à  dessiner.
@@ -190,7 +190,7 @@ public class Interface extends Application {
 		importer.setTitle("Selectionner un fichier 3D");
 		b1.setOnAction(e -> {
 			filePly = importer.showOpenDialog(primaryStage);
-			if(filePly!=null) {
+			if(filePly != null) {
 				String extension = "";
 				int i=0;
 				while (filePly.getPath().charAt(i) != '.')
@@ -202,85 +202,89 @@ public class Interface extends Application {
 						throw new WrongFormatFileException();
 					else {
 						gc.clearRect(0, 0, 1600, 800);
-						file = new LoadFile(filePly);
+						loadFile = new LoadFile(filePly);
 					}
-				} catch (WrongFormatFileException | IOException e2) {
-					JOptionPane.showMessageDialog(null, e2.toString(), "Erreur Format Fichier", JOptionPane.ERROR_MESSAGE);
+				} catch (WrongFormatFileException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
 					System.exit(1);
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}
 				init = null;
 				try {
 					init = new Initialisation(filePly);
-					tabp = file.getPoints();
-					tabf = file.getFaces();
+					tabp = loadFile.getPoints();
+					tabf = loadFile.getFaces();
 				} catch (IOException e1) {
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erreur", "Erreur Fichier", JOptionPane.ERROR_MESSAGE);
+					System.exit(1);
 				}
 				try {
-					dessin(gc, file);
+					dessin(gc, loadFile);
 				} catch (IOException e1) {
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erreur", "Erreur Fichier", JOptionPane.ERROR_MESSAGE);
+					System.exit(1);
 				}	
 			}
 		});
 
 		cp.setOnAction(e ->{
-			if(filePly!=null) {
+			if(filePly != null) {
 				couleur = cp.getValue();
-				init.creerFigure(gc, file.getFaces(), couleur);
+				init.creerFigure(gc, loadFile.getFaces(), couleur);
 			}
 		});
 
 
 		tournerX.setOnMouseDragged(e-> {
-			if(filePly!=null)
+			if(filePly != null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 		
 		tournerX.setOnMouseClicked(e-> {
-			if(filePly!=null)
+			if(filePly != null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		tournerY.setOnMouseDragged(e ->{
-			if(filePly!=null)
+			if(filePly != null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 		
 		tournerY.setOnMouseClicked(e ->{
-			if(filePly!=null)
+			if(filePly != null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		tournerZ.setOnMouseDragged(e -> {
-			if(filePly!=null)
+			if(filePly != null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 		
 		tournerZ.setOnMouseClicked(e -> {
-			if(filePly!=null)
+			if(filePly != null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		zoom.setOnMouseDragged(e -> {
-			if(filePly!=null)
+			if(filePly != null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 		
 		zoom.setOnMouseClicked(e -> {
-			if(filePly!=null)
+			if(filePly != null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		gauche.setOnAction(e->{
-			if(filePly!=null) {
+			if(filePly != null) {
 				cptTranslateGD += 10;
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 			}
 		});
 
 		droite.setOnAction(e->{
-			if(filePly!=null) {
+			if(filePly != null) {
 				cptTranslateGD -= 10;
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 			}
@@ -328,11 +332,16 @@ public class Interface extends Application {
 		try {
 			file.creerPoints();
 			file.creerFaces();
-		} catch (WrongPointLineFormatException | WrongFaceLineFormatException e) {
+		} catch (WrongPointLineFormatException e) {
 			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		} catch (WrongFaceLineFormatException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
-		init.creerFigure(gc, file.getFaces(),couleur);
+		init.creerFigure(gc, file.getFaces(), couleur);
 	}
 
 	/**
@@ -344,59 +353,62 @@ public class Interface extends Application {
 	public void miseAJourVue(GraphicsContext gc, double xValue, double yValue, double zValue, double zoomValue) {
 		Translation translation = new Translation();
 		Rotation rotation = new Rotation();
-		Face[] tabf = file.getFaces();
-		Point[] tabp = file.getPoints();
+		Face[] tabf = loadFile.getFaces();
+		Point[] tabp = loadFile.getPoints();
 		Zoom zoom = new Zoom();
 
 		try {
 			tabp = rotation.creerPointRotate(xValue, tabp, 1);
 		} catch (MatriceNullException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		} catch (MatriceFormatException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		}
 		rotation.recopiePoint(tabf, tabp);
 
 		try {
 			tabp = rotation.creerPointRotate(yValue, tabp, 0);
 		} catch (MatriceNullException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		} catch (MatriceFormatException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		}
 		rotation.recopiePoint(tabf, tabp);
 
 		try {
 			tabp = rotation.creerPointRotate(zValue, tabp, 2);
 		} catch (MatriceNullException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		} catch (MatriceFormatException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		}
 		rotation.recopiePoint(tabf, tabp);
 
 		try {
 			tabp = zoom.creerPointZoom(zoomValue, tabp);
-		} catch (MatriceNullException | MatriceFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (MatriceNullException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		} catch (MatriceFormatException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		}
 		rotation.recopiePoint(tabf, tabp);
 
 		try {
 			tabp = translation.creerPointsTranslate(cptTranslateGD, 0, tabp);
 		} catch (MatriceNullException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		} catch (MatriceFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		}
 		rotation.recopiePoint(tabf, tabp);
 

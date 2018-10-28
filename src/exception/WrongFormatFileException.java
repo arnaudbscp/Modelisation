@@ -14,16 +14,30 @@ public class WrongFormatFileException extends Exception {
 	private String message;
 	
 	/**
+	 * Titre du message d'erreur.
+	 */
+	private String title;
+	
+	/**
 	 * Constructeur affichant le message d'erreur.
 	 */
 	public WrongFormatFileException() {
-		message="Le format du fichier est incorrect. Vous devez choisir un fichier .ply";
+		message = "Le format du fichier est incorrect. Vous devez choisir un fichier .ply";
+		title = "Erreur Format Fichier";
 	}
 	
 	/**
 	 * Retourne le message d'erreur.
 	 */
-	public String toString() {
+	public String getMessage() {
 		return message;
+	}
+	
+	/**
+	 * Retourne le titre du message d'erreur.
+	 * @return
+	 */
+	public String getTitle() {
+		return title;
 	}
 }

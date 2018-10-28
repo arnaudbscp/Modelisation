@@ -3,12 +3,20 @@ package mecanique;
 import donnees.Face;
 
 /**
- * Classe réalisant le tri "QuickSort".
+ * Classe implémentant le design pattern "Singleton",
+ * réalisant le tri "QuickSort".
  * @author Valentin
  *
  */
-public class QuickSort
+public final class QuickSort
 { 
+	/**
+	 * L'instance de la classe. Il ne peut y en avoir qu'une seule.
+	 * On instancie directement l'attribut pour éviter d'utiliser la méthode
+	 * getInstance avec la version synchronized plutôt contre-productive en Java.
+	 */
+	private final static QuickSort INSTANCE = new QuickSort();
+	
 	/**
 	 * Le tableau à trier.
 	 */
@@ -25,10 +33,25 @@ public class QuickSort
 	private int high;
 	
 	/**
-	 * Constructeur spécifiant le tableau à trier.
+	 * Constructeur de l'objet.
+	 */
+	private QuickSort() {
+		super();
+	}
+	
+	/** 
+	 * Méthode permettant de renvoyer une instance de la classe Singleton.
+	 * @return
+	 */
+	public final static QuickSort getInstance() {
+		return INSTANCE;
+	}
+	
+	/**
+	 * Méthode spécifiant le tableau à trier.
 	 * @param tab
 	 */
-	public QuickSort(Face[] tab) {
+	public void setTab(Face[] tab) {
 		this.tab = tab;
 		low = 0;
 		high = tab.length - 1;

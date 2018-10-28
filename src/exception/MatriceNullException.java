@@ -14,16 +14,30 @@ public class MatriceNullException extends Exception{
 	private String message;
 	
 	/**
+	 * Titre du message d'erreur.
+	 */
+	private String title;
+	
+	/**
 	 * Constructeur créant le message.
 	 */
 	public MatriceNullException() {
-		message="Une des deux matrices est NULL.";
+		message = "Une des deux matrices ne contient pas de données.";
+		title = "Erreur Matrice NULL";
 	}
 	
 	/**
 	 * Retourne le message d'erreur.
 	 */
-	public String toString() {
+	public String getMessage() {
 		return message;
+	}
+	
+	/**
+	 * Retourne le titre du message d'erreur.
+	 * @return
+	 */
+	public String getTitle() {
+		return title;
 	}
 }

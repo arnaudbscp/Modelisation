@@ -25,7 +25,6 @@ class TestFace {
 	 */
 	@Test
 	void test() throws IOException {
-		LoadFile f = new LoadFile();
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"element vertex 3\n" + 
@@ -39,15 +38,16 @@ class TestFace {
 				"-24.9399 0 513.564 \n" + 
 				"-19.6099 -8.13 512.804 \n" +
 				"3 0 1 2 ";
-		f.lireStream(new StringReader(model));
+		LoadFile lf = new LoadFile();
+		lf.readStream(new StringReader(model));
 		try {
-			f.creerPoints();
-			f.creerFaces();
+			lf.creerPoints();
+			lf.creerFaces();
 		} catch (WrongPointLineFormatException | WrongFaceLineFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertTrue(f.getFaces()[0].getPoints()[1].equals(f.getPoints()[1]));
-		assertEquals((float)-19.6099, (float)f.getFaces()[0].getPoints()[2].getX());
+		assertTrue(lf.getFaces()[0].getPoints()[1].equals(lf.getPoints()[1]));
+		assertEquals((float)-19.6099, (float)lf.getFaces()[0].getPoints()[2].getX());
 	}
 }

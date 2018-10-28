@@ -23,20 +23,20 @@ public class Initialisation {
 	Face[] faces;
 	
 	public Initialisation(File f) throws IOException{
-		LoadFile file = new LoadFile(f);
+		LoadFile lf = new LoadFile(f);
 		try {
-			file.creerPoints();
+			lf.creerPoints();
 		} catch (WrongPointLineFormatException e) {
-			JOptionPane.showMessageDialog(null, e.toString(),"Erreur Format Ligne Point",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
 		try {
-			file.creerFaces();
+			lf.creerFaces();
 		} catch (WrongFaceLineFormatException e) {
-			JOptionPane.showMessageDialog(null, e.toString(),"Erreur Format Ligne Face",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
-		faces = file.getFaces();
+		faces = lf.getFaces();
 		for(int i=0;i<faces.length;++i)
 			faces[i].setCentreGravite(faces[i].calculCentreGravite());
 	}
@@ -52,8 +52,8 @@ public class Initialisation {
 		double[] py;
 		for (int i = 0; i < faces.length; i++)
 			faces[i].setCentreGravite(faces[i].calculCentreGravite());
-		QuickSort qs = new QuickSort(faces);
-		qs.sort();
+		QuickSort.getInstance().setTab(faces);
+		QuickSort.getInstance().sort();
 		//qs.inverserOrdre(faces);
 		for (int i = 0; i < faces.length; i++) {
 			px = new double[] {faces[i].getPoints()[0].getX()*-1+(gc.getCanvas().getWidth()/2),faces[i].getPoints()[1].getX()*-1+(gc.getCanvas().getWidth()/2),faces[i].getPoints()[2].getX()*-1+(gc.getCanvas().getWidth()/2)};

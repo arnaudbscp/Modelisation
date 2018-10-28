@@ -22,7 +22,6 @@ class TestNb {
 	 */
 	@Test 
 	public void testNbPoints() throws IOException {
-		LoadFile f = new LoadFile();
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"element vertex 855\n" + 
@@ -32,8 +31,9 @@ class TestNb {
 				"element face 1689\n" + 
 				"property list uint8 int32 vertex_indices\n" + 
 				"end_header";
-		f.lireStream(new StringReader(model));
-		assertEquals(855, f.getPoints().length);
+		LoadFile lf = new LoadFile();
+		lf.readStream(new StringReader(model));
+		assertEquals(855, lf.getPoints().length);
 	}
 
 	/**
@@ -42,7 +42,6 @@ class TestNb {
 	 */
 	@Test
 	public void testNbFaces() throws IOException {
-		LoadFile f = new LoadFile();
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"element vertex 855\n" + 
@@ -52,7 +51,8 @@ class TestNb {
 				"element face 1689\n" + 
 				"property list uint8 int32 vertex_indices\n" + 
 				"end_header";
-		f.lireStream(new StringReader(model));
-		assertEquals(1689, f.getFaces().length);
+		LoadFile lf = new LoadFile();
+		lf.readStream(new StringReader(model));
+		assertEquals(1689, lf.getFaces().length);
 	}
 }

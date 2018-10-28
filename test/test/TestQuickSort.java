@@ -62,11 +62,11 @@ class TestQuickSort {
 			tabFacesTriees[i].setCentreGravite(tabFacesTriees[i].calculCentreGravite());
 			tabFacesTrieesInverses[i].setCentreGravite(tabFacesTrieesInverses[i].calculCentreGravite());
 		}
-		QuickSort qs = new QuickSort(tabFaces);
-		qs.sort();
+		QuickSort.getInstance().setTab(tabFaces);
+		QuickSort.getInstance().sort();
 		for (int i = 0; i < tabFaces.length; i++)
 			assertTrue(tabFacesTriees[i].equals(tabFaces[i]));
-		qs.inverserOrdre(tabFaces);
+		QuickSort.getInstance().inverserOrdre(tabFaces);
 		for (int i = 0; i < tabFaces.length; i++)
 			assertTrue(tabFacesTrieesInverses[i].equals(tabFaces[i]));
 	}
