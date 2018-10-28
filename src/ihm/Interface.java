@@ -323,7 +323,7 @@ public class Interface extends Application {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Application.launch(args);
+		Application.launch(args); 
 	}
 
 	/**
