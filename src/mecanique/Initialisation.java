@@ -69,7 +69,6 @@ public class Initialisation {
 			faces[i].setCentreGravite(faces[i].calculCentreGravite());
 		QuickSort.getInstance().setTab(faces);
 		QuickSort.getInstance().sort();
-		//qs.inverserOrdre(faces);
 		for (int i = 0; i < faces.length; i++) {
 			px = new double[] {faces[i].getPoints()[0].getX()*-1+(gc.getCanvas().getWidth()/2),faces[i].getPoints()[1].getX()*-1+(gc.getCanvas().getWidth()/2),faces[i].getPoints()[2].getX()*-1+(gc.getCanvas().getWidth()/2)};
 			py = new double[] {faces[i].getPoints()[0].getZ()*-1+(gc.getCanvas().getHeight()/2),faces[i].getPoints()[1].getZ()*-1+(gc.getCanvas().getHeight()/2),faces[i].getPoints()[2].getZ()*-1+(gc.getCanvas().getHeight()/2)};

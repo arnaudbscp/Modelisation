@@ -107,14 +107,14 @@ public class Face implements Comparable<Face>{
 	}
 
 	/**
-	 * Compare la coordonnée Z du barycentre de la face avec celle de la face passée en paramètre.
-	 * Retourne 1 si la coordonnée Z du barycentre de la face est supérieure à celle de la face passée en paramètre.
-	 * Retourne 0 si la coordonnée Z du barycentre de la face est égale à celle de la face passée en paramètre.
-	 * Retourne -1 si la coordonnée Z du barycentre de la face est inférieure à celle de la face passée en paramètre.
+	 * Compare la coordonnée Y du barycentre de la face avec celle de la face passée en paramètre.
+	 * Retourne 1 si la coordonnée Y du barycentre de la face est supérieure à celle de la face passée en paramètre.
+	 * Retourne 0 si la coordonnée Y du barycentre de la face est égale à celle de la face passée en paramètre.
+	 * Retourne -1 si la coordonnée Y du barycentre de la face est inférieure à celle de la face passée en paramètre.
 	 */
 	@Override
 	public int compareTo(Face arg0) {
-		float sub = this.getCentreGravite().getZ() - arg0.getCentreGravite().getZ();
+		float sub = this.getCentreGravite().getY() - arg0.getCentreGravite().getY();
 		if (sub<0) return -1;
 		if (sub>0) return 1;
 		return 0;

@@ -117,15 +117,6 @@ public final class QuickSort
 		// TODO Auto-generated method stub
 		sort(tab, low, high);
 	}
-	
-	/**
-	 * Inverse l'ordre de tri.
-	 * @param tab
-	 */
-	public void inverserOrdre(Face[] tab) {
-		for(int i=0;i<tab.length/2;i++)
-			swap(tab, i, tab.length-1-i);
-	}
 
 	/**
 	 * Méthode affichant le tableau trié (pour vérification du bon fonctionnement).
