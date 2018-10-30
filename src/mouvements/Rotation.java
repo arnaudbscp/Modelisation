@@ -11,24 +11,28 @@ import outils.BoiteaOutils;
 
 public class Rotation implements Recopie{
 
-	public Point[] creerPointRotate(double angle, Point[] p, int axe) throws MatriceNullException, MatriceFormatException {
+	public Point[] creerPointRotate(double angle, Point[] p, char axe) throws MatriceNullException, MatriceFormatException {
 
 		BoiteaOutils bo = new BoiteaOutils(); 
-		double[][] matriceRotate = bo.creerRotation(angle);
+		double[][] matriceRotate = null;
+		if(axe == 'X') {
+			matriceRotate = bo.creerRotationX(angle);
+		}else if(axe == 'Y') {
+			matriceRotate = bo.creerRotationY(angle);
+		}else if(axe == 'Z') {
+			matriceRotate = bo.creerRotationZ(angle);
+		}
 		Matrice m = new Matrice(matriceRotate);
 		double[][] matriceFigure;
-		if(axe == 0)
-			matriceFigure = m.creerMatriceY(p);
-		else if(axe == 1) 
-			matriceFigure = m.creerMatriceX(p);
-		else
-			matriceFigure = m.creerMatriceZ(p);
+		matriceFigure = m.creerMatrice(p);
 		double[][] matriceRes = m.multiplierMatrice(matriceFigure);
-		Point[] tabp = creerTabPoint(matriceRes, p, axe);
+		Point[] tabp = creerTabPoint(matriceRes, p);
 		return tabp;
 	}
 
-	private Point[] creerTabPoint(double[][] matrice, Point[] p, int axe) {
+
+
+	private Point[] creerTabPoint(double[][] matrice, Point[] p) {
 		Point[] tabp = new Point[matrice[0].length];
 		boolean premierTour = true;
 		for (int i = 0; i < matrice.length; i++) {
@@ -36,26 +40,15 @@ public class Rotation implements Recopie{
 				if(premierTour)
 					tabp[j] = new Point(0, 0, 0);
 				if(i == 0) {
-					if(axe == 0 || axe == 2)
-						tabp[j].setX((float)matrice[i][j]);
-					else if(axe == 1)
-						tabp[j].setY((float)matrice[i][j]);
+					tabp[j].setX((float)matrice[i][j]);
 				} else if(i == 1) {
-					if(axe == 0) 
-						tabp[j].setY((float)matrice[i][j]);
-					else if(axe == 1 || axe == 2)
-						tabp[j].setZ((float)matrice[i][j]);
+					tabp[j].setY((float)matrice[i][j]);
+				}else if(i == 2) {
+					tabp[j].setZ((float)matrice[i][j]);
 				}
 			}
 			premierTour = false;
 		}
-		for(int idx = 0; idx<p.length; idx++)
-			if(axe == 0)
-				tabp[idx].setZ(p[idx].getZ());
-			else if(axe == 1)
-				tabp[idx].setX(p[idx].getX());
-			else if(axe == 2)
-				tabp[idx].setY(p[idx].getY());
 		return tabp;
 	}
 

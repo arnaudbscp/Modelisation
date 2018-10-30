@@ -245,18 +245,8 @@ public class Interface extends Application {
 			if(filePly != null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
-		
-		tournerX.setOnMouseClicked(e-> {
-			if(filePly != null)
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-		});
 
 		tournerY.setOnMouseDragged(e ->{
-			if(filePly != null)
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-		});
-		
-		tournerY.setOnMouseClicked(e ->{
 			if(filePly != null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
@@ -265,18 +255,8 @@ public class Interface extends Application {
 			if(filePly != null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
-		
-		tournerZ.setOnMouseClicked(e -> {
-			if(filePly != null)
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-		});
 
 		zoom.setOnMouseDragged(e -> {
-			if(filePly != null)
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-		});
-		
-		zoom.setOnMouseClicked(e -> {
 			if(filePly != null)
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
@@ -291,6 +271,20 @@ public class Interface extends Application {
 		droite.setOnAction(e->{
 			if(filePly != null) {
 				cptTranslateGD -= 10;
+				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			}
+		});
+		
+		haut.setOnAction(e->{
+			if(filePly != null) {
+				cptTranslateHB += 10;
+				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			}
+		});
+		
+		bas.setOnAction(e->{
+			if(filePly != null) {
+				cptTranslateHB -= 10;
 				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 			}
 		});
@@ -372,8 +366,8 @@ public class Interface extends Application {
 		Point[] tabp = loadFile.getPoints();
 		Zoom zoom = new Zoom();
 
-		try {
-			tabp = rotation.creerPointRotate(xValue, tabp, 1);
+		/*try {
+			tabp = rotation.creerPointRotate(xValue, tabp, 'X');
 		} catch (MatriceNullException e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
@@ -384,7 +378,7 @@ public class Interface extends Application {
 		rotation.recopiePoint(tabf, tabp);
 
 		try {
-			tabp = rotation.creerPointRotate(yValue, tabp, 0);
+			tabp = rotation.creerPointRotate(yValue, tabp, 'Y');
 		} catch (MatriceNullException e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
@@ -395,7 +389,7 @@ public class Interface extends Application {
 		rotation.recopiePoint(tabf, tabp);
 
 		try {
-			tabp = rotation.creerPointRotate(zValue, tabp, 2);
+			tabp = rotation.creerPointRotate(zValue, tabp, 'Z');
 		} catch (MatriceNullException e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
@@ -414,10 +408,10 @@ public class Interface extends Application {
 			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
-		rotation.recopiePoint(tabf, tabp);
+		rotation.recopiePoint(tabf, tabp);*/
 
 		try {
-			tabp = translation.creerPointsTranslate(cptTranslateGD, 0, tabp);
+			tabp = translation.creerPointsTranslate(cptTranslateGD, cptTranslateHB, tabp);
 		} catch (MatriceNullException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
