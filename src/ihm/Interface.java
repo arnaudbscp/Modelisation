@@ -42,7 +42,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
+//Debug pour Julien
 /**
  * Classe représentant la fenêtre graphique et tous les éléments graphiques contenus dedans.
  * @author bascopa & clarissa
