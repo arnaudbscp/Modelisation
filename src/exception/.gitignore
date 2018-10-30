@@ -1,0 +1,10 @@
+/MatriceFormatException.class
+/MatriceNullException.class
+/MissingFaceLineException.class
+/MissingPointLineException.class
+/TooMuchFaceLineException.class
+/TooMuchPointLineException.class
+/WrongFaceLineFormatException.class
+/WrongFormatFileException.class
+/WrongHeaderException.class
+/WrongPointLineFormatException.class

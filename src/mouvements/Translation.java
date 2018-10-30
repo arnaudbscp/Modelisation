@@ -16,7 +16,7 @@ public class Translation implements Recopie{
 		double[][] matriceDeTranslation = bo.creerTranslation(x1, x2);
 		Matrice m = new Matrice(matriceDeTranslation);
 		double[][] matriceDeFigure = m.creerMatriceY(p);
-		double[][] matriceResultat = m.multiplierMatrice(matriceDeFigure);
+		double[][] matriceResultat = m.additionMatrice(matriceDeFigure);
 		Point[] tabPointsRes = creerTabPoint(matriceResultat, p);
 		return tabPointsRes;
 	}
