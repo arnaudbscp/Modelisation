@@ -8,31 +8,41 @@ package outils;
 public class BoiteaOutils {
 
 	/**
-	 * Retourne la matrice de rotation.
+	 * Retourne la matrice de rotation sur l'axe X.
 	 * @param angle
 	 * @return
 	 */
 	public double[][] creerRotationX(double angle) {
 		double[][] tab = new double[][] {
-			{1,0,0},
-			{0,Math.cos(angle),-Math.sin(angle)},
+			{1, 0, 0},
+			{0, Math.cos(angle), -Math.sin(angle)},
 			{0, Math.sin(angle), Math.cos(angle)}};
 			return tab;
 	}
-	
+
+	/**
+	 * Retourne la matrice de rotation sur l'axe Y.
+	 * @param angle
+	 * @return
+	 */
 	public double[][] creerRotationY(double angle) {
 		double[][] tab = new double[][] {
-			{Math.cos(angle),0,Math.sin(angle)},
-			{0,1,0},
-			{-Math.sin(angle),0,Math.cos(angle)}};
+			{Math.cos(angle), 0, Math.sin(angle)},
+			{0, 1, 0},
+			{-Math.sin(angle), 0, Math.cos(angle)}};
 			return tab;
 	}
 
+	/**
+	 * Retourne la matrice de rotation sur l'axe Z.
+	 * @param angle
+	 * @return
+	 */
 	public double[][] creerRotationZ(double angle) {
 		double[][] tab = new double[][] {
 			{Math.cos(angle), -Math.sin(angle), 0},
 			{Math.sin(angle), Math.cos(angle), 0},
-			{0,0,1}};
+			{0, 0, 1}};
 			return tab;
 	}
 	/**
@@ -42,7 +52,6 @@ public class BoiteaOutils {
 	 * @return
 	 */
 	public double[][] creerTranslation(double x1, double x2) {
-
 		double[][] tab = new double[][] {
 			{1, 0, x1},
 			{0, 1, x2},
@@ -51,27 +60,14 @@ public class BoiteaOutils {
 	}
 
 	/**
-	 * Retourne la matrice d'homothétie.
+	 * Retourne la matrice d'homothétie (zoom).
 	 * @param k
 	 * @return
 	 */
 	public double[][] creerHomothetie(double k) {
-
 		double[][] tab = new double[][] {{k, 0, 0},
 			{0, k, 0},
 			{0, 0, 1}};
-			return tab;
-	}
-
-	/**
-	 * Retourne la matrice Zoom.
-	 * @param z
-	 * @return
-	 */
-	public double[][] creerZoom(double z) {
-		double[][] tab = new double[][] {{z, 0, 0},
-			{0, z, 0},
-			{0, 0, z}};
 			return tab;
 	}
 }

@@ -42,7 +42,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-//Debug pour Julien
+
 /**
  * Classe représentant la fenêtre graphique et tous les éléments graphiques contenus dedans.
  * @author bascopa & clarissa
@@ -229,7 +229,12 @@ public class Interface extends Application {
 				} catch (IOException e1) {
 					JOptionPane.showMessageDialog(null, "Erreur", "Erreur Fichier", JOptionPane.ERROR_MESSAGE);
 					System.exit(1);
-				}	
+				}
+				cptTranslateGD = 0;
+				cptTranslateHB = 0;
+				cp.setValue(Color.WHITE);
+				//On simule un premier mouvement de la figure pour que tous les mouvements fonctionnent correctement.
+				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 			}
 		});
 
@@ -240,53 +245,76 @@ public class Interface extends Application {
 			}
 		});
 
-
 		tournerX.setOnMouseDragged(e-> {
-			if(filePly != null)
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+		});
+
+		tournerX.setOnMouseClicked(e-> {
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		tournerY.setOnMouseDragged(e ->{
-			if(filePly != null)
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+		});
+
+		tournerY.setOnMouseClicked(e ->{
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		tournerZ.setOnMouseDragged(e -> {
-			if(filePly != null)
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+		});
+
+		tournerZ.setOnMouseClicked(e -> {
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		zoom.setOnMouseDragged(e -> {
-			if(filePly != null)
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+		});
+
+		zoom.setOnMouseClicked(e -> {
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		gauche.setOnAction(e->{
-			if(filePly != null) {
-				cptTranslateGD += 10;
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-			}
+			cptTranslateGD += 10;
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+		});
+
+		gauche.setOnMouseDragged(e->{
+			cptTranslateGD += 10;
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		droite.setOnAction(e->{
-			if(filePly != null) {
-				cptTranslateGD -= 10;
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-			}
+			cptTranslateGD -= 10;
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 		
+		droite.setOnMouseDragged(e->{
+			cptTranslateGD -= 10;
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+		});
+
 		haut.setOnAction(e->{
-			if(filePly != null) {
-				cptTranslateHB += 10;
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-			}
+			cptTranslateHB += 10;
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 		
+		haut.setOnMouseDragged(e->{
+			cptTranslateHB += 10;
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+		});
+
 		bas.setOnAction(e->{
-			if(filePly != null) {
-				cptTranslateHB -= 10;
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-			}
+			cptTranslateHB -= 10;
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+		});
+		
+		bas.setOnMouseDragged(e->{
+			cptTranslateHB -= 10;
+			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
 		});
 
 		//----AFFICHAGE FENETRE------
@@ -360,68 +388,70 @@ public class Interface extends Application {
 	 * @param zoomvalue
 	 */
 	public void miseAJourVue(GraphicsContext gc, double xValue, double yValue, double zValue, double zoomValue) {
-		Translation translation = new Translation();
-		Rotation rotation = new Rotation();
-		Face[] tabf = loadFile.getFaces();
-		Point[] tabp = loadFile.getPoints();
-		Zoom zoom = new Zoom();
+		if(filePly!=null) {
+			Translation translation = new Translation();
+			Rotation rotation = new Rotation();
+			Face[] tabf = loadFile.getFaces();
+			Point[] tabp = loadFile.getPoints();
+			Zoom zoom = new Zoom();
 
-		try {
-			tabp = rotation.creerPointRotate(xValue, tabp, 'X');
-		} catch (MatriceNullException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		} catch (MatriceFormatException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
+			try {
+				tabp = rotation.creerPointRotate(xValue, tabp, 'X');
+			} catch (MatriceNullException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+				System.exit(1);
+			} catch (MatriceFormatException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+				System.exit(1);
+			}
+			rotation.recopiePoint(tabf, tabp);
+
+			try {
+				tabp = rotation.creerPointRotate(yValue, tabp, 'Y');
+			} catch (MatriceNullException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+				System.exit(1);
+			} catch (MatriceFormatException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+				System.exit(1);
+			}
+			rotation.recopiePoint(tabf, tabp);
+
+			try {
+				tabp = rotation.creerPointRotate(zValue, tabp, 'Z');
+			} catch (MatriceNullException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+				System.exit(1);
+			} catch (MatriceFormatException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+				System.exit(1);
+			}
+			rotation.recopiePoint(tabf, tabp);
+
+			try {
+				tabp = zoom.creerPointZoom(zoomValue, tabp);
+			} catch (MatriceNullException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+				System.exit(1);
+			} catch (MatriceFormatException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+				System.exit(1);
+			}
+			zoom.recopiePoint(tabf, tabp);
+
+			try {
+				tabp = translation.creerPointsTranslate(cptTranslateGD, cptTranslateHB, tabp);
+			} catch (MatriceNullException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+				System.exit(1);
+			} catch (MatriceFormatException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+				System.exit(1);
+			}
+			translation.recopiePoint(tabf, tabp);
+
+			gc.clearRect(0, 0, 1280, 600);
+			init.creerFigure(gc, tabf,couleur);
 		}
-		rotation.recopiePoint(tabf, tabp);
-
-		try {
-			tabp = rotation.creerPointRotate(yValue, tabp, 'Y');
-		} catch (MatriceNullException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		} catch (MatriceFormatException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		}
-		rotation.recopiePoint(tabf, tabp);
-
-		try {
-			tabp = rotation.creerPointRotate(zValue, tabp, 'Z');
-		} catch (MatriceNullException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		} catch (MatriceFormatException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		}
-		rotation.recopiePoint(tabf, tabp);
-
-		try {
-			tabp = zoom.creerPointZoom(zoomValue, tabp);
-		} catch (MatriceNullException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		} catch (MatriceFormatException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		}
-		rotation.recopiePoint(tabf, tabp);
-
-		try {
-			tabp = translation.creerPointsTranslate(cptTranslateGD, cptTranslateHB, tabp);
-		} catch (MatriceNullException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		} catch (MatriceFormatException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		}
-		rotation.recopiePoint(tabf, tabp);
-
-		gc.clearRect(0, 0, 1280, 600);
-		init.creerFigure(gc, tabf,couleur);
 	}
 }

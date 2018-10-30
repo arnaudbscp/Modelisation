@@ -51,14 +51,26 @@ public class Face implements Comparable<Face>{
 		this.position = position;
 	}
 
+	/**
+	 * Définit le premier point composant la face.
+	 * @param pt1
+	 */
 	public void setPt1(Point pt1) {
 		this.pt1 = pt1;
 	}
 
+	/**
+	 * Définit le deuxième point composant la face.
+	 * @param pt2
+	 */
 	public void setPt2(Point pt2) {
 		this.pt2 = pt2;
 	}
 
+	/**
+	 * Définit le troisième point composant la face.
+	 * @param pt3
+	 */
 	public void setPt3(Point pt3) {
 		this.pt3 = pt3;
 	}
@@ -89,7 +101,6 @@ public class Face implements Comparable<Face>{
 	
 	/**
 	 * Calcule le centre de gravité de la Face triangulaire.
-	 * @param f
 	 * @return
 	 */
 	public Point calculCentreGravite() {

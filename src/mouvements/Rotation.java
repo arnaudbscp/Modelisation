@@ -9,10 +9,26 @@ import exception.MatriceNullException;
 
 import outils.BoiteaOutils;
 
+/**
+ * Classe représentant un mouvement de rotation.
+ * @author Valentin
+ *
+ */
 public class Rotation implements Recopie{
 
+	/**
+	 * Méthode effectuant la rotation et retournant le tableau de points de la figure après avoir effectué la rotation. Cette méthode
+	 * ne remplace pas directement les anciens points des faces de la figure par les nouveaux, il faudra pour cela appeler la méthode recopiePoint
+	 * de l'interface Recopie.
+	 * @param angle : angle de rotation en degré.
+	 * @param p : le tableau de points de la figure sur lesquels effectuer la rotation.
+	 * @param axe : l'axe sur lequel effectuer la rotation (X, Y ou Z).
+	 * @return le nouveau tableau de points représentant la figure après avoir effectueé la rotation.
+	 * @throws MatriceNullException
+	 * @throws MatriceFormatException
+	 */
 	public Point[] creerPointRotate(double angle, Point[] p, char axe) throws MatriceNullException, MatriceFormatException {
-
+		angle=Math.toRadians(angle);
 		BoiteaOutils bo = new BoiteaOutils(); 
 		double[][] matriceRotate = null;
 		if(axe == 'X') {
@@ -26,13 +42,18 @@ public class Rotation implements Recopie{
 		double[][] matriceFigure;
 		matriceFigure = m.creerMatrice(p);
 		double[][] matriceRes = m.multiplierMatrice(matriceFigure);
-		Point[] tabp = creerTabPoint(matriceRes, p);
+		Point[] tabp = creerTabPoint(matriceRes);
 		return tabp;
 	}
 
-
-
-	private Point[] creerTabPoint(double[][] matrice, Point[] p) {
+	/**
+	 * Créer le nouveau tableau de points à partir d'une matrice résultant de la multiplication de la matrice type de rotation sur X
+	 * et de la matrice des anciens points de la figure.
+	 * @param matrice
+	 * @param p
+	 * @return
+	 */
+	private Point[] creerTabPoint(double[][] matrice) {
 		Point[] tabp = new Point[matrice[0].length];
 		boolean premierTour = true;
 		for (int i = 0; i < matrice.length; i++) {

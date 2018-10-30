@@ -10,26 +10,39 @@ import exception.MatriceNullException;
 import outils.BoiteaOutils;
 
 /**
- * 
+ * Classe représentant un mouvement de zoom (homothétie).
  * @author bascopa
  *
  */
 public class Zoom implements Recopie{
 	
+	/**
+	 * Méthode effectuant l'homothétie (zoom) et retournant le tableau de points de la figure après avoir effectué l'homthétie. Cette méthode
+	 * ne remplace pas directement les anciens points des faces de la figure par les nouveaux, il faudra pour cela appeler la méthode recopiePoint
+	 * de l'interface Recopie.
+	 * @param z : la valeur du zoom.
+	 * @param p : le tableau de points de la figure sur lesquels effectuer l'homothétie.
+	 * @return le nouveau tableau de points représentant la figure après avoir effectueé l'homothétie.
+	 * @throws MatriceNullException
+	 * @throws MatriceFormatException
+	 */
 	public Point[] creerPointZoom(double z, Point[] p) throws MatriceNullException, MatriceFormatException {
 		BoiteaOutils bo = new BoiteaOutils();
-		double[][] matriceZoom = bo.creerZoom(z);
-		
+		double[][] matriceZoom = bo.creerHomothetie(z);
 		Matrice m = new Matrice(matriceZoom);
-		
 		double[][] f = m.creerMatrice(p);
 		double[][] matriceFigure = m.multiplierMatrice(f);
-		
 		Point[] fp = creerTabPoint(matriceFigure, p);
-		
 		return fp;
 	}
 	
+	/**
+	 * Créer le nouveau tableau de points à partir d'une matrice résultant de la multiplication de la matrice type d'homothétie
+	 * et de la matrice des anciens points de la figure.
+	 * @param matrice
+	 * @param p
+	 * @return
+	 */
 	private Point[] creerTabPoint(double[][] matrice, Point[] p) {
 		Point[] tabp = new Point[matrice[0].length];
 		boolean premierTour = true;

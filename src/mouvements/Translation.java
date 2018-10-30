@@ -9,9 +9,25 @@ import exception.MatriceNullException;
 
 import outils.BoiteaOutils;
 
+/**
+ * Classe représentant un mouvement de translation.
+ * @author Valentin
+ *
+ */
 public class Translation implements Recopie{
 	
-	public Point[] creerPointsTranslate(double x1,double x2, Point[] p) throws MatriceNullException, MatriceFormatException {
+	/**
+	 * Méthode effectuant la translation et retournant le tableau de points de la figure après avoir effectué la translation. Cette méthode
+	 * ne remplace pas directement les anciens points des faces de la figure par les nouveaux, il faudra pour cela appeler la méthode recopiePoint
+	 * de l'interface Recopie.
+	 * @param x1 : translation horizontale.
+	 * @param x2 : translation verticale.
+	 * @param p : le tableau de points de la figure sur lesquels effectuer la translation.
+	 * @return le nouveau tableau de points représentant la figure après avoir effectueé la translation.
+	 * @throws MatriceNullException
+	 * @throws MatriceFormatException
+	 */
+	public Point[] creerPointsTranslate(double x1, double x2, Point[] p) throws MatriceNullException, MatriceFormatException {
 		BoiteaOutils bo = new BoiteaOutils(); 
 		double[][] matriceDeTranslation = bo.creerTranslation(x1, x2);
 		Matrice m = new Matrice(matriceDeTranslation);
@@ -31,12 +47,12 @@ public class Translation implements Recopie{
 				if(i == 0)
 					tabp[j].setX((float)matrice[i][j]);
 				else if(i == 1)
-					tabp[j].setY((float)matrice[i][j]);
+					tabp[j].setZ((float)matrice[i][j]);
 			}
 			premierTour = false;
 		}
 		for(int idx = 0; idx < p.length; idx++)
-			tabp[idx].setZ(p[idx].getZ());
+			tabp[idx].setY(p[idx].getY());
 		return tabp;
 	}
 

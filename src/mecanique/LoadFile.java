@@ -19,7 +19,8 @@ import exception.WrongHeaderException;
 import exception.WrongPointLineFormatException;
 
 /**
- * Charge le fichier 3D en créant tous les points et les faces.
+ * Lit le fichier 3D, récupère le nombre de points et de faces de la figure pour dimensionner le tableau de points et de faces, sans les
+ * remplir. Ces 2 tableaux seront remplit dans l'Initialisation en appelant les méthodes CreerPoints et CreerFaces.
  * @author Valentin
  *
  */
@@ -124,7 +125,7 @@ public class LoadFile {
 	}
 
 	/**
-	 * Création des faces.
+	 * Création des faces de la figure et stockage dans un tableau de faces.
 	 * @throws IOException
 	 * @throws WrongFaceLineFormatException 
 	 * @throws TooMuchPointLineException 
@@ -162,6 +163,10 @@ public class LoadFile {
 		br.close();
 	}
 
+	/**
+	 * Définit directement le tableau de points.
+	 * @param points
+	 */
 	public void setPoints(Point[] points) {
 		this.points = points;
 	}
@@ -179,7 +184,7 @@ public class LoadFile {
 
 	/**
 	 * Retourne le tableau contenant l'ensemble des Point de la figure.
-	 * @return
+	 * @return tableau des points de la figure.
 	 */
 	public Point[] getPoints() {
 		return points;
@@ -187,7 +192,7 @@ public class LoadFile {
 
 	/**
 	 * Retourne le tableau contenant l'ensemble des Face de la figure.
-	 * @return
+	 * @return tableau des faces de la figure.
 	 */
 	public Face[] getFaces() {
 		return faces;
@@ -195,7 +200,7 @@ public class LoadFile {
 
 	/**
 	 * Récupère la plus petite des coordonnées de la dimension passée en paramètre de la figure pour adapter la taille du canvas.
-	 * @param dimension
+	 * @param dimension 0 pour X, 1 pour Y et 2 pour Z.
 	 * @return
 	 */
 	public float getCoordMin(int dimension) {
@@ -209,7 +214,7 @@ public class LoadFile {
 
 	/**
 	 * Récupère la plus grande des coordonnées de la dimension passée en paramètre de la figure pour adapter la taille du canvas.
-	 * @param dimension
+	 * @param dimension 0 pour X, 1 pour Y et 2 pour Z.
 	 * @return
 	 */
 	public float getCoordMax(int dimension) {

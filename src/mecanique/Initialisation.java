@@ -23,8 +23,16 @@ import javafx.scene.paint.Color;
  */
 public class Initialisation {
 	
+	/**
+	 * Le tableau de faces de la figure.
+	 */
 	Face[] faces;
 	
+	/**
+	 * Lit le fichier grâce à un LoadFile et créer les points et les faces en calculant également leur centre de gravité.
+	 * @param f : le fichier à interpréter.
+	 * @throws IOException
+	 */
 	public Initialisation(File f) throws IOException{
 		LoadFile lf = new LoadFile(f);
 		try {
