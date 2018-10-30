@@ -366,7 +366,7 @@ public class Interface extends Application {
 		Point[] tabp = loadFile.getPoints();
 		Zoom zoom = new Zoom();
 
-		/*try {
+		try {
 			tabp = rotation.creerPointRotate(xValue, tabp, 'X');
 		} catch (MatriceNullException e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
@@ -408,7 +408,7 @@ public class Interface extends Application {
 			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
-		rotation.recopiePoint(tabf, tabp);*/
+		rotation.recopiePoint(tabf, tabp);
 
 		try {
 			tabp = translation.creerPointsTranslate(cptTranslateGD, cptTranslateHB, tabp);
