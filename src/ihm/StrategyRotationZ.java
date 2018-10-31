@@ -2,20 +2,21 @@ package ihm;
 
 public class StrategyRotationZ implements Strategy{
 
-	double valeurrotation;
+	private double valeurRotation;
 
 	public StrategyRotationZ(double i) {
-		valeurrotation = i;
+		valeurRotation = i;
 	}
+	
 	public char execute() {
-
 		return 'Z';
 	}
 
 	public double getValeurrotation() {
-		return valeurrotation;
+		return valeurRotation;
 	}
+	
 	public void setValeurrotation(double valeurrotation) {
-		this.valeurrotation = valeurrotation;
+		this.valeurRotation = valeurrotation;
 	}
 }

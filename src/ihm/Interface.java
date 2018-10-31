@@ -68,14 +68,13 @@ public class Interface extends Application {
 	 * Compteur de translation gauche-droite. On l'incrémente lors de l'appui sur le bouton droite et on le 
 	 * décrémente lors de l'appui sur le bouton gauche pour déplacer la figure horizontalement.
 	 */
-	private int cptTranslateGD=0;
+	private int cptTranslateGD = 0;
 
 	/**
 	 * Compteur de translation haut-bas. On l'incrémente lors de l'appui sur le bouton haut et on le décrémente lors de 
 	 * l'appui sur le bouton bas pour déplacer la figure verticalement.
 	 */
-	@SuppressWarnings("unused")
-	private int cptTranslateHB=0;
+	private int cptTranslateHB = 0;
 
 	/**
 	 * Couleur de la figure initialisée à  blanche. Elle sera modifiée grâce au colorpicker par l'utilisateur.
@@ -111,6 +110,7 @@ public class Interface extends Application {
 		FileChooser importer = new FileChooser();
 		VBox dessin = new VBox();
 		Separator sep = new Separator(Orientation.VERTICAL);
+		sep.setPrefSize(1, 800);
 		dessin.getChildren().add(sep);
 		corps.getChildren().add(menu);
 		corps.getChildren().add(dessin);
@@ -152,6 +152,7 @@ public class Interface extends Application {
 
 		Button X = new Button();
 		X.setText("X");
+		X.setDisable(true);
 		Button Y = new Button();
 		Y.setText("Y");
 		Button Z = new Button();
@@ -252,29 +253,39 @@ public class Interface extends Application {
 			}
 		});
 
-
-
 		X.setOnAction(e -> {
+			X.setDisable(true);
+			Y.setDisable(false);
+			Z.setDisable(false);
 			lblTournerX.setText("Tourner X");
 			sliderRotation.setValue(stratX.getValeurrotation());
 			flagX = true;
 			flagY = false;
 			flagZ = false;
 		});
+		
 		Y.setOnAction(e -> {
+			Y.setDisable(true);
+			X.setDisable(false);
+			Z.setDisable(false);
 			lblTournerX.setText("Tourner Y");
 			sliderRotation.setValue(stratY.getValeurrotation());
 			flagY = true;
 			flagX = false;
 			flagZ = false;
 		});
+		
 		Z.setOnAction(e -> {
+			Z.setDisable(true);
+			Y.setDisable(false);
+			X.setDisable(false);
 			lblTournerX.setText("Tourner Z");
 			sliderRotation.setValue(stratZ.getValeurrotation());
 			flagZ = true;
 			flagX = false;
 			flagY = false;
 		});
+		
 		sliderRotation.setOnMouseDragged(e-> {
 			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 		});
