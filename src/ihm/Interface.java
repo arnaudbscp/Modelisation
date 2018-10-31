@@ -255,18 +255,21 @@ public class Interface extends Application {
 
 
 		X.setOnAction(e -> {
+			lblTournerX.setText("Tourner X");
 			sliderRotation.setValue(stratX.getValeurrotation());
 			flagX = true;
 			flagY = false;
 			flagZ = false;
 		});
 		Y.setOnAction(e -> {
+			lblTournerX.setText("Tourner Y");
 			sliderRotation.setValue(stratY.getValeurrotation());
 			flagY = true;
 			flagX = false;
 			flagZ = false;
 		});
 		Z.setOnAction(e -> {
+			lblTournerX.setText("Tourner Z");
 			sliderRotation.setValue(stratZ.getValeurrotation());
 			flagZ = true;
 			flagX = false;
