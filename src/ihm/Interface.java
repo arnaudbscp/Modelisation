@@ -86,6 +86,14 @@ public class Interface extends Application {
 	 * Méthode d'affichage de l'interface graphique.
 	 */
 
+	StrategyRotationX stratX = new StrategyRotationX(0);
+	StrategyRotationY stratY = new StrategyRotationY(0);
+	StrategyRotationZ stratZ = new StrategyRotationZ(0);
+
+	boolean flagX = false;
+	boolean flagY = false;
+	boolean flagZ = false;
+
 	Face[] tabf;
 	Point[] tabp;
 	public void start(Stage primaryStage){
@@ -126,43 +134,40 @@ public class Interface extends Application {
 		menu.getChildren().addAll(lblZoom, zoom);
 
 		//SLIDER TRANSLATION X
-		Slider tournerX = new Slider();
+		Slider sliderRotation = new Slider();
 		Label lblTournerX = new Label();
 		lblTournerX.setText("Tourner X");
-		lblTournerX.setStyle("-fx-padding : 20 0 0 50;");
-		tournerX.setMin(0);
-		tournerX.setMax(360);
-		tournerX.setMajorTickUnit(90);
-		tournerX.setValue(0);
-		tournerX.setShowTickLabels(true);
-		menu.getChildren().addAll(lblTournerX, tournerX);
+		//lblTournerX.setStyle("-fx-padding : 20 0 0 50;");
+		lblTournerX.setPadding(new Insets(50,1,1,50));
+		sliderRotation.setMin(0);
+		sliderRotation.setMax(360);
+		sliderRotation.setMajorTickUnit(90);
+		sliderRotation.setValue(0);
+		sliderRotation.setShowTickLabels(true);
+		//tournerX.setPadding(new Insets(50,1,1,1));
+		menu.getChildren().addAll(lblTournerX, sliderRotation);
 
-		//SLIDER TRANSLATION Y
-		Slider tournerY = new Slider();
-		Label lblTournerY = new Label();
-		lblTournerY.setText("Tourner Y");
-		lblTournerY.setStyle("-fx-padding : 20 0 0 50;");
-		tournerY.setMin(0);
-		tournerY.setMax(360);
-		tournerY.setMajorTickUnit(90);
-		tournerY.setValue(0);
-		tournerY.setShowTickLabels(true);
-		menu.getChildren().addAll(lblTournerY, tournerY);
 
-		//SLIDER TRANSLATION Z
-		Slider tournerZ = new Slider();
-		Label lblTournerZ = new Label();
-		lblTournerZ.setText("Tourner Z");
-		lblTournerZ.setStyle("-fx-padding : 20 0 0 50;");
-		tournerZ.setMin(-180);
-		tournerZ.setMax(180);
-		tournerZ.setMajorTickUnit(90);
-		tournerZ.setValue(0);
-		tournerZ.setShowTickLabels(true);
-		menu.getChildren().addAll(lblTournerZ, tournerZ);
+		//BOUTON DIRECTIONNELLE ROTATION
+
+		Button X = new Button();
+		X.setText("X");
+		Button Y = new Button();
+		Y.setText("Y");
+		Button Z = new Button();
+		Z.setText("Z");
+		HBox alignementbutton = new HBox();
+		alignementbutton.getChildren().add(X);
+		alignementbutton.getChildren().add(Y);
+		alignementbutton.getChildren().add(Z);
+		alignementbutton.setPadding(new Insets(25,1,1,10));
+		alignementbutton.setSpacing(30);
+		menu.getChildren().addAll(alignementbutton);
+
 
 		//CROIX DIRECTIONNELLE TRANSLATION
 		Label lblTranslation = new Label("Translation");
+		lblTranslation.setPadding(new Insets(30,1,1,45));
 		HBox hbHaut = new HBox();
 		HBox hbGaucheDroite = new HBox();
 		HBox hbBas = new HBox();
@@ -170,8 +175,9 @@ public class Interface extends Application {
 		Button gauche = new Button("G");
 		Button droite = new Button("D");
 		Button bas = new Button("B");
-		hbHaut.setPadding(new Insets(0, 0, 0, 28));
-		hbBas.setPadding(new Insets(0, 0, 0, 28));
+		hbHaut.setPadding(new Insets(10, 0, 0, 60));
+		hbBas.setPadding(new Insets(0, 0, 0,60));
+		hbGaucheDroite.setPadding(new Insets(0, 0, 0,33));
 		hbGaucheDroite.setSpacing(28);
 		haut.setPrefWidth(25);
 		bas.setPrefWidth(25);
@@ -184,6 +190,7 @@ public class Interface extends Application {
 
 		//CHOIX COULEURS
 		Label lcolor = new Label("Couleur");
+		lcolor.setPadding(new Insets(30, 0, 10,50));
 		ColorPicker cp = new ColorPicker();
 		menu.getChildren().addAll(lcolor,cp);
 
@@ -234,7 +241,7 @@ public class Interface extends Application {
 				cptTranslateHB = 0;
 				cp.setValue(Color.WHITE);
 				//On simule un premier mouvement de la figure pour que tous les mouvements fonctionnent correctement.
-				miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 			}
 		});
 
@@ -245,77 +252,82 @@ public class Interface extends Application {
 			}
 		});
 
-		tournerX.setOnMouseDragged(e-> {
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+
+
+		X.setOnAction(e -> {
+			sliderRotation.setValue(stratX.getValeurrotation());
+			flagX = true;
+			flagY = false;
+			flagZ = false;
+		});
+		Y.setOnAction(e -> {
+			sliderRotation.setValue(stratY.getValeurrotation());
+			flagY = true;
+			flagX = false;
+			flagZ = false;
+		});
+		Z.setOnAction(e -> {
+			sliderRotation.setValue(stratZ.getValeurrotation());
+			flagZ = true;
+			flagX = false;
+			flagY = false;
+		});
+		sliderRotation.setOnMouseDragged(e-> {
+			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 		});
 
-		tournerX.setOnMouseClicked(e-> {
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-		});
-
-		tournerY.setOnMouseDragged(e ->{
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-		});
-
-		tournerY.setOnMouseClicked(e ->{
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-		});
-
-		tournerZ.setOnMouseDragged(e -> {
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
-		});
-
-		tournerZ.setOnMouseClicked(e -> {
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+		sliderRotation.setOnMouseClicked(e-> {
+			miseAJourVue(gc, sliderRotation.getValue(),  zoom.getValue());
 		});
 
 		zoom.setOnMouseDragged(e -> {
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 		});
 
 		zoom.setOnMouseClicked(e -> {
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 		});
 
 		gauche.setOnAction(e->{
 			cptTranslateGD += 10;
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 		});
 
 		gauche.setOnMouseDragged(e->{
 			cptTranslateGD += 10;
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 		});
 
 		droite.setOnAction(e->{
 			cptTranslateGD -= 10;
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 		});
-		
+
 		droite.setOnMouseDragged(e->{
 			cptTranslateGD -= 10;
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			miseAJourVue(gc, sliderRotation.getValue(),zoom.getValue());
 		});
 
 		haut.setOnAction(e->{
 			cptTranslateHB += 10;
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 		});
-		
+
 		haut.setOnMouseDragged(e->{
 			cptTranslateHB += 10;
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 		});
 
 		bas.setOnAction(e->{
 			cptTranslateHB -= 10;
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 		});
-		
+
 		bas.setOnMouseDragged(e->{
 			cptTranslateHB -= 10;
-			miseAJourVue(gc, tournerX.getValue(), tournerY.getValue(), tournerZ.getValue(), zoom.getValue());
+			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 		});
+
 
 		//----AFFICHAGE FENETRE------
 		primaryStage.setScene(scene);
@@ -387,7 +399,7 @@ public class Interface extends Application {
 	 * @param xvalue
 	 * @param zoomvalue
 	 */
-	public void miseAJourVue(GraphicsContext gc, double xValue, double yValue, double zValue, double zoomValue) {
+	public void miseAJourVue(GraphicsContext gc, double rotationvalue, double zoomValue) {
 		if(filePly!=null) {
 			Translation translation = new Translation();
 			Rotation rotation = new Rotation();
@@ -396,7 +408,12 @@ public class Interface extends Application {
 			Zoom zoom = new Zoom();
 
 			try {
-				tabp = rotation.creerPointRotate(xValue, tabp, 'X');
+				if(flagX) {
+					tabp = rotation.creerPointRotate(rotationvalue, tabp, stratX.execute());
+					stratX.setValeurrotation(rotationvalue);
+				}else {
+					tabp = rotation.creerPointRotate(stratX.getValeurrotation(), tabp, stratX.execute());
+				}
 			} catch (MatriceNullException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
 				System.exit(1);
@@ -407,7 +424,12 @@ public class Interface extends Application {
 			rotation.recopiePoint(tabf, tabp);
 
 			try {
-				tabp = rotation.creerPointRotate(yValue, tabp, 'Y');
+				if(flagY) {
+					tabp = rotation.creerPointRotate(rotationvalue, tabp, stratY.execute());
+					stratY.setValeurrotation(rotationvalue);
+				}else {
+					tabp = rotation.creerPointRotate(stratY.getValeurrotation(), tabp, stratY.execute());
+				}
 			} catch (MatriceNullException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
 				System.exit(1);
@@ -418,7 +440,12 @@ public class Interface extends Application {
 			rotation.recopiePoint(tabf, tabp);
 
 			try {
-				tabp = rotation.creerPointRotate(zValue, tabp, 'Z');
+				if(flagZ) {
+				tabp = rotation.creerPointRotate(rotationvalue, tabp, stratZ.execute());
+				stratZ.setValeurrotation(rotationvalue);
+				}else {
+					tabp = rotation.creerPointRotate(stratZ.getValeurrotation(), tabp, stratZ.execute());
+				}
 			} catch (MatriceNullException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
 				System.exit(1);
