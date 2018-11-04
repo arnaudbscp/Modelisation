@@ -23,7 +23,7 @@ public class Face implements Comparable<Face>{
 	private Point pt3;
 	
 	/**
-	 * Centre de gravité de la face triangulaire. Il s'agit du Point situé à l'intersection des 3 médianes.
+	 * Centre de gravité de la face triangulaire. Il s'agit du Point situé à l'intersection des 3 médianes. 
 	 */
 	private Point centreGravite;
 	
