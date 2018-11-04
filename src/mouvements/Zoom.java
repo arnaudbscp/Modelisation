@@ -32,18 +32,11 @@ public class Zoom implements Recopie{
 		Matrice m = new Matrice(matriceZoom);
 		double[][] f = m.creerMatrice(p);
 		double[][] matriceFigure = m.multiplierMatrice(f);
-		Point[] fp = creerTabPoint(matriceFigure, p);
+		Point[] fp = creerTabPoint(matriceFigure);
 		return fp;
 	}
 	
-	/**
-	 * Créer le nouveau tableau de points à partir d'une matrice résultant de la multiplication de la matrice type d'homothétie
-	 * et de la matrice des anciens points de la figure.
-	 * @param matrice
-	 * @param p
-	 * @return
-	 */
-	private Point[] creerTabPoint(double[][] matrice, Point[] p) {
+	public Point[] creerTabPoint(double[][] matrice) {
 		Point[] tabp = new Point[matrice[0].length];
 		boolean premierTour = true;
 		for (int i = 0; i < matrice.length; i++) {

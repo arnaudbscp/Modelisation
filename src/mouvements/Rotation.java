@@ -46,14 +46,7 @@ public class Rotation implements Recopie{
 		return tabp;
 	}
 
-	/**
-	 * Créer le nouveau tableau de points à partir d'une matrice résultant de la multiplication de la matrice type de rotation sur X
-	 * et de la matrice des anciens points de la figure.
-	 * @param matrice
-	 * @param p
-	 * @return
-	 */
-	private Point[] creerTabPoint(double[][] matrice) {
+	public Point[] creerTabPoint(double[][] matrice) {
 		Point[] tabp = new Point[matrice[0].length];
 		boolean premierTour = true;
 		for (int i = 0; i < matrice.length; i++) {

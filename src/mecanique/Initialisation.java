@@ -26,7 +26,12 @@ public class Initialisation {
 	/**
 	 * Le tableau de faces de la figure.
 	 */
-	Face[] faces;
+	private Face[] faces;
+	
+	/**
+	 * Le LoadFile qui va lire le fichier pour connaître le nombre de points et de face de la figure.
+	 */
+	private LoadFile lf;
 	
 	/**
 	 * Lit le fichier grâce à un LoadFile et créer les points et les faces en calculant également leur centre de gravité.
@@ -34,7 +39,7 @@ public class Initialisation {
 	 * @throws IOException
 	 */
 	public Initialisation(File f) throws IOException{
-		LoadFile lf = new LoadFile(f);
+		lf = new LoadFile(f);
 		try {
 			lf.creerPoints();
 		} catch (WrongPointLineFormatException e) {
@@ -84,5 +89,13 @@ public class Initialisation {
 			gc.strokePolygon(px, py, 3);
 			gc.setFill(c);
 		}
+	}
+
+	/**
+	 * Retourne le LoadFile de la figure.
+	 * @return
+	 */
+	public LoadFile getLoadFile() {
+		return lf;
 	}
 }

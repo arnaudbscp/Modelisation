@@ -1,9 +1,18 @@
 package ihm;
 
+/**
+ * A DOCUMENTER
+ */
 public class StrategyRotationX implements Strategy{
 
+	/**
+	 * A DOCUMENTER
+	 */
 	private double valeurRotation;
 	
+	/**
+	 * A DOCUMENTER
+	 */
 	public StrategyRotationX(double i) {
 		valeurRotation = i;
 	}
@@ -12,11 +21,11 @@ public class StrategyRotationX implements Strategy{
 		return 'X';
 	}
 	
-	public double getValeurrotation() {
+	public double getValeurRotation() {
 		return valeurRotation;
 	}
 	
-	public void setValeurrotation(double valeurRotation) {
+	public void setValeurRotation(double valeurRotation) {
 		this.valeurRotation = valeurRotation;
 	}
 }

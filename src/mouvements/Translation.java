@@ -33,11 +33,11 @@ public class Translation implements Recopie{
 		Matrice m = new Matrice(matriceDeTranslation);
 		double[][] matriceDeFigure = m.creerMatriceY(p);
 		double[][] matriceResultat = m.additionMatrice(matriceDeFigure);
-		Point[] tabPointsRes = creerTabPoint(matriceResultat, p);
+		Point[] tabPointsRes = creerTabPoint(matriceResultat);
 		return tabPointsRes;
 	}
 
-	private Point[] creerTabPoint(double[][] matrice, Point[] p) {
+	public Point[] creerTabPoint(double[][] matrice) {
 		Point[] tabp = new Point[matrice[0].length];
 		boolean premierTour = true;
 		for (int i = 0; i < matrice.length; i++) {
@@ -51,8 +51,6 @@ public class Translation implements Recopie{
 			}
 			premierTour = false;
 		}
-		for(int idx = 0; idx < p.length; idx++)
-			tabp[idx].setY(p[idx].getY());
 		return tabp;
 	}
 

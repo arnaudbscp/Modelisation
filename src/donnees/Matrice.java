@@ -3,14 +3,26 @@ package donnees;
 import exception.MatriceFormatException;
 import exception.MatriceNullException;
 
+/**
+ * A DOCUMENTER
+ */
 public class Matrice {
 	
+	/**
+	 * A DOCUMENTER
+	 */
 	double[][] MA;
 	
+	/**
+	 * A DOCUMENTER
+	 */
 	public Matrice(double[][] MA) {
 		this.MA = MA;
 	}
 
+	/**
+	 * A DOCUMENTER
+	 */
 	public double[][] creerMatrice(Point[] p) {
 		double[][] tab = new double[3][p.length];
 		for(int i = 0; i < 4; i++) {
@@ -26,6 +38,9 @@ public class Matrice {
 		return tab;
 	}
 	
+	/**
+	 * A DOCUMENTER
+	 */
 	public double[][] creerMatriceY(Point[] p) {
 		double[][] tab = new double[3][p.length];
 		for(int i = 0; i < 4; i++) {
@@ -41,6 +56,9 @@ public class Matrice {
 		return tab;
 	}
 	
+	/**
+	 * A DOCUMENTER
+	 */
 	public double[][] creerMatriceX(Point[] p) {
 		double[][] tab = new double[3][p.length];
 		for(int i = 0; i < 4; i++) {
@@ -70,6 +88,10 @@ public class Matrice {
 		}
 		return tab;
 	}
+	
+	/**
+	 * A DOCUMENTER
+	 */
 	public double[][] multiplierMatrice(double[][] MB) throws MatriceNullException, MatriceFormatException {
 		double[][] MC;
 		int l, c;
@@ -99,6 +121,9 @@ public class Matrice {
 		return MC;
 	}
 	
+	/**
+	 * A DOCUMENTER
+	 */
 	public double[][] additionMatrice(double[][] MB) throws MatriceNullException, MatriceFormatException {
 		double[][] MC;
 		int l, c;

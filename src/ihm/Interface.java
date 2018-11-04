@@ -9,7 +9,6 @@ import donnees.Face;
 import donnees.Point;
 
 import mecanique.Initialisation;
-import mecanique.LoadFile;
 
 import mouvements.Rotation;
 import mouvements.Translation;
@@ -17,13 +16,7 @@ import mouvements.Zoom;
 
 import exception.MatriceFormatException;
 import exception.MatriceNullException;
-import exception.MissingFaceLineException;
-import exception.MissingPointLineException;
-import exception.TooMuchFaceLineException;
-import exception.TooMuchPointLineException;
-import exception.WrongFaceLineFormatException;
 import exception.WrongFormatFileException;
-import exception.WrongPointLineFormatException;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -48,11 +41,6 @@ import javafx.stage.Stage;
  * @author bascopa & clarissa
  */
 public class Interface extends Application {
-
-	/**
-	 * Permet de charger le fichier, de le lire séquentiellement afin de ranger les points et les faces dans des tableaux.
-	 */
-	private LoadFile loadFile;
 
 	/**
 	 * le fichier .ply contenant les points et les faces à  dessiner.
@@ -82,19 +70,38 @@ public class Interface extends Application {
 	private Color couleur = Color.WHITE;
 
 	/**
+	 * A DOCUMENTER
+	 */
+	private Strategy stratX = new StrategyRotationX(0);
+
+	/**
+	 * A DOCUMENTER
+	 */
+	private Strategy stratY = new StrategyRotationY(0);
+
+	/**
+	 * A DOCUMENTER
+	 */
+	private Strategy stratZ = new StrategyRotationZ(0);
+
+	/**
+	 * A DOCUMENTER
+	 */
+	private boolean flagX = true;
+
+	/**
+	 * A DOCUMENTER
+	 */
+	private boolean flagY = false;
+
+	/**
+	 * A DOCUMENTER
+	 */
+	private boolean flagZ = false;
+
+	/**
 	 * Méthode d'affichage de l'interface graphique.
 	 */
-
-	StrategyRotationX stratX = new StrategyRotationX(0);
-	StrategyRotationY stratY = new StrategyRotationY(0);
-	StrategyRotationZ stratZ = new StrategyRotationZ(0);
-
-	boolean flagX = false;
-	boolean flagY = false;
-	boolean flagZ = false;
-
-	Face[] tabf;
-	Point[] tabp;
 	public void start(Stage primaryStage){
 		//ELEMENTS GRAPHIQUES
 		HBox corps = new HBox();
@@ -115,7 +122,6 @@ public class Interface extends Application {
 		corps.getChildren().add(menu);
 		corps.getChildren().add(dessin);
 		sep.setValignment(VPos.CENTER);
-		//A modifier
 		sep.setMinHeight(300);
 		sep.setStyle("-fx-padding : 0 0 0 30;");
 		corps.getChildren().add(canv);
@@ -133,23 +139,19 @@ public class Interface extends Application {
 		zoom.setShowTickLabels(true);
 		menu.getChildren().addAll(lblZoom, zoom);
 
-		//SLIDER TRANSLATION X
+		//SLIDER ROTATION X (par défaut)
 		Slider sliderRotation = new Slider();
 		Label lblTournerX = new Label();
 		lblTournerX.setText("Tourner X");
-		//lblTournerX.setStyle("-fx-padding : 20 0 0 50;");
 		lblTournerX.setPadding(new Insets(50,1,1,50));
 		sliderRotation.setMin(0);
 		sliderRotation.setMax(360);
 		sliderRotation.setMajorTickUnit(90);
 		sliderRotation.setValue(0);
 		sliderRotation.setShowTickLabels(true);
-		//tournerX.setPadding(new Insets(50,1,1,1));
 		menu.getChildren().addAll(lblTournerX, sliderRotation);
 
-
-		//BOUTON DIRECTIONNELLE ROTATION
-
+		//BOUTON DIRECTIONNEL ROTATION
 		Button X = new Button();
 		X.setText("X");
 		X.setDisable(true);
@@ -157,14 +159,13 @@ public class Interface extends Application {
 		Y.setText("Y");
 		Button Z = new Button();
 		Z.setText("Z");
-		HBox alignementbutton = new HBox();
-		alignementbutton.getChildren().add(X);
-		alignementbutton.getChildren().add(Y);
-		alignementbutton.getChildren().add(Z);
-		alignementbutton.setPadding(new Insets(25,1,1,10));
-		alignementbutton.setSpacing(30);
-		menu.getChildren().addAll(alignementbutton);
-
+		HBox alignementButton = new HBox();
+		alignementButton.getChildren().add(X);
+		alignementButton.getChildren().add(Y);
+		alignementButton.getChildren().add(Z);
+		alignementButton.setPadding(new Insets(25,1,1,10));
+		alignementButton.setSpacing(30);
+		menu.getChildren().addAll(alignementButton);
 
 		//CROIX DIRECTIONNELLE TRANSLATION
 		Label lblTranslation = new Label("Translation");
@@ -193,6 +194,7 @@ public class Interface extends Application {
 		Label lcolor = new Label("Couleur");
 		lcolor.setPadding(new Insets(30, 0, 10,50));
 		ColorPicker cp = new ColorPicker();
+		cp.setValue(couleur);
 		menu.getChildren().addAll(lcolor,cp);
 
 
@@ -212,45 +214,32 @@ public class Interface extends Application {
 				try {
 					if (!extension.equals(".ply"))
 						throw new WrongFormatFileException();
-					else {
+					else
 						gc.clearRect(0, 0, 1600, 800);
-						loadFile = new LoadFile(filePly);
-					}
 				} catch (WrongFormatFileException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-					System.exit(1);
-				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(null, "Erreur", "Erreur Fichier", JOptionPane.ERROR_MESSAGE);
 					System.exit(1);
 				}
 				init = null;
 				try {
 					init = new Initialisation(filePly);
-					tabp = loadFile.getPoints();
-					tabf = loadFile.getFaces();
 				} catch (IOException e1) {
 					JOptionPane.showMessageDialog(null, "Erreur", "Erreur Fichier", JOptionPane.ERROR_MESSAGE);
 					System.exit(1);
 				}
-				try {
-					dessin(gc, loadFile);
-				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(null, "Erreur", "Erreur Fichier", JOptionPane.ERROR_MESSAGE);
-					System.exit(1);
-				}
+				gc.setLineWidth(1); //epaisseur des lignes
+				init.creerFigure(gc, init.getLoadFile().getFaces(), couleur);
 				cptTranslateGD = 0;
 				cptTranslateHB = 0;
-				cp.setValue(Color.WHITE);
 				//On simule un premier mouvement de la figure pour que tous les mouvements fonctionnent correctement.
 				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 			}
 		});
 
 		cp.setOnAction(e ->{
-			if(filePly != null) {
-				couleur = cp.getValue();
-				init.creerFigure(gc, loadFile.getFaces(), couleur);
-			}
+			couleur = cp.getValue();
+			if(filePly != null)
+				init.creerFigure(gc, init.getLoadFile().getFaces(), couleur);
 		});
 
 		X.setOnAction(e -> {
@@ -258,34 +247,34 @@ public class Interface extends Application {
 			Y.setDisable(false);
 			Z.setDisable(false);
 			lblTournerX.setText("Tourner X");
-			sliderRotation.setValue(stratX.getValeurrotation());
+			sliderRotation.setValue(stratX.getValeurRotation());
 			flagX = true;
 			flagY = false;
 			flagZ = false;
 		});
-		
+
 		Y.setOnAction(e -> {
 			Y.setDisable(true);
 			X.setDisable(false);
 			Z.setDisable(false);
 			lblTournerX.setText("Tourner Y");
-			sliderRotation.setValue(stratY.getValeurrotation());
+			sliderRotation.setValue(stratY.getValeurRotation());
 			flagY = true;
 			flagX = false;
 			flagZ = false;
 		});
-		
+
 		Z.setOnAction(e -> {
 			Z.setDisable(true);
 			Y.setDisable(false);
 			X.setDisable(false);
 			lblTournerX.setText("Tourner Z");
-			sliderRotation.setValue(stratZ.getValeurrotation());
+			sliderRotation.setValue(stratZ.getValeurRotation());
 			flagZ = true;
 			flagX = false;
 			flagY = false;
 		});
-		
+
 		sliderRotation.setOnMouseDragged(e-> {
 			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 		});
@@ -342,6 +331,15 @@ public class Interface extends Application {
 			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 		});
 
+		canv.setOnScroll(e->{
+			if(e.getDeltaY() < 0 && zoom.getValue() < 5) { //scroll up
+				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue() + 0.2);
+				zoom.setValue(zoom.getValue() + 0.2);
+			} else if(e.getDeltaY() > 0 && zoom.getValue() > 0){ //scroll down
+				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue() - 0.2);
+				zoom.setValue(zoom.getValue() - 0.2);
+			}
+		});
 
 		//----AFFICHAGE FENETRE------
 		primaryStage.setScene(scene);
@@ -367,67 +365,25 @@ public class Interface extends Application {
 	}
 
 	/**
-	 * Méthode lançant le programme.
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		Application.launch(args); 
-	}
-
-	/**
-	 * Dessine la figure à partir de la création dans Initialisation.
+	 * A DOCUMENTER
 	 * @param gc
-	 * @param file
-	 * @throws IOException
+	 * @param rotationValue
+	 * @param zoomValue
 	 */
-	public void dessin(GraphicsContext gc, LoadFile file) throws IOException{
-		gc.setLineWidth(1); //epaisseur des lignes
-		try {
-			file.creerPoints();
-			file.creerFaces();
-		} catch (WrongPointLineFormatException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		} catch (WrongFaceLineFormatException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		} catch (MissingPointLineException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		} catch (TooMuchPointLineException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		} catch (MissingFaceLineException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		} catch (TooMuchFaceLineException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		}
-		init.creerFigure(gc, file.getFaces(), couleur);
-	}
-
-	/**
-	 * 
-	 * @param gc
-	 * @param xvalue
-	 * @param zoomvalue
-	 */
-	public void miseAJourVue(GraphicsContext gc, double rotationvalue, double zoomValue) {
+	public void miseAJourVue(GraphicsContext gc, double rotationValue, double zoomValue) {
 		if(filePly!=null) {
 			Translation translation = new Translation();
 			Rotation rotation = new Rotation();
-			Face[] tabf = loadFile.getFaces();
-			Point[] tabp = loadFile.getPoints();
+			Face[] tabf = init.getLoadFile().getFaces();
+			Point[] tabp = init.getLoadFile().getPoints();
 			Zoom zoom = new Zoom();
 
 			try {
 				if(flagX) {
-					tabp = rotation.creerPointRotate(rotationvalue, tabp, stratX.execute());
-					stratX.setValeurrotation(rotationvalue);
-				}else {
-					tabp = rotation.creerPointRotate(stratX.getValeurrotation(), tabp, stratX.execute());
-				}
+					tabp = rotation.creerPointRotate(rotationValue, tabp, stratX.execute());
+					stratX.setValeurRotation(rotationValue);
+				}else
+					tabp = rotation.creerPointRotate(stratX.getValeurRotation(), tabp, stratX.execute());
 			} catch (MatriceNullException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
 				System.exit(1);
@@ -439,11 +395,10 @@ public class Interface extends Application {
 
 			try {
 				if(flagY) {
-					tabp = rotation.creerPointRotate(rotationvalue, tabp, stratY.execute());
-					stratY.setValeurrotation(rotationvalue);
-				}else {
-					tabp = rotation.creerPointRotate(stratY.getValeurrotation(), tabp, stratY.execute());
-				}
+					tabp = rotation.creerPointRotate(rotationValue, tabp, stratY.execute());
+					stratY.setValeurRotation(rotationValue);
+				}else
+					tabp = rotation.creerPointRotate(stratY.getValeurRotation(), tabp, stratY.execute());
 			} catch (MatriceNullException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
 				System.exit(1);
@@ -455,11 +410,10 @@ public class Interface extends Application {
 
 			try {
 				if(flagZ) {
-				tabp = rotation.creerPointRotate(rotationvalue, tabp, stratZ.execute());
-				stratZ.setValeurrotation(rotationvalue);
-				}else {
-					tabp = rotation.creerPointRotate(stratZ.getValeurrotation(), tabp, stratZ.execute());
-				}
+					tabp = rotation.creerPointRotate(rotationValue, tabp, stratZ.execute());
+					stratZ.setValeurRotation(rotationValue);
+				}else
+					tabp = rotation.creerPointRotate(stratZ.getValeurRotation(), tabp, stratZ.execute());
 			} catch (MatriceNullException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
 				System.exit(1);
@@ -494,5 +448,13 @@ public class Interface extends Application {
 			gc.clearRect(0, 0, 1280, 600);
 			init.creerFigure(gc, tabf,couleur);
 		}
+	}
+
+	/**
+	 * Méthode lançant le programme.
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Application.launch(args); 
 	}
 }

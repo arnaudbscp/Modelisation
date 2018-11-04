@@ -27,6 +27,9 @@ public class Face implements Comparable<Face>{
 	 */
 	private Point centreGravite;
 	
+	/**
+	 * A DOCUMENTER
+	 */
 	private int[] position;
 	
 	/**
@@ -43,10 +46,16 @@ public class Face implements Comparable<Face>{
 		this.position = new int[3];
 	}
 	
+	/**
+	 * A DOCUMENTER
+	 */
 	public int[] getPosition() {
 		return position;
 	}
 
+	/**
+	 * A DOCUMENTER
+	 */
 	public void setPosition(int[] position) {
 		this.position = position;
 	}
