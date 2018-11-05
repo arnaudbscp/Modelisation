@@ -1,0 +1,14 @@
+﻿Ce fichier doit contenir 
+
+- quelle version de java utiliser pour compiler/exécuter
+
+javac 1.8.0_191
+java version "9.0.4"
+
+- ligne de commande pour compiler le projet (en supposant qu'on se trouve dans le répertoire de ce fichier)
+
+Ne comprend pas. Le .jar est déjà compilé.
+
+- ligne de commande pour exécuter le projet (en supposant qu'on se trouve dans le répertoire de ce fichier)
+
+java -jar ProjetMode2018-P3.jar
