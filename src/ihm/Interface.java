@@ -227,12 +227,6 @@ public class Interface extends Application {
 					JOptionPane.showMessageDialog(null, "Erreur", "Erreur Fichier", JOptionPane.ERROR_MESSAGE);
 					System.exit(1);
 				}
-				System.out.println(init.getLoadFile().getCoordMin(0));
-				System.out.println(init.getLoadFile().getCoordMax(0));
-				System.out.println(init.getLoadFile().getCoordMin(1));
-				System.out.println(init.getLoadFile().getCoordMax(1));
-				System.out.println(init.getLoadFile().getCoordMin(2));
-				System.out.println(init.getLoadFile().getCoordMax(2));
 				gc.setLineWidth(1); //epaisseur des lignes
 				init.creerFigure(gc, init.getLoadFile().getFaces(), couleur);
 				cptTranslateGD = 0;
