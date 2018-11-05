@@ -1,4 +1,4 @@
-package exception;
+package src.exception;
 
 /**
  * Exception soulevée si une matrice est NULL.

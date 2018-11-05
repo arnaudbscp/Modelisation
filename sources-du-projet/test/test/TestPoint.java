@@ -1,4 +1,4 @@
-package test;
+package test.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,9 +7,9 @@ import java.io.StringReader;
 
 import org.junit.jupiter.api.Test;
 
-import mecanique.LoadFile;
-import exception.MissingPointLineException;
-import exception.WrongPointLineFormatException;
+import src.mecanique.LoadFile;
+import src.exception.MissingPointLineException;
+import src.exception.WrongPointLineFormatException;
 
 /**
  * Classe de test sur un point. On teste si un point est créé à partir des bonnes coordonnées.

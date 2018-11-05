@@ -1,4 +1,4 @@
-package test;
+package test.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -7,7 +7,7 @@ import java.io.StringReader;
 
 import org.junit.jupiter.api.Test;
 
-import mecanique.LoadFile;
+import src.mecanique.LoadFile;
 
 /**
  * Classe de test sur la récupération du nombre de points et de faces de la figure.

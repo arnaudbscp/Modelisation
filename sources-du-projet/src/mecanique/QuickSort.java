@@ -1,6 +1,6 @@
-package mecanique;
+package src.mecanique;
 
-import donnees.Face;
+import src.donnees.Face;
 
 /**
  * Classe implémentant le design pattern "Singleton",

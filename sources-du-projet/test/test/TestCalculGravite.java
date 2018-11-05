@@ -1,11 +1,11 @@
-package test;
+package test.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import donnees.Face;
-import donnees.Point;
+import src.donnees.Face;
+import src.donnees.Point;
 
 /**
  * Classe de test sur le calcul du barycentre d'une face triangulaire.

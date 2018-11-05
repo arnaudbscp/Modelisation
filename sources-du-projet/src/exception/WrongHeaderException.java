@@ -1,4 +1,4 @@
-package exception;
+package src.exception;
 
 /**
  * Exception soulevée lorsque l'en-tête du fichier n'est pas écrit dans le format attendu.

@@ -1,22 +1,22 @@
-package ihm;
+package src.ihm;
 
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
-import donnees.Face;
-import donnees.Point;
+import src.donnees.Face;
+import src.donnees.Point;
 
-import mecanique.Initialisation;
+import src.mecanique.Initialisation;
 
-import mouvements.Rotation;
-import mouvements.Translation;
-import mouvements.Zoom;
+import src.mouvements.Rotation;
+import src.mouvements.Translation;
+import src.mouvements.Zoom;
 
-import exception.MatriceFormatException;
-import exception.MatriceNullException;
-import exception.WrongFormatFileException;
+import src.exception.MatriceFormatException;
+import src.exception.MatriceNullException;
+import src.exception.WrongFormatFileException;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;

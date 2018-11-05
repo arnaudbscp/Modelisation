@@ -1,4 +1,4 @@
-package exception;
+package src.exception;
 
 /**
  * Exception soulevée lorsque le format du fichier n'est pas correct, c'est-à-dire que le fichier n'est pas un .ply

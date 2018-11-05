@@ -1,4 +1,4 @@
-package exception;
+package src.exception;
 
 /**
  * Exception soulevée lorsqu'une ligne représentant un point n'est pas écrite dans le format attendu.

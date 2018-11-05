@@ -1,4 +1,4 @@
-package donnees;
+package src.donnees;
 
 /**
  * Représente un point dans un espace à 3 dimensions.

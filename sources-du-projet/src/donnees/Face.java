@@ -1,4 +1,4 @@
-package donnees;
+package src.donnees;
 
 /**
  * Représente une face, composée de 3 Point et de segments les liant.

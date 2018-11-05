@@ -1,4 +1,4 @@
-package exception;
+package src.exception;
 
 /**
  * Exception soulevée lorsqu'il y a plus de lignes représentant un point dans le fichier que prévu, en se fiant au nombre

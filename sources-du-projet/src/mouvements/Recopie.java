@@ -1,7 +1,7 @@
-package mouvements;
+package src.mouvements;
 
-import donnees.Face;
-import donnees.Point;
+import src.donnees.Face;
+import src.donnees.Point;
 
 /**
  * Interface contenant la méthode de remplacement des anciens points de chaque face de la figure par les nouveaux points générés 

@@ -1,17 +1,17 @@
-package mecanique;
+package src.mecanique;
 
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
-import donnees.Face;
-import exception.MissingFaceLineException;
-import exception.MissingPointLineException;
-import exception.TooMuchFaceLineException;
-import exception.TooMuchPointLineException;
-import exception.WrongFaceLineFormatException;
-import exception.WrongPointLineFormatException;
+import src.donnees.Face;
+import src.exception.MissingFaceLineException;
+import src.exception.MissingPointLineException;
+import src.exception.TooMuchFaceLineException;
+import src.exception.TooMuchPointLineException;
+import src.exception.WrongFaceLineFormatException;
+import src.exception.WrongPointLineFormatException;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;

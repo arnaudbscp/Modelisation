@@ -1,4 +1,4 @@
-package exception;
+package src.exception;
 
 /**
  * Exception soulevée lorsque l'on cherche à multiplier deux matrices qui ne peuvent être multipliées à cause de 

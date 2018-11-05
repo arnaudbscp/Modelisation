@@ -1,14 +1,14 @@
-package test;
+package test.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import donnees.Matrice;
-import donnees.Point;
+import src.donnees.Matrice;
+import src.donnees.Point;
 
-import exception.MatriceFormatException;
-import exception.MatriceNullException;
+import src.exception.MatriceFormatException;
+import src.exception.MatriceNullException;
 
 /**
  * Classe de test sur les matrices, à savoir la création et la multiplication de matrices.

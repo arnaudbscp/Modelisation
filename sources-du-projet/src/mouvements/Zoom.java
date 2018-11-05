@@ -1,13 +1,13 @@
-package mouvements;
+package src.mouvements;
 
-import donnees.Face;
-import donnees.Matrice;
-import donnees.Point;
+import src.donnees.Face;
+import src.donnees.Matrice;
+import src.donnees.Point;
 
-import exception.MatriceFormatException;
-import exception.MatriceNullException;
+import src.exception.MatriceFormatException;
+import src.exception.MatriceNullException;
 
-import outils.BoiteaOutils;
+import src.outils.BoiteaOutils;
 
 /**
  * Classe représentant un mouvement de zoom (homothétie).

@@ -1,4 +1,4 @@
-package exception;
+package src.exception;
 
 /**
  * Exception soulevée lorsqu'il y a plus de lignes représentant une face dans le fichier que prévu, en se fiant au nombre

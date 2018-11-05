@@ -1,7 +1,7 @@
-package donnees;
+package src.donnees;
 
-import exception.MatriceFormatException;
-import exception.MatriceNullException;
+import src.exception.MatriceFormatException;
+import src.exception.MatriceNullException;
 
 /**
  * A DOCUMENTER

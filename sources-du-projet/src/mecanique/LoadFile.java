@@ -1,4 +1,4 @@
-package mecanique;
+package src.mecanique;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,15 +8,15 @@ import java.io.Reader;
 
 import javax.swing.JOptionPane;
 
-import donnees.Face;
-import donnees.Point;
-import exception.MissingFaceLineException;
-import exception.MissingPointLineException;
-import exception.TooMuchFaceLineException;
-import exception.TooMuchPointLineException;
-import exception.WrongFaceLineFormatException;
-import exception.WrongHeaderException;
-import exception.WrongPointLineFormatException;
+import src.donnees.Face;
+import src.donnees.Point;
+import src.exception.MissingFaceLineException;
+import src.exception.MissingPointLineException;
+import src.exception.TooMuchFaceLineException;
+import src.exception.TooMuchPointLineException;
+import src.exception.WrongFaceLineFormatException;
+import src.exception.WrongHeaderException;
+import src.exception.WrongPointLineFormatException;
 
 /**
  * Lit le fichier 3D, récupère le nombre de points et de faces de la figure pour dimensionner le tableau de points et de faces, sans les

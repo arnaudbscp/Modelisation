@@ -1,4 +1,4 @@
-package test;
+package test.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,13 +7,13 @@ import java.io.StringReader;
 
 import org.junit.jupiter.api.Test;
 
-import mecanique.LoadFile;
-import exception.MissingFaceLineException;
-import exception.MissingPointLineException;
-import exception.TooMuchFaceLineException;
-import exception.TooMuchPointLineException;
-import exception.WrongFaceLineFormatException;
-import exception.WrongPointLineFormatException;
+import src.mecanique.LoadFile;
+import src.exception.MissingFaceLineException;
+import src.exception.MissingPointLineException;
+import src.exception.TooMuchFaceLineException;
+import src.exception.TooMuchPointLineException;
+import src.exception.WrongFaceLineFormatException;
+import src.exception.WrongPointLineFormatException;
 
 /**
  * Classe de test sur une face. On teste si une face est créée à partir des bons points.
