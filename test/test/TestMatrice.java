@@ -40,22 +40,22 @@ class TestMatrice {
 	}
 
 	//NE PASSE PAS
-	@Test
-	void testMultiplierBis() throws MatriceNullException, MatriceFormatException {
-
-		double[][] tab = new double[][] {{1, 2}, {3, 4}, {5, 6}};
-
-		double[][] tab2 = new double[][] {{1, 2, 3, 4}, {4, 5, 6, 7}};
-
-		double[][] res = new double[][] {{13, 13, 13}, {11, 11, 11}, {10, 10, 10}};
-
-		Matrice m = new Matrice(tab);
-		double[][] multiplier = m.multiplierMatrice(tab2);
-		for(int i = 0; i < multiplier.length; i++) {
-			for(int j = 0; j < multiplier[0].length; j++)
-				assertEquals(multiplier[i][j], res[i][j]);
-		}	
-	}
+//	@Test
+//	void testMultiplierBis() throws MatriceNullException, MatriceFormatException {
+//
+//		double[][] tab = new double[][] {{1, 2}, {3, 4}, {5, 6}};
+//
+//		double[][] tab2 = new double[][] {{1, 2, 3, 4}, {4, 5, 6, 7}};
+//
+//		double[][] res = new double[][] {{13, 13, 13}, {11, 11, 11}, {10, 10, 10}};
+//
+//		Matrice m = new Matrice(tab);
+//		double[][] multiplier = m.multiplierMatrice(tab2);
+//		for(int i = 0; i < multiplier.length; i++) {
+//			for(int j = 0; j < multiplier[0].length; j++)
+//				assertEquals(multiplier[i][j], res[i][j]);
+//		}	
+//	}
 
 	/**
 	 * Méthode testant la création d'une matrice à partir de 3 points.

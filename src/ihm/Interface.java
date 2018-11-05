@@ -85,19 +85,24 @@ public class Interface extends Application {
 	private Strategy stratZ = new StrategyRotationZ(0);
 
 	/**
-	 * A DOCUMENTER
+	 * Boolean true lorsque le slider de rotation X est activé (par défaut).
 	 */
 	private boolean flagX = true;
 
 	/**
-	 * A DOCUMENTER
+	 * Boolean true lorsque le slider de rotation Y est activé.
 	 */
 	private boolean flagY = false;
 
 	/**
-	 * A DOCUMENTER
+	 * Boolean true lorsque le slider de rotation Z est activé.
 	 */
 	private boolean flagZ = false;
+	
+	/**
+	 * Représente le niveau de zoom moyen adapté à la figure par rapport à sa taille.
+	 */
+	private double defaultZoom;
 
 	/**
 	 * Méthode d'affichage de l'interface graphique.
@@ -131,12 +136,7 @@ public class Interface extends Application {
 		Label lblZoom = new Label();
 		lblZoom.setText("Zoomer");
 		lblZoom.setStyle("-fx-padding : 20 0 0 50;");
-		zoom.setMin(0);
-		zoom.setMax(5);
-		zoom.setValue(1);
-		zoom.setMajorTickUnit(1);
-		zoom.setBlockIncrement(0.2);
-		zoom.setShowTickLabels(true);
+		zoom.setDisable(true);
 		menu.getChildren().addAll(lblZoom, zoom);
 
 		//SLIDER ROTATION X (par défaut)
@@ -196,7 +196,7 @@ public class Interface extends Application {
 		ColorPicker cp = new ColorPicker();
 		cp.setValue(couleur);
 		menu.getChildren().addAll(lcolor,cp);
-
+		
 
 		//---------------------GESTION DES EVENEMENTS------------------
 
@@ -227,10 +227,24 @@ public class Interface extends Application {
 					JOptionPane.showMessageDialog(null, "Erreur", "Erreur Fichier", JOptionPane.ERROR_MESSAGE);
 					System.exit(1);
 				}
+				System.out.println(init.getLoadFile().getCoordMin(0));
+				System.out.println(init.getLoadFile().getCoordMax(0));
+				System.out.println(init.getLoadFile().getCoordMin(1));
+				System.out.println(init.getLoadFile().getCoordMax(1));
+				System.out.println(init.getLoadFile().getCoordMin(2));
+				System.out.println(init.getLoadFile().getCoordMax(2));
 				gc.setLineWidth(1); //epaisseur des lignes
 				init.creerFigure(gc, init.getLoadFile().getFaces(), couleur);
 				cptTranslateGD = 0;
 				cptTranslateHB = 0;
+				defaultZoom = defaultZoom();
+				zoom.setDisable(false);
+				zoom.setMin(0);
+				zoom.setMax(defaultZoom*2);
+				zoom.setValue(defaultZoom);
+				zoom.setMajorTickUnit(defaultZoom/2.5);
+				zoom.setBlockIncrement(defaultZoom/12.5);
+				zoom.setShowTickLabels(true);
 				//On simule un premier mouvement de la figure pour que tous les mouvements fonctionnent correctement.
 				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
 			}
@@ -332,12 +346,12 @@ public class Interface extends Application {
 		});
 
 		canv.setOnScroll(e->{
-			if(e.getDeltaY() < 0 && zoom.getValue() < 5) { //scroll up
-				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue() + 0.2);
-				zoom.setValue(zoom.getValue() + 0.2);
+			if(e.getDeltaY() < 0 && zoom.getValue() < defaultZoom*2) { //scroll up
+				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue() + defaultZoom/12.5);
+				zoom.setValue(zoom.getValue() + defaultZoom/12.5);
 			} else if(e.getDeltaY() > 0 && zoom.getValue() > 0){ //scroll down
-				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue() - 0.2);
-				zoom.setValue(zoom.getValue() - 0.2);
+				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue() - defaultZoom/12.5);
+				zoom.setValue(zoom.getValue() - defaultZoom/12.5);
 			}
 		});
 
@@ -346,6 +360,38 @@ public class Interface extends Application {
 		primaryStage.setTitle("i3D"); 
 		primaryStage.setResizable(false);
 		primaryStage.show();
+	}
+
+	/**
+	 * Retourne le niveau de zoom adapté à la figure par rapport à sa taille.
+	 * @return
+	 */
+	private double defaultZoom() {
+		double max = init.getLoadFile().getCoordMax(0);
+		if(Math.abs(init.getLoadFile().getCoordMin(0)) > max)
+			max = Math.abs(init.getLoadFile().getCoordMin(0));
+		if(max > 500)
+			return 0.5;
+		else if(max > 300)
+			return 1;
+		else if(max > 200)
+			return 1.5;
+		else if(max > 100)
+			return 2.5;
+		else if(max > 75)
+			return 5;
+		else if(max > 50)
+			return 7.5;
+		else if(max > 25)
+			return 10;
+		else if (max > 10)
+			return 12.5;
+		else if(max > 5)
+			return 15;
+		else if(max > 1)
+			return 20;
+		else
+			return 30;
 	}
 
 	/**
@@ -365,7 +411,7 @@ public class Interface extends Application {
 	}
 
 	/**
-	 * A DOCUMENTER
+	 * Méthode mettant à jour la position de la figure dans l'espace à la suite d'un mouvement (rotation, translation ou homothétie).
 	 * @param gc
 	 * @param rotationValue
 	 * @param zoomValue

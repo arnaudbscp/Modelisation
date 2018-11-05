@@ -1,6 +1,5 @@
 ply
 format ascii 1.0
-
 element vertex 8477
 property float32 x
 property float32 y
