@@ -225,7 +225,7 @@ public class Interface extends Application {
 					init = new Initialisation(filePly);
 				} catch (IOException e1) {
 					JOptionPane.showMessageDialog(null, "Erreur", "Erreur Fichier", JOptionPane.ERROR_MESSAGE);
-					System.exit(1); 
+					System.exit(1);
 				}
 				gc.setLineWidth(1); //epaisseur des lignes
 				init.creerFigure(gc, init.getLoadFile().getFaces(), couleur);
