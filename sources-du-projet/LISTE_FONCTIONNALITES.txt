@@ -1,0 +1,20 @@
+﻿Une liste des fonctionnalités implémentées par rapport au sujet qui vous a été fourni. Respectez la structure du sujet (Sect. 1: fonctions mathématiques, Sect. 2: gestion de la bibliothèque, Sect. 3: fonctionnalités supplémentaires).
+
+
+1) Fonctions mathématiques
+	- Calcul du barycentre des faces triangulaires.a
+	- Multiplication des matrices type des différents mouvements avec la matrice de points de la figure.
+	- Mise en place d'un tri QuickSort pour trier les faces rapidement.
+	- Création des points dans le cas où les coordonnées sont exprimées avec des puissances de 10.
+
+2) Gestion de la bibliothèque
+	- Affichage de certaines figures 3D à faces triangulaires. Nous rencontrons encore des problèmes avec certaines figures.
+	- Gestion des différents mouvements: homothétie (zoom), translation haut-bas et droite-gauche et rotation selon les 3 axes.
+	- Zoom automatique au chargement du fichier pour afficher les différentes figures malgré leur différence d'échelle, et adaptation de l'échelle du slider zoom.
+	- Interface graphique avec un menu pour gérer les déplacements grâce à des sliders et des boutons. Le zoom peut également se faire grâce au scroll.
+
+3) Fonctionalités supplémentaires
+	- Choix de la couleur de la figure.
+	- Implémentation du design pattern Singleton ne permettant qu'une seule instance du QuickSort
+	- Implémentation du design pattern Strategy pour switcher entre les 3 sliders de rotation grâce à des boutons. Cela permet l'affichage d'un seul slider pour la rotation.
+	
