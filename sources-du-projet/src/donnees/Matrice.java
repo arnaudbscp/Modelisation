@@ -110,7 +110,7 @@ public class Matrice {
 			c = 0;
 			for (int n = 0; n < MB[0].length; n++){
 
-				int calcul = 0;
+				float calcul = 0;
 				for (int m = 0; m < MB.length; m++)
 					calcul += MA[i][m] * MB[m][n];
 				MC[l][c] = calcul;
@@ -142,7 +142,7 @@ public class Matrice {
 			c = 0;
 			for (int n = 0; n < MB[0].length; n++){
 
-				int calcul = 0;
+				float calcul = 0;
 				for (int m = 0; m < MB.length; m++)
 					calcul += MA[i][m] * MB[m][n];
 				MC[l][c] = calcul;

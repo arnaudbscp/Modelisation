@@ -417,7 +417,7 @@ public class Interface extends Application {
 			Face[] tabf = init.getLoadFile().getFaces();
 			Point[] tabp = init.getLoadFile().getPoints();
 			Zoom zoom = new Zoom();
-
+			
 			try {
 				if(flagX) {
 					tabp = rotation.creerPointRotate(rotationValue, tabp, stratX.execute());
@@ -447,7 +447,7 @@ public class Interface extends Application {
 				System.exit(1);
 			}
 			rotation.recopiePoint(tabf, tabp);
-
+			
 			try {
 				if(flagZ) {
 					tabp = rotation.creerPointRotate(rotationValue, tabp, stratZ.execute());
