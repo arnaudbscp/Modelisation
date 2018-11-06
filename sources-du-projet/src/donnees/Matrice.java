@@ -131,7 +131,7 @@ public class Matrice {
 	
 	/**
 	  * Additionne la matrice de base avec celle passée en paramètre. Retourne la matrice résultant de l'opération.
-	 *  @return MC
+	 *  @return MC 
 	 */
 	public double[][] additionMatrice(double[][] MB) throws MatriceNullException, MatriceFormatException {
 		double[][] MC;
