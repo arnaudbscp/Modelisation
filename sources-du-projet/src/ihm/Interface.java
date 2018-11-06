@@ -70,17 +70,17 @@ public class Interface extends Application {
 	private Color couleur = Color.WHITE;
 
 	/**
-	 * A DOCUMENTER
+	 * Implémentation de cette Strategy lors de l'appui sur le Bouton X.
 	 */
 	private Strategy stratX = new StrategyRotationX(0);
 
 	/**
-	 * A DOCUMENTER
+	 * Implémentation de cette Strategy lors de l'appui sur le Bouton Y.
 	 */
 	private Strategy stratY = new StrategyRotationY(0);
 
 	/**
-	 * A DOCUMENTER
+	 * Implémentation de cette Strategy lors de l'appui sur le Bouton Z.
 	 */
 	private Strategy stratZ = new StrategyRotationZ(0);
 

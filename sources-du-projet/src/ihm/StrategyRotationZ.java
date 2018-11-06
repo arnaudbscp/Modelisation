@@ -1,17 +1,17 @@
 package src.ihm;
 
 /**
- * A DOCUMENTER
+ * Implémentation du design-pattern Strategy pour le mouvement de Rotation Z.
  */
 public class StrategyRotationZ implements Strategy{
 
 	/**
-	 * A DOCUMENTER
+	 * Stockage de la valeur du Slider de rotation Z, pour garder sa valeur malgré les switch sur les autres sliders.
 	 */
 	private double valeurRotation;
 
 	/**
-	 * A DOCUMENTER
+	 * Constructeur spécifiant la valeur du Slider de rotation Z, à conserver.
 	 */
 	public StrategyRotationZ(double i) {
 		valeurRotation = i;
