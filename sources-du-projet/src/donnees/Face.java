@@ -28,7 +28,7 @@ public class Face implements Comparable<Face>{
 	private Point centreGravite;
 	
 	/**
-	 * A DOCUMENTER
+	 * Tableau d'entiers représentant la position de la face dans le plan.
 	 */
 	private int[] position;
 	
@@ -47,14 +47,16 @@ public class Face implements Comparable<Face>{
 	}
 	
 	/**
-	 * A DOCUMENTER
+	 * Retourne la position de la Face, sous forme d'un tableau.
+	 * @return position
 	 */
 	public int[] getPosition() {
 		return position;
 	}
 
 	/**
-	 * A DOCUMENTER
+	 * Définit la position de la face.
+	 * @param position
 	 */
 	public void setPosition(int[] position) {
 		this.position = position;
@@ -86,7 +88,7 @@ public class Face implements Comparable<Face>{
 
 	/**
 	 * Retourne les 3 Point de la Face, sous forme d'un tableau.
-	 * @return
+	 * @return new Point[]
 	 */
 	public Point[] getPoints() {
 		return new Point[] {pt1, pt2, pt3};
@@ -94,7 +96,7 @@ public class Face implements Comparable<Face>{
 	
 	/**
 	 * Retourne le centre de gravité de la face triangulaire.
-	 * @return
+	 * @return centreGravite
 	 */
 	public Point getCentreGravite() {
 		return centreGravite;
@@ -110,7 +112,7 @@ public class Face implements Comparable<Face>{
 	
 	/**
 	 * Calcule le centre de gravité de la Face triangulaire.
-	 * @return
+	 * @return new Point()
 	 */
 	public Point calculCentreGravite() {
 		float x = (this.getPoints()[0].getX() + this.getPoints()[1].getX() + this.getPoints()[2].getX()) / 3;
