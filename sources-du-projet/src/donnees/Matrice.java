@@ -130,7 +130,7 @@ public class Matrice {
 		return MC;
 	}
 	
-	/**
+	 /** 
 	 * Additionne la matrice de base avec celle passée en paramètre. Retourne la matrice résultant de l'opération.
 	 * @return MC
 	 */
