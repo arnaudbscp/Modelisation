@@ -30,9 +30,11 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -56,13 +58,13 @@ public class Interface extends Application {
 	 * Compteur de translation gauche-droite. On l'incrémente lors de l'appui sur le bouton droite et on le 
 	 * décrémente lors de l'appui sur le bouton gauche pour déplacer la figure horizontalement.
 	 */
-	private int cptTranslateGD = 0;
+	private float cptTranslateGD = 0;
 
 	/**
 	 * Compteur de translation haut-bas. On l'incrémente lors de l'appui sur le bouton haut et on le décrémente lors de 
 	 * l'appui sur le bouton bas pour déplacer la figure verticalement.
 	 */
-	private int cptTranslateHB = 0;
+	private float cptTranslateHB = 0;
 
 	/**
 	 * Couleur de la figure initialisée à  blanche. Elle sera modifiée grâce au colorpicker par l'utilisateur.
@@ -105,6 +107,11 @@ public class Interface extends Application {
 	private double defaultZoom;
 
 	/**
+	 * Boolean true si le pas de translation est valide, c'est à dire que c'est un bien un nombre réel.
+	 */
+	private boolean pasValide = true;
+
+	/**
 	 * Méthode d'affichage de l'interface graphique.
 	 */
 	public void start(Stage primaryStage){
@@ -114,12 +121,18 @@ public class Interface extends Application {
 		VBox menu = new VBox();
 		menu.setMinWidth(150);
 		Button b1 = new Button("Importer");
+		Button aide = new Button("Aide");
+		VBox boutonsImportAide = new VBox();
 		b1.setMinWidth(150);
-		menu.getChildren().add(b1);
+		aide.setMinWidth(150);
+		boutonsImportAide.setSpacing(3);
+		boutonsImportAide.getChildren().addAll(b1, aide);
+		menu.getChildren().add(boutonsImportAide);
 		Canvas canv = new Canvas(1100, 600);
 		GraphicsContext gc = canv.getGraphicsContext2D();
 		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		FileChooser importer = new FileChooser();
+		importer.setTitle("Selectionner un fichier 3D");
 		VBox dessin = new VBox();
 		Separator sep = new Separator(Orientation.VERTICAL);
 		sep.setPrefSize(1, 800);
@@ -130,6 +143,8 @@ public class Interface extends Application {
 		sep.setMinHeight(300);
 		sep.setStyle("-fx-padding : 0 0 0 30;");
 		corps.getChildren().add(canv);
+		Text textErreur = new Text(" Erreur.");
+		textErreur.setFill(Color.RED);
 
 		//SLIDER ZOOM
 		Slider zoom = new Slider();
@@ -177,6 +192,12 @@ public class Interface extends Application {
 		Button gauche = new Button("G");
 		Button droite = new Button("D");
 		Button bas = new Button("B");
+		HBox hbPas = new HBox();
+		hbPas.setPadding(new Insets(3, 0, 0, 0));
+		Label lblPas = new Label("Pas: ");
+		TextField tfPas = new TextField("10");
+		tfPas.setPrefWidth(50);
+		hbPas.getChildren().addAll(lblPas, tfPas);
 		hbHaut.setPadding(new Insets(10, 0, 0, 60));
 		hbBas.setPadding(new Insets(0, 0, 0,60));
 		hbGaucheDroite.setPadding(new Insets(0, 0, 0,33));
@@ -188,7 +209,7 @@ public class Interface extends Application {
 		hbHaut.getChildren().add(haut);
 		hbGaucheDroite.getChildren().addAll(gauche, droite);
 		hbBas.getChildren().add(bas);
-		menu.getChildren().addAll(lblTranslation, hbHaut, hbGaucheDroite, hbBas);
+		menu.getChildren().addAll(lblTranslation, hbHaut, hbGaucheDroite, hbBas, hbPas);
 
 		//CHOIX COULEURS
 		Label lcolor = new Label("Couleur");
@@ -200,8 +221,24 @@ public class Interface extends Application {
 
 		//---------------------GESTION DES EVENEMENTS------------------
 
+		aide.setOnAction(e->{
+			Stage stageAide = new Stage();
+			VBox rootAide = new VBox();
+			Scene sceneAide = new Scene(rootAide, 500, 150);
+			stageAide.setTitle("Aide");
+			stageAide.setScene(sceneAide);
+			Text textAide = new Text("Ce logiciel te permet d'afficher des figures géométriques dans un espace 3D.\nPour cela, choisis le fichier .ply contenant les coordonnées des points et les faces de la figure\nque tu souhaites charger grâce au bouton \"Importer\".\nTu pourras ensuite déplacer la figure dans l'espace grâce aux différents Sliders et Boutons,\nqui permettent d'effectuer des rotations, des translations et de zoomer.\nTu peux également customiser la figure en changeant sa couleur !");
+			Button okAide = new Button("J'ai compris !");
+			rootAide.getChildren().addAll(textAide, okAide);
+			okAide.setOnAction(e2->{
+				stageAide.close();
+			});
+			rootAide.setPadding(new Insets(5));
+			rootAide.setSpacing(5);
+			stageAide.setResizable(false);
+			stageAide.show();
+		});
 
-		importer.setTitle("Selectionner un fichier 3D");
 		b1.setOnAction(e -> {
 			filePly = importer.showOpenDialog(primaryStage);
 			if(filePly != null) {
@@ -300,43 +337,59 @@ public class Interface extends Application {
 		});
 
 		gauche.setOnAction(e->{
-			cptTranslateGD += 10;
-			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+			if(pasValide) {
+				cptTranslateGD += Float.parseFloat("0"+tfPas.getText());
+				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+			}
 		});
 
 		gauche.setOnMouseDragged(e->{
-			cptTranslateGD += 10;
-			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+			if(pasValide) {
+				cptTranslateGD += Float.parseFloat("0"+tfPas.getText());
+				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+			}
 		});
 
 		droite.setOnAction(e->{
-			cptTranslateGD -= 10;
-			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+			if(pasValide) {
+				cptTranslateGD -= Float.parseFloat("0"+tfPas.getText());
+				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+			}
 		});
 
 		droite.setOnMouseDragged(e->{
-			cptTranslateGD -= 10;
-			miseAJourVue(gc, sliderRotation.getValue(),zoom.getValue());
+			if(pasValide) {
+				cptTranslateGD -= Float.parseFloat("0"+tfPas.getText());
+				miseAJourVue(gc, sliderRotation.getValue(),zoom.getValue());
+			}
 		});
 
 		haut.setOnAction(e->{
-			cptTranslateHB += 10;
-			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+			if(pasValide) {
+				cptTranslateHB += Float.parseFloat("0"+tfPas.getText());
+				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+			}
 		});
 
 		haut.setOnMouseDragged(e->{
-			cptTranslateHB += 10;
-			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+			if(pasValide) {
+				cptTranslateHB += Float.parseFloat("0"+tfPas.getText());
+				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+			}
 		});
 
 		bas.setOnAction(e->{
-			cptTranslateHB -= 10;
-			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+			if(pasValide) {
+				cptTranslateHB -= Float.parseFloat("0"+tfPas.getText());
+				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+			}
 		});
 
 		bas.setOnMouseDragged(e->{
-			cptTranslateHB -= 10;
-			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+			if(pasValide) {
+				cptTranslateHB -= Float.parseFloat("0"+tfPas.getText());
+				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+			}
 		});
 
 		canv.setOnScroll(e->{
@@ -346,6 +399,15 @@ public class Interface extends Application {
 			} else if(e.getDeltaY() < 0 && zoom.getValue() > 0){ //scroll down
 				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue() - defaultZoom/12.5);
 				zoom.setValue(zoom.getValue() - defaultZoom/12.5);
+			}
+		});
+
+		tfPas.setOnKeyReleased(e -> {
+			hbPas.getChildren().remove(textErreur);
+			pasValide = true;
+			if(!tfPas.getText().matches("^[0-9]+\\.?[0-9]*$")) {
+				hbPas.getChildren().add(textErreur);
+				pasValide = false;
 			}
 		});
 

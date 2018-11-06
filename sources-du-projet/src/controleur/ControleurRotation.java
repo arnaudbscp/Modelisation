@@ -1,4 +1,4 @@
-package Controleur;
+package src.controleur;
 
 import Modele.Modele;
 import src.donnees.Point;
