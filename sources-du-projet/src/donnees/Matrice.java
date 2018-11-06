@@ -4,24 +4,25 @@ import src.exception.MatriceFormatException;
 import src.exception.MatriceNullException;
 
 /**
- * A DOCUMENTER
+ * Création de matrices (réprésente un tableau à deux dimensions), avec opérations de multiplications et additions.
  */
 public class Matrice {
 	
 	/**
-	 * A DOCUMENTER
+	 * Tableau à deux dimensions de double, matrice de base.
 	 */
 	double[][] MA;
 	
 	/**
-	 * A DOCUMENTER
+	 * Initialisation de la matrice de base avec celle passée en paramètre.
 	 */
 	public Matrice(double[][] MA) {
 		this.MA = MA;
 	}
 
 	/**
-	 * A DOCUMENTER
+	 * Création d'une matrice de la figure à partir du tableau de point passé en paramètre.
+	 * @return tab
 	 */
 	public double[][] creerMatrice(Point[] p) {
 		double[][] tab = new double[3][p.length];
@@ -39,7 +40,8 @@ public class Matrice {
 	}
 	
 	/**
-	 * A DOCUMENTER
+	 * Création d'une matrice de la figure à partir du tableau de point par rapport à l'axe des Y (qui reste donc inchangé).
+	 * @return tab
 	 */
 	public double[][] creerMatriceY(Point[] p) {
 		double[][] tab = new double[3][p.length];
@@ -57,7 +59,8 @@ public class Matrice {
 	}
 	
 	/**
-	 * A DOCUMENTER
+	 * Création d'une matrice de la figure à partir du tableau de point par rapport à l'axe des X (qui reste donc inchangé).
+	 * @return tab
 	 */
 	public double[][] creerMatriceX(Point[] p) {
 		double[][] tab = new double[3][p.length];
@@ -74,6 +77,11 @@ public class Matrice {
 		return tab;
 	}
 
+	/**
+	 * Création d'une matrice de la figure à partir du tableau de point par rapport à l'axe des Z (qui reste donc inchangé).
+	 * @return tab
+	 */
+	
 	public double[][] creerMatriceZ(Point[] p) {
 		double[][] tab = new double[3][p.length];
 		for(int i = 0; i < 4; i++) {
@@ -90,7 +98,8 @@ public class Matrice {
 	}
 	
 	/**
-	 * A DOCUMENTER
+	 * Multiplie la matrice de base avec celle passée en paramètre. Retourne la matrice résultant de l'opération.
+	 * @return MC
 	 */
 	public double[][] multiplierMatrice(double[][] MB) throws MatriceNullException, MatriceFormatException {
 		double[][] MC;
@@ -122,7 +131,8 @@ public class Matrice {
 	}
 	
 	/**
-	 * A DOCUMENTER
+	 * Additionne la matrice de base avec celle passée en paramètre. Retourne la matrice résultant de l'opération.
+	 * @return MC
 	 */
 	public double[][] additionMatrice(double[][] MB) throws MatriceNullException, MatriceFormatException {
 		double[][] MC;

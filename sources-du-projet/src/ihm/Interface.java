@@ -70,17 +70,17 @@ public class Interface extends Application {
 	private Color couleur = Color.WHITE;
 
 	/**
-	 * A DOCUMENTER
+	 * Implémentation de cette Strategy lors de l'appui sur le Bouton X.
 	 */
 	private Strategy stratX = new StrategyRotationX(0);
 
 	/**
-	 * A DOCUMENTER
+	 * Implémentation de cette Strategy lors de l'appui sur le Bouton Y.
 	 */
 	private Strategy stratY = new StrategyRotationY(0);
 
 	/**
-	 * A DOCUMENTER
+	 * Implémentation de cette Strategy lors de l'appui sur le Bouton Z.
 	 */
 	private Strategy stratZ = new StrategyRotationZ(0);
 
@@ -98,7 +98,7 @@ public class Interface extends Application {
 	 * Boolean true lorsque le slider de rotation Z est activé.
 	 */
 	private boolean flagZ = false;
-	
+
 	/**
 	 * Représente le niveau de zoom moyen adapté à la figure par rapport à sa taille.
 	 */
@@ -196,7 +196,7 @@ public class Interface extends Application {
 		ColorPicker cp = new ColorPicker();
 		cp.setValue(couleur);
 		menu.getChildren().addAll(lcolor,cp);
-		
+
 
 		//---------------------GESTION DES EVENEMENTS------------------
 
@@ -340,10 +340,10 @@ public class Interface extends Application {
 		});
 
 		canv.setOnScroll(e->{
-			if(e.getDeltaY() < 0 && zoom.getValue() < defaultZoom*2) { //scroll up
+			if(e.getDeltaY() > 0 && zoom.getValue() < defaultZoom*2) { //scroll up
 				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue() + defaultZoom/12.5);
 				zoom.setValue(zoom.getValue() + defaultZoom/12.5);
-			} else if(e.getDeltaY() > 0 && zoom.getValue() > 0){ //scroll down
+			} else if(e.getDeltaY() < 0 && zoom.getValue() > 0){ //scroll down
 				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue() - defaultZoom/12.5);
 				zoom.setValue(zoom.getValue() - defaultZoom/12.5);
 			}
@@ -384,8 +384,7 @@ public class Interface extends Application {
 			return 15;
 		else if(max > 1)
 			return 20;
-		else
-			return 30;
+		return 30;
 	}
 
 	/**
@@ -417,7 +416,7 @@ public class Interface extends Application {
 			Face[] tabf = init.getLoadFile().getFaces();
 			Point[] tabp = init.getLoadFile().getPoints();
 			Zoom zoom = new Zoom();
-			
+
 			try {
 				if(flagX) {
 					tabp = rotation.creerPointRotate(rotationValue, tabp, stratX.execute());
@@ -447,7 +446,7 @@ public class Interface extends Application {
 				System.exit(1);
 			}
 			rotation.recopiePoint(tabf, tabp);
-			
+
 			try {
 				if(flagZ) {
 					tabp = rotation.creerPointRotate(rotationValue, tabp, stratZ.execute());
