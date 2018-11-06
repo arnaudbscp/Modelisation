@@ -340,10 +340,10 @@ public class Interface extends Application {
 		});
 
 		canv.setOnScroll(e->{
-			if(e.getDeltaY() < 0 && zoom.getValue() < defaultZoom*2) { //scroll up
+			if(e.getDeltaY() > 0 && zoom.getValue() < defaultZoom*2) { //scroll up
 				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue() + defaultZoom/12.5);
 				zoom.setValue(zoom.getValue() + defaultZoom/12.5);
-			} else if(e.getDeltaY() > 0 && zoom.getValue() > 0){ //scroll down
+			} else if(e.getDeltaY() < 0 && zoom.getValue() > 0){ //scroll down
 				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue() - defaultZoom/12.5);
 				zoom.setValue(zoom.getValue() - defaultZoom/12.5);
 			}

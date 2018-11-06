@@ -76,6 +76,7 @@ public class Matrice {
 		}
 		return tab;
 	}
+	
 	/**
 	 * Création d'une matrice de la figure à partir du tableau de point par rapport à l'axe des Z (qui reste donc inchangé).
 	 * @return tab
