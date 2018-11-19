@@ -1,8 +1,7 @@
 package src.controleur;
 
-import Modele.Modele;
 import src.donnees.Point;
-import src.mouvements.Rotation;
+import src.modele.Modele;
 
 public class ControleurRotation {
 

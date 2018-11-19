@@ -65,7 +65,7 @@ public class Initialisation {
 			System.exit(1);
 		}
 		faces = lf.getFaces();
-		for(int i=0;i<faces.length;++i)
+		for(int i = 0; i < faces.length; ++i)
 			faces[i].setCentreGravite(faces[i].calculCentreGravite());
 	}
 
@@ -83,8 +83,8 @@ public class Initialisation {
 		QuickSort.getInstance().setTab(faces);
 		QuickSort.getInstance().sort();
 		for (int i = 0; i < faces.length; i++) {
-			px = new double[] {faces[i].getPoints()[0].getX()*-1+(gc.getCanvas().getWidth()/2),faces[i].getPoints()[1].getX()*-1+(gc.getCanvas().getWidth()/2),faces[i].getPoints()[2].getX()*-1+(gc.getCanvas().getWidth()/2)};
-			py = new double[] {faces[i].getPoints()[0].getZ()*-1+(gc.getCanvas().getHeight()/2),faces[i].getPoints()[1].getZ()*-1+(gc.getCanvas().getHeight()/2),faces[i].getPoints()[2].getZ()*-1+(gc.getCanvas().getHeight()/2)};
+			px = new double[] {faces[i].getPoints()[0].getX()*-1 + (gc.getCanvas().getWidth()/2),faces[i].getPoints()[1].getX()*-1 + (gc.getCanvas().getWidth()/2),faces[i].getPoints()[2].getX()*-1+(gc.getCanvas().getWidth()/2)};
+			py = new double[] {faces[i].getPoints()[0].getZ()*-1 + (gc.getCanvas().getHeight()/2),faces[i].getPoints()[1].getZ()*-1 + (gc.getCanvas().getHeight()/2),faces[i].getPoints()[2].getZ()*-1+(gc.getCanvas().getHeight()/2)};
 			gc.fillPolygon(px, py, 3);
 			gc.strokePolygon(px, py, 3);
 			gc.setFill(c);

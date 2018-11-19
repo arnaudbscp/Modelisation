@@ -1,6 +1,6 @@
 package src.controleur;
 
-import Modele.Modele;
+import src.modele.Modele;
 
 public class ControleurZoom {
 

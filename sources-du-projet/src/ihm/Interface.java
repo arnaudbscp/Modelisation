@@ -35,7 +35,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -121,6 +123,7 @@ public class Interface extends Application {
 		VBox menu = new VBox();
 		menu.setMinWidth(150);
 		Button b1 = new Button("Importer");
+		b1.setDefaultButton(true);
 		Button aide = new Button("Aide");
 		VBox boutonsImportAide = new VBox();
 		b1.setMinWidth(150);
@@ -223,12 +226,18 @@ public class Interface extends Application {
 
 		aide.setOnAction(e->{
 			Stage stageAide = new Stage();
+			stageAide.initOwner(primaryStage); //Définit la fenêtre principale comme fenêtre parente.
+			stageAide.initModality(Modality.WINDOW_MODAL); //Verrouille la fenêtre parente.
 			VBox rootAide = new VBox();
-			Scene sceneAide = new Scene(rootAide, 500, 150);
+			Scene sceneAide = new Scene(rootAide, 610, 180);
 			stageAide.setTitle("Aide");
 			stageAide.setScene(sceneAide);
-			Text textAide = new Text("Ce logiciel te permet d'afficher des figures géométriques dans un espace 3D.\nPour cela, choisis le fichier .ply contenant les coordonnées des points et les faces de la figure\nque tu souhaites charger grâce au bouton \"Importer\".\nTu pourras ensuite déplacer la figure dans l'espace grâce aux différents Sliders et Boutons,\nqui permettent d'effectuer des rotations, des translations et de zoomer.\nTu peux également customiser la figure en changeant sa couleur !");
+			Text textAide = new Text("Ce logiciel te permet d'afficher des figures géométriques dans un espace 3D. Pour cela, choisis le fichier .ply contenant les coordonnées des points et les faces de la figure que tu souhaites charger grâce au bouton \"Importer\". Tu pourras ensuite déplacer la figure dans l'espace grâce aux différents Sliders et Boutons, qui permettent d'effectuer des rotations, des translations et de zoomer. Tu peux régler le pas de la translation pour plus ou moins de précision dans le champ dédié. Tu peux également zoomer avec la molette de la souris. Enfin, tu peux customiser la figure en changeant sa couleur !");
+			textAide.setWrappingWidth(sceneAide.getWidth()-10); //Adapte le texte à la largeur de la fenêtre.
+			textAide.setLineSpacing(5); //Définit la valeur de l'interligne.
+			textAide.setTextAlignment(TextAlignment.JUSTIFY); //Justifie le texte.
 			Button okAide = new Button("J'ai compris !");
+			okAide.setDefaultButton(true); //Définit le bouton "J'ai compris" comme bouton par défaut de la fenêtre, permettant son activation à l'appui de la touche Entrée.
 			rootAide.getChildren().addAll(textAide, okAide);
 			okAide.setOnAction(e2->{
 				stageAide.close();
@@ -243,7 +252,7 @@ public class Interface extends Application {
 			filePly = importer.showOpenDialog(primaryStage);
 			if(filePly != null) {
 				String extension = "";
-				int i = 0;
+				short i = 0;
 				while (filePly.getPath().charAt(i) != '.')
 					i++;
 				extension = filePly.getPath().substring(i, filePly.getPath().length());	

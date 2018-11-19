@@ -26,7 +26,7 @@ public class Matrice {
 	 */
 	public double[][] creerMatrice(Point[] p) {
 		double[][] tab = new double[3][p.length];
-		for(int i = 0; i < 4; i++) {
+		for(byte i = 0; i < 4; i++) {
 			for(int j = 0; j < p.length; j++) {
 				if(i == 0)
 					tab[i][j] = p[j].getX();
@@ -45,7 +45,7 @@ public class Matrice {
 	 */
 	public double[][] creerMatriceY(Point[] p) {
 		double[][] tab = new double[3][p.length];
-		for(int i = 0; i < 4; i++) {
+		for(byte i = 0; i < 4; i++) {
 			for(int j = 0; j < p.length; j++) {
 				if(i == 0)
 					tab[i][j] = p[j].getX();
@@ -64,7 +64,7 @@ public class Matrice {
 	 */
 	public double[][] creerMatriceX(Point[] p) {
 		double[][] tab = new double[3][p.length];
-		for(int i = 0; i < 4; i++) {
+		for(byte i = 0; i < 4; i++) {
 			for(int j = 0; j < p.length; j++) {
 				if(i == 0)
 					tab[i][j] = p[j].getY();
@@ -89,7 +89,7 @@ public class Matrice {
 	
 	public double[][] creerMatriceZ(Point[] p) {
 		double[][] tab = new double[3][p.length];
-		for(int i = 0; i < 4; i++) {
+		for(byte i = 0; i < 4; i++) {
 			for(int j = 0; j < p.length; j++) {
 				if(i == 0)
 					tab[i][j] = p[j].getX();

@@ -1,6 +1,6 @@
 package src.controleur;
 
-import Modele.Modele;
+import src.modele.Modele;
 
 public class ControleurTranslation {
 
@@ -9,6 +9,4 @@ public class ControleurTranslation {
 	public ControleurTranslation(Modele modele) {
 		this.modele = modele;
 	}
-	
-	
 }

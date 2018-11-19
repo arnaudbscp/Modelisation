@@ -64,7 +64,7 @@ public class LoadFile {
 			br.readLine();
 			br.readLine();
 			points = new Point[recupNb(br.readLine())];
-			for(int i = 0; i < 3; i++)
+			for(byte i = 0; i < 3; i++)
 				br.readLine();
 			faces = new Face[recupNb(br.readLine())];
 		} catch (WrongHeaderException e) {
@@ -113,7 +113,7 @@ public class LoadFile {
 		xyz = lignePoint.split("a");
 		String[] StringCoords = new String[] {xyz[0], xyz[1], xyz[2]};
 		float[] floatCoords = new float[StringCoords.length];
-		for(int i = 0; i < StringCoords.length; i++) {
+		for(byte i = 0; i < StringCoords.length; i++) {
 			if(StringCoords[i].contains("e")) {
 				String nb = StringCoords[i].substring(0, StringCoords[i].indexOf("e"));
 				String expo = StringCoords[i].substring(StringCoords[i].indexOf("e")+1);
