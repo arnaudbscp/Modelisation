@@ -506,7 +506,7 @@ public class Interface extends Application {
 	 * Retourne le fichier .ply
 	 * @return
 	 */
-	public File getFichier() {
+	public File getFichier() { 
 		return filePly;
 	}
 
