@@ -116,7 +116,7 @@ public class Interface extends Application {
 	/**
 	 * Contient le mode selectionné pour dessiner la figure (faces + arrêtes, faces seulement ou arrêtes seulement).
 	 */
-	private ModeDessin md = ModeDessin.FACES_ARRETES;
+	private ModeDessin modeDessin = ModeDessin.FACES_ARRETES;
 
 	/**
 	 * Méthode d'affichage de l'interface graphique.
@@ -127,26 +127,24 @@ public class Interface extends Application {
 		Scene scene = new Scene(corps, 1280, 700);
 		VBox menu = new VBox();
 		menu.setMinWidth(150);
-		Button b1 = new Button("Importer");
-		b1.setDefaultButton(true);
-		Button aide = new Button("Aide");
-		VBox boutonsImportAide = new VBox();
-		b1.setMinWidth(150);
-		aide.setMinWidth(150);
-		boutonsImportAide.setSpacing(3);
-		boutonsImportAide.getChildren().addAll(b1, aide);
-		menu.getChildren().add(boutonsImportAide);
+		Button boutonImport = new Button("Importer");
+		boutonImport.setDefaultButton(true);
+		Button boutonAide = new Button("Aide");
+		VBox vbBoutonsImportAide = new VBox();
+		boutonImport.setMinWidth(150);
+		boutonAide.setMinWidth(150);
+		vbBoutonsImportAide.setSpacing(3);
+		vbBoutonsImportAide.getChildren().addAll(boutonImport, boutonAide);
+		menu.getChildren().add(vbBoutonsImportAide);
 		Canvas canv = new Canvas(1100, 600);
 		GraphicsContext gc = canv.getGraphicsContext2D();
 		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		FileChooser importer = new FileChooser();
 		importer.setTitle("Selectionner un fichier 3D");
-		VBox dessin = new VBox();
 		Separator sep = new Separator(Orientation.VERTICAL);
 		sep.setPrefSize(1, 800);
-		dessin.getChildren().add(sep);
 		corps.getChildren().add(menu);
-		corps.getChildren().add(dessin);
+		corps.getChildren().add(sep);
 		sep.setValignment(VPos.CENTER);
 		sep.setMinHeight(300);
 		sep.setStyle("-fx-padding : 0 0 0 30;");
@@ -165,7 +163,7 @@ public class Interface extends Application {
 		//SLIDER ROTATION X (par défaut)
 		Slider sliderRotation = new Slider();
 		Label lblTournerX = new Label();
-		lblTournerX.setText("Tourner X");
+		lblTournerX.setText("Rotation X");
 		lblTournerX.setPadding(new Insets(50,1,1,50));
 		sliderRotation.setMin(0);
 		sliderRotation.setMax(360);
@@ -226,25 +224,26 @@ public class Interface extends Application {
 		cp.setValue(couleur);
 		menu.getChildren().addAll(lcolor,cp);
 		
-		//BOUTONS FACES/ARRETES/LES DEUX
-		VBox boutonsFacesArretes = new VBox();
-		boutonsFacesArretes.setPadding(new Insets(20, 0, 0, 0));
-		Button buttonFacesEtArretes = new Button("Faces + Arrêtes");
-		buttonFacesEtArretes.setDisable(true);
-		Button buttonFaces = new Button("Faces");
-		Button buttonArretes = new Button("Arrêtes");
-		buttonArretes.setPrefWidth(150);
-		buttonFacesEtArretes.setPrefWidth(150);
-		buttonFaces.setPrefWidth(150);
-		boutonsFacesArretes.getChildren().addAll(buttonFacesEtArretes, buttonFaces, buttonArretes);
-		boutonsFacesArretes.setSpacing(2);
-		menu.getChildren().add(boutonsFacesArretes);
+		//BOUTONS FACES/ARRETES/LES DEUX (MODE)
+		Label lblMode = new Label("Mode de dessin:");
+		lblMode.setPadding(new Insets(0, 0, 0, 20));
+		VBox vbBoutonsFacesArretes = new VBox();
+		vbBoutonsFacesArretes.setPadding(new Insets(20, 0, 0, 0));
+		Button boutonFacesEtArretes = new Button("Faces + Arrêtes");
+		boutonFacesEtArretes.setDisable(true);
+		Button boutonFaces = new Button("Faces");
+		Button boutonArretes = new Button("Arrêtes");
+		boutonArretes.setPrefWidth(150);
+		boutonFacesEtArretes.setPrefWidth(150);
+		boutonFaces.setPrefWidth(150);
+		vbBoutonsFacesArretes.getChildren().addAll(lblMode, boutonFacesEtArretes, boutonFaces, boutonArretes);
+		vbBoutonsFacesArretes.setSpacing(2);
+		menu.getChildren().add(vbBoutonsFacesArretes);
 		
-
 
 		//---------------------GESTION DES EVENEMENTS------------------
 
-		aide.setOnAction(e->{
+		boutonAide.setOnAction(e->{
 			Stage stageAide = new Stage();
 			stageAide.initOwner(primaryStage); //Définit la fenêtre principale comme fenêtre parente.
 			stageAide.initModality(Modality.WINDOW_MODAL); //Verrouille la fenêtre parente.
@@ -268,7 +267,7 @@ public class Interface extends Application {
 			stageAide.show();
 		});
 
-		b1.setOnAction(e -> {
+		boutonImport.setOnAction(e -> {
 			filePly = importer.showOpenDialog(primaryStage);
 			if(filePly != null) {
 				String extension = "";
@@ -294,7 +293,7 @@ public class Interface extends Application {
 					System.exit(1);
 				}
 				gc.setLineWidth(1); //epaisseur des lignes
-				init.creerFigure(gc, init.getLoadFile().getFaces(), couleur, md);
+				init.creerFigure(gc, init.getLoadFile().getFaces(), couleur, modeDessin);
 				cptTranslateGD = 0;
 				cptTranslateHB = 0;
 				defaultZoom = defaultZoom();
@@ -313,14 +312,14 @@ public class Interface extends Application {
 		cp.setOnAction(e ->{
 			couleur = cp.getValue();
 			if(filePly != null)
-				init.creerFigure(gc, init.getLoadFile().getFaces(), couleur, md);
+				init.creerFigure(gc, init.getLoadFile().getFaces(), couleur, modeDessin);
 		});
 
 		X.setOnAction(e -> {
 			X.setDisable(true);
 			Y.setDisable(false);
 			Z.setDisable(false);
-			lblTournerX.setText("Tourner X");
+			lblTournerX.setText("Rotation X");
 			sliderRotation.setValue(stratX.getValeurRotation());
 			flagX = true;
 			flagY = false;
@@ -331,7 +330,7 @@ public class Interface extends Application {
 			Y.setDisable(true);
 			X.setDisable(false);
 			Z.setDisable(false);
-			lblTournerX.setText("Tourner Y");
+			lblTournerX.setText("Rotation Y");
 			sliderRotation.setValue(stratY.getValeurRotation());
 			flagY = true;
 			flagX = false;
@@ -342,7 +341,7 @@ public class Interface extends Application {
 			Z.setDisable(true);
 			Y.setDisable(false);
 			X.setDisable(false);
-			lblTournerX.setText("Tourner Z");
+			lblTournerX.setText("Rotation Z");
 			sliderRotation.setValue(stratZ.getValeurRotation());
 			flagZ = true;
 			flagX = false;
@@ -440,27 +439,27 @@ public class Interface extends Application {
 			}
 		});
 		
-		buttonFacesEtArretes.setOnAction(e->{
-			buttonFacesEtArretes.setDisable(true);
-			buttonArretes.setDisable(false);
-			buttonFaces.setDisable(false);
-			md = ModeDessin.FACES_ARRETES;
+		boutonFacesEtArretes.setOnAction(e->{
+			boutonFacesEtArretes.setDisable(true);
+			boutonArretes.setDisable(false);
+			boutonFaces.setDisable(false);
+			modeDessin = ModeDessin.FACES_ARRETES;
 			miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 		});
 
-		buttonFaces.setOnAction(e->{
-			buttonFacesEtArretes.setDisable(false);
-			buttonArretes.setDisable(false);
-			buttonFaces.setDisable(true);
-			md = ModeDessin.FACES;
+		boutonFaces.setOnAction(e->{
+			boutonFacesEtArretes.setDisable(false);
+			boutonArretes.setDisable(false);
+			boutonFaces.setDisable(true);
+			modeDessin = ModeDessin.FACES;
 			miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 		});
 		
-		buttonArretes.setOnAction(e->{
-			buttonFacesEtArretes.setDisable(false);
-			buttonArretes.setDisable(true);
-			buttonFaces.setDisable(false);
-			md = ModeDessin.ARRETES;
+		boutonArretes.setOnAction(e->{
+			boutonFacesEtArretes.setDisable(false);
+			boutonArretes.setDisable(true);
+			boutonFaces.setDisable(false);
+			modeDessin = ModeDessin.ARRETES;
 			miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 		});
 		
@@ -600,7 +599,7 @@ public class Interface extends Application {
 			translation.recopiePoint(tabf, tabp);
 
 			gc.clearRect(0, 0, 1280, 600);
-			init.creerFigure(gc, tabf,couleur, md);
+			init.creerFigure(gc, tabf,couleur, modeDessin);
 		}
 	}
 
