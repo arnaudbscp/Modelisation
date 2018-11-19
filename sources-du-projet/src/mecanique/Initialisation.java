@@ -75,7 +75,7 @@ public class Initialisation {
 	 * @param faces
 	 * @param c
 	 */
-	public void creerFigure(GraphicsContext gc, Face[] faces, Color c) {
+	public void creerFigure(GraphicsContext gc, Face[] faces, Color c, ModeDessin md) {
 		double[] px;
 		double[] py;
 		for (int i = 0; i < faces.length; i++)
@@ -85,9 +85,15 @@ public class Initialisation {
 		for (int i = 0; i < faces.length; i++) {
 			px = new double[] {faces[i].getPoints()[0].getX()*-1 + (gc.getCanvas().getWidth()/2),faces[i].getPoints()[1].getX()*-1 + (gc.getCanvas().getWidth()/2),faces[i].getPoints()[2].getX()*-1+(gc.getCanvas().getWidth()/2)};
 			py = new double[] {faces[i].getPoints()[0].getZ()*-1 + (gc.getCanvas().getHeight()/2),faces[i].getPoints()[1].getZ()*-1 + (gc.getCanvas().getHeight()/2),faces[i].getPoints()[2].getZ()*-1+(gc.getCanvas().getHeight()/2)};
-			gc.fillPolygon(px, py, 3);
-			gc.strokePolygon(px, py, 3);
-			gc.setFill(c);
+			if(md.equals(ModeDessin.FACES_ARRETES)) {
+				gc.fillPolygon(px, py, 3);
+				gc.strokePolygon(px, py, 3);
+				gc.setFill(c);
+			}else if(md.equals(ModeDessin.FACES)) {
+				gc.fillPolygon(px, py, 3);
+				gc.setFill(c);
+			}else
+				gc.strokePolygon(px, py, 3);
 		}
 	}
 

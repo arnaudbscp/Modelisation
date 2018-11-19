@@ -9,7 +9,7 @@ import src.donnees.Face;
 import src.donnees.Point;
 
 import src.mecanique.Initialisation;
-
+import src.mecanique.ModeDessin;
 import src.mouvements.Rotation;
 import src.mouvements.Translation;
 import src.mouvements.Zoom;
@@ -112,6 +112,11 @@ public class Interface extends Application {
 	 * Boolean true si le pas de translation est valide, c'est à dire que c'est un bien un nombre réel.
 	 */
 	private boolean pasValide = true;
+	
+	/**
+	 * Contient le mode selectionné pour dessiner la figure (faces + arrêtes, faces seulement ou arrêtes seulement).
+	 */
+	private ModeDessin md = ModeDessin.FACES_ARRETES;
 
 	/**
 	 * Méthode d'affichage de l'interface graphique.
@@ -119,7 +124,7 @@ public class Interface extends Application {
 	public void start(Stage primaryStage){
 		//ELEMENTS GRAPHIQUES
 		HBox corps = new HBox();
-		Scene scene = new Scene(corps, 1280, 600);
+		Scene scene = new Scene(corps, 1280, 700);
 		VBox menu = new VBox();
 		menu.setMinWidth(150);
 		Button b1 = new Button("Importer");
@@ -150,12 +155,12 @@ public class Interface extends Application {
 		textErreur.setFill(Color.RED);
 
 		//SLIDER ZOOM
-		Slider zoom = new Slider();
+		Slider sliderZoom = new Slider();
 		Label lblZoom = new Label();
 		lblZoom.setText("Zoomer");
 		lblZoom.setStyle("-fx-padding : 20 0 0 50;");
-		zoom.setDisable(true);
-		menu.getChildren().addAll(lblZoom, zoom);
+		sliderZoom.setDisable(true);
+		menu.getChildren().addAll(lblZoom, sliderZoom);
 
 		//SLIDER ROTATION X (par défaut)
 		Slider sliderRotation = new Slider();
@@ -220,6 +225,21 @@ public class Interface extends Application {
 		ColorPicker cp = new ColorPicker();
 		cp.setValue(couleur);
 		menu.getChildren().addAll(lcolor,cp);
+		
+		//BOUTONS FACES/ARRETES/LES DEUX
+		VBox boutonsFacesArretes = new VBox();
+		boutonsFacesArretes.setPadding(new Insets(20, 0, 0, 0));
+		Button buttonFacesEtArretes = new Button("Faces + Arrêtes");
+		buttonFacesEtArretes.setDisable(true);
+		Button buttonFaces = new Button("Faces");
+		Button buttonArretes = new Button("Arrêtes");
+		buttonArretes.setPrefWidth(150);
+		buttonFacesEtArretes.setPrefWidth(150);
+		buttonFaces.setPrefWidth(150);
+		boutonsFacesArretes.getChildren().addAll(buttonFacesEtArretes, buttonFaces, buttonArretes);
+		boutonsFacesArretes.setSpacing(2);
+		menu.getChildren().add(boutonsFacesArretes);
+		
 
 
 		//---------------------GESTION DES EVENEMENTS------------------
@@ -274,26 +294,26 @@ public class Interface extends Application {
 					System.exit(1);
 				}
 				gc.setLineWidth(1); //epaisseur des lignes
-				init.creerFigure(gc, init.getLoadFile().getFaces(), couleur);
+				init.creerFigure(gc, init.getLoadFile().getFaces(), couleur, md);
 				cptTranslateGD = 0;
 				cptTranslateHB = 0;
 				defaultZoom = defaultZoom();
-				zoom.setDisable(false);
-				zoom.setMin(0);
-				zoom.setMax(defaultZoom*2);
-				zoom.setValue(defaultZoom);
-				zoom.setMajorTickUnit(defaultZoom/2.5);
-				zoom.setBlockIncrement(defaultZoom/12.5);
-				zoom.setShowTickLabels(true);
+				sliderZoom.setDisable(false);
+				sliderZoom.setMin(0);
+				sliderZoom.setMax(defaultZoom*2);
+				sliderZoom.setValue(defaultZoom);
+				sliderZoom.setMajorTickUnit(defaultZoom/2.5);
+				sliderZoom.setBlockIncrement(defaultZoom/12.5);
+				sliderZoom.setShowTickLabels(true);
 				//On simule un premier mouvement de la figure pour que tous les mouvements fonctionnent correctement.
-				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+				miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 			}
 		});
 
 		cp.setOnAction(e ->{
 			couleur = cp.getValue();
 			if(filePly != null)
-				init.creerFigure(gc, init.getLoadFile().getFaces(), couleur);
+				init.creerFigure(gc, init.getLoadFile().getFaces(), couleur, md);
 		});
 
 		X.setOnAction(e -> {
@@ -330,84 +350,84 @@ public class Interface extends Application {
 		});
 
 		sliderRotation.setOnMouseDragged(e-> {
-			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+			miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 		});
 
 		sliderRotation.setOnMouseClicked(e-> {
-			miseAJourVue(gc, sliderRotation.getValue(),  zoom.getValue());
+			miseAJourVue(gc, sliderRotation.getValue(),  sliderZoom.getValue());
 		});
 
-		zoom.setOnMouseDragged(e -> {
-			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+		sliderZoom.setOnMouseDragged(e -> {
+			miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 		});
 
-		zoom.setOnMouseClicked(e -> {
-			miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+		sliderZoom.setOnMouseClicked(e -> {
+			miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 		});
 
 		gauche.setOnAction(e->{
 			if(pasValide) {
 				cptTranslateGD += Float.parseFloat("0"+tfPas.getText());
-				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+				miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 			}
 		});
 
 		gauche.setOnMouseDragged(e->{
 			if(pasValide) {
 				cptTranslateGD += Float.parseFloat("0"+tfPas.getText());
-				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+				miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 			}
 		});
 
 		droite.setOnAction(e->{
 			if(pasValide) {
 				cptTranslateGD -= Float.parseFloat("0"+tfPas.getText());
-				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+				miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 			}
 		});
 
 		droite.setOnMouseDragged(e->{
 			if(pasValide) {
 				cptTranslateGD -= Float.parseFloat("0"+tfPas.getText());
-				miseAJourVue(gc, sliderRotation.getValue(),zoom.getValue());
+				miseAJourVue(gc, sliderRotation.getValue(),sliderZoom.getValue());
 			}
 		});
 
 		haut.setOnAction(e->{
 			if(pasValide) {
 				cptTranslateHB += Float.parseFloat("0"+tfPas.getText());
-				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+				miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 			}
 		});
 
 		haut.setOnMouseDragged(e->{
 			if(pasValide) {
 				cptTranslateHB += Float.parseFloat("0"+tfPas.getText());
-				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+				miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 			}
 		});
 
 		bas.setOnAction(e->{
 			if(pasValide) {
 				cptTranslateHB -= Float.parseFloat("0"+tfPas.getText());
-				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+				miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 			}
 		});
 
 		bas.setOnMouseDragged(e->{
 			if(pasValide) {
 				cptTranslateHB -= Float.parseFloat("0"+tfPas.getText());
-				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue());
+				miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 			}
 		});
 
 		canv.setOnScroll(e->{
-			if(e.getDeltaY() > 0 && zoom.getValue() < defaultZoom*2) { //scroll up
-				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue() + defaultZoom/12.5);
-				zoom.setValue(zoom.getValue() + defaultZoom/12.5);
-			} else if(e.getDeltaY() < 0 && zoom.getValue() > 0){ //scroll down
-				miseAJourVue(gc, sliderRotation.getValue(), zoom.getValue() - defaultZoom/12.5);
-				zoom.setValue(zoom.getValue() - defaultZoom/12.5);
+			if(e.getDeltaY() > 0 && sliderZoom.getValue() < defaultZoom*2) { //scroll up
+				miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue() + defaultZoom/12.5);
+				sliderZoom.setValue(sliderZoom.getValue() + defaultZoom/12.5);
+			} else if(e.getDeltaY() < 0 && sliderZoom.getValue() > 0){ //scroll down
+				miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue() - defaultZoom/12.5);
+				sliderZoom.setValue(sliderZoom.getValue() - defaultZoom/12.5);
 			}
 		});
 
@@ -419,7 +439,31 @@ public class Interface extends Application {
 				pasValide = false;
 			}
 		});
+		
+		buttonFacesEtArretes.setOnAction(e->{
+			buttonFacesEtArretes.setDisable(true);
+			buttonArretes.setDisable(false);
+			buttonFaces.setDisable(false);
+			md = ModeDessin.FACES_ARRETES;
+			miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
+		});
 
+		buttonFaces.setOnAction(e->{
+			buttonFacesEtArretes.setDisable(false);
+			buttonArretes.setDisable(false);
+			buttonFaces.setDisable(true);
+			md = ModeDessin.FACES;
+			miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
+		});
+		
+		buttonArretes.setOnAction(e->{
+			buttonFacesEtArretes.setDisable(false);
+			buttonArretes.setDisable(true);
+			buttonFaces.setDisable(false);
+			md = ModeDessin.ARRETES;
+			miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
+		});
+		
 		//----AFFICHAGE FENETRE------
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("i3D"); 
@@ -556,7 +600,7 @@ public class Interface extends Application {
 			translation.recopiePoint(tabf, tabp);
 
 			gc.clearRect(0, 0, 1280, 600);
-			init.creerFigure(gc, tabf,couleur);
+			init.creerFigure(gc, tabf,couleur, md);
 		}
 	}
 
