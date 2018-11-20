@@ -136,7 +136,7 @@ public class Interface extends Application {
 		vbBoutonsImportAide.setSpacing(3);
 		vbBoutonsImportAide.getChildren().addAll(boutonImport, boutonAide);
 		menu.getChildren().add(vbBoutonsImportAide);
-		Canvas canv = new Canvas(1100, 600);
+		Canvas canv = new Canvas(1100, 700);
 		GraphicsContext gc = canv.getGraphicsContext2D();
 		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		FileChooser importer = new FileChooser();
@@ -598,7 +598,7 @@ public class Interface extends Application {
 			}
 			translation.recopiePoint(tabf, tabp);
 
-			gc.clearRect(0, 0, 1280, 600);
+			gc.clearRect(0, 0, 1280, 700);
 			init.creerFigure(gc, tabf,couleur, modeDessin);
 		}
 	}
