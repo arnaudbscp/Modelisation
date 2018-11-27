@@ -48,8 +48,9 @@ public class LoadFile {
 	 * Constructeur permettant de lire un fichier passé en paramètre, appelant la méthode readStream(Reader in) 
 	 * qui va lire le stream du fichier.
 	 * @throws IOException
+	 * @throws WrongHeaderException 
 	 */
-	public LoadFile(File f) throws IOException{
+	public LoadFile(File f) throws IOException, WrongHeaderException{
 		readStream(new FileReader(new File(f.getPath())));
 	}
 
@@ -57,20 +58,25 @@ public class LoadFile {
 	 * Méthode permettant de lire un stream sans spécifier de fichier.
 	 * Création des tableaux de Point et de Face de longueurs adéquates, sans les remplir.
 	 * @throws IOException
+	 * @throws WrongHeaderException 
 	 */
-	public void readStream(Reader in) throws IOException {
-		try {
-			br = new BufferedReader(in);
-			br.readLine();
-			br.readLine();
-			points = new Point[recupNb(br.readLine())];
-			for(byte i = 0; i < 3; i++)
-				br.readLine();
-			faces = new Face[recupNb(br.readLine())];
-		} catch (WrongHeaderException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
+	public void readStream(Reader in) throws IOException, WrongHeaderException {
+		String l = "";
+		br = new BufferedReader(in);
+		for(byte i = 0; i < 3; i++) {
+			l = br.readLine();
+			//Si la ligne est un commentaire, on ne la prend pas en compte.
+			if(isCommentaire(l))
+				i--;
 		}
+		points = new Point[recupNb(l)];
+		for(byte i = 0; i < 3; i++) {
+			l = br.readLine();
+			//Si la ligne est un commentaire, on ne la prend pas en compte.
+			if(isCommentaire(l))
+				i--;
+		}
+		faces = new Face[recupNb(br.readLine())];
 	}
 
 	/**
@@ -80,26 +86,35 @@ public class LoadFile {
 	 * @throws MissingPointLineException 
 	 */
 	public void creerPoints() throws IOException, WrongPointLineFormatException, MissingPointLineException {
-		br.readLine();
-		br.readLine();
+		String lignePoint = "";
+		for(byte i = 0; i < 2; i++) {
+			lignePoint = br.readLine();
+			if(isCommentaire(lignePoint))
+				i--;
+		}
 		for(int i = 0; i < points.length; i++) {
-			String lignePoint = br.readLine() + "a";
-			//Je remplace les espaces par des a car je n'arrive pas à gérer les espaces dans la regex.
-			lignePoint = lignePoint.replace(" ", "a");
-			if(!lignePoint.matches("^(-?[0-9]+\\.?[0-9]*(e-?[0-9]+)?a){3}a*$")) { //Si la ligne n'est pas dans le bon format d'une ligne représentant un point.
-				if(lignePoint.matches("^3a([0-9]+a+){3}a*$")) //Si c'est une ligne représentant une face, c'est qu'il n'y a pas assez de points.
-					throw new MissingPointLineException(points.length, i);
-				else
-					throw new WrongPointLineFormatException(i + 10); //Sinon c'est juste une erreur de format de ligne de point.
-			}
-			else if(lignePoint.contains("e")) 
-				creerPointsExposant(lignePoint, i);
+			lignePoint = br.readLine() + "a";
+			//Si la ligne est un commentaire, on ne la prend pas en compte.
+			if(isCommentaire(lignePoint))
+				i--;
 			else {
-				String[] xyz = new String[3];
-				//Pour chaque ligne, on récupère les 3 coordonnées en repérant les espaces dans la ligne.
-				xyz = lignePoint.split("a");
-				points[i] = new Point(Float.parseFloat(xyz[0]), Float.parseFloat(xyz[1]), Float.parseFloat(xyz[2]));
-			} 
+				//Je remplace les espaces par des a car je n'arrive pas à gérer les espaces dans la regex.
+				lignePoint = lignePoint.replace(" ", "a");
+				if(!lignePoint.matches("^(-?[0-9]+\\.?[0-9]*(e-?[0-9]+)?a){3}a*$")) { //Si la ligne n'est pas dans le bon format d'une ligne représentant un point.
+					if(lignePoint.matches("^3a([0-9]+a+){3}a*$")) //Si c'est une ligne représentant une face, c'est qu'il n'y a pas assez de points.
+						throw new MissingPointLineException(points.length, i);
+					else
+						throw new WrongPointLineFormatException(i + 10); //Sinon c'est juste une erreur de format de ligne de point.
+				}
+				else if(lignePoint.contains("e")) 
+					creerPointsExposant(lignePoint, i);
+				else {
+					String[] xyz = new String[3];
+					//Pour chaque ligne, on récupère les 3 coordonnées en repérant les espaces dans la ligne.
+					xyz = lignePoint.split("a");
+					points[i] = new Point(Float.parseFloat(xyz[0]), Float.parseFloat(xyz[1]), Float.parseFloat(xyz[2]));
+				}
+			}
 		}
 	}
 
@@ -135,26 +150,34 @@ public class LoadFile {
 	public void creerFaces() throws IOException, WrongFaceLineFormatException, TooMuchPointLineException, MissingFaceLineException, TooMuchFaceLineException {
 		for(int j = 0; j < faces.length; j++) {
 			String ligneFace = br.readLine() + "a";
-			//Je remplace les espaces par des a car je n'arrive pas à gérer les espaces dans la regex.
-			ligneFace = ligneFace.replace(" ", "a");
-			if(!ligneFace.matches("^3a([0-9]+a){3}a*$")) { //Si la ligne n'est pas dans le bon format d'une ligne représentant une face.
-				if(ligneFace.matches("^(-?[0-9]+\\.?[0-9]*(e-?[0-9]+)?a){3}a*$")) //Si c'est une ligne représentant un point, c'est qu'il y a trop de points.
-					throw new TooMuchPointLineException();
-				else if(ligneFace.equals("nulla"))
-					throw new MissingFaceLineException(faces.length, j); //Si la ligne est vide c'est qu'il manque des faces. 
-				else
-					throw new WrongFaceLineFormatException(j + 10 + points.length); //Sinon c'est juste une erreur de format de ligne de face.
+			//Si la ligne est un commentaire, on ne la prend pas en compte.
+			if(isCommentaire(ligneFace))
+				j--;
+			else {
+				//Je remplace les espaces par des a car je n'arrive pas à gérer les espaces dans la regex.
+				ligneFace = ligneFace.replace(" ", "a");
+				if(!ligneFace.matches("^3a([0-9]+a){3}a*$")) { //Si la ligne n'est pas dans le bon format d'une ligne représentant une face.
+					if(ligneFace.matches("^(-?[0-9]+\\.?[0-9]*(e-?[0-9]+)?a){3}a*$")) //Si c'est une ligne représentant un point, c'est qu'il y a trop de points.
+						throw new TooMuchPointLineException();
+					else if(ligneFace.equals("nulla"))
+						throw new MissingFaceLineException(faces.length, j); //Si la ligne est vide c'est qu'il manque des faces. 
+					else
+						throw new WrongFaceLineFormatException(j + 10 + points.length); //Sinon c'est juste une erreur de format de ligne de face.
+				}
+				ligneFace = ligneFace.substring(2,ligneFace.length()-1);//Supprime le 3 en début de chaque ligne.
+				String[] tabFaces = new String[3];
+				tabFaces = ligneFace.split("a");
+				int pt1 = Integer.parseInt(tabFaces[0]);
+				int pt2 = Integer.parseInt(tabFaces[1]);
+				int pt3 = Integer.parseInt(tabFaces[2]);
+				faces[j] = new Face(points[pt1], points[pt2], points[pt3]);
+				faces[j].setPosition(new int[] {pt1, pt2, pt3});
 			}
-			ligneFace = ligneFace.substring(2,ligneFace.length()-1);//Supprime le 3 en début de chaque ligne.
-			String[] tabFaces = new String[3];
-			tabFaces = ligneFace.split("a");
-			int pt1 = Integer.parseInt(tabFaces[0]);
-			int pt2 = Integer.parseInt(tabFaces[1]);
-			int pt3 = Integer.parseInt(tabFaces[2]);
-			faces[j] = new Face(points[pt1], points[pt2], points[pt3]);
-			faces[j].setPosition(new int[] {pt1, pt2, pt3});
 		}
-		String ligneEnTrop = br.readLine() + "a";
+		String ligneEnTrop;
+		do
+			ligneEnTrop = br.readLine() + "a";
+		while(isCommentaire(ligneEnTrop));
 		ligneEnTrop = ligneEnTrop.replace(" ", "a");
 		if(!ligneEnTrop.equals("nulla")){ //Si il y a encore des lignes c'est qu'il y a trop de faces.
 			if(ligneEnTrop.matches("^3a([0-9]+a){3}a*$"))
@@ -224,5 +247,14 @@ public class LoadFile {
 				max=points[i].getCoordonnees()[dimension];
 		}
 		return max;
+	}
+
+	/**
+	 * Retourne true si une ligne est un commentaire.
+	 * @param ligne
+	 * @return
+	 */
+	public boolean isCommentaire(String ligne) {
+		return ligne.startsWith("//");
 	}
 }
