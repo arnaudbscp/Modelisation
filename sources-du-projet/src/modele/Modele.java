@@ -6,6 +6,8 @@ import java.util.Observable;
 
 import javax.swing.JOptionPane;
 
+import javafx.scene.canvas.GraphicsContext;
+import src.exception.WrongFormatFileException;
 import src.mecanique.Initialisation;
 
 
@@ -20,6 +22,54 @@ public class Modele extends Observable{
 	 * Interprète le LoadFile pour créer les points et les faces, trier les faces et ainsi créer la figure.
 	 */
 	private Initialisation init;
+	
+	private double rotationValue;
+	
+	private double zoomValue;
+	
+	private int cptTranslateGD;
+	
+	private int cptTranslateHB;
+
+	public double getRotationValue() {
+		return rotationValue;
+	}
+
+	public double getZoomValue() {
+		return zoomValue;
+	}
+
+	public int getCptTranslateGD() {
+		return cptTranslateGD;
+	}
+
+	public int getCptTranslateHB() {
+		return cptTranslateHB;
+	}
+
+	public File getFilePly() {
+		return filePly;
+	}
+	
+	public Initialisation getInit() {
+		return init;
+	}
+
+	public void setCptTranslateGD(int cptTranslateGD) {
+		this.cptTranslateGD = cptTranslateGD;
+	}
+
+	public void setCptTranslateHB(int cptTranslateHB) {
+		this.cptTranslateHB = cptTranslateHB;
+	}
+
+	public void setInit(Initialisation init) {
+		this.init = init;
+	}
+	
+	public void setFilePly(File filePly) {
+		this.filePly = filePly;
+	}
 
 	public Modele(File filePly) {
 		this.filePly = filePly;
@@ -31,8 +81,12 @@ public class Modele extends Observable{
 			System.exit(1);
 		}
 	}
-
-	public Initialisation getInit() {
-		return init;
+	public void setModele(double rotationValue, double zoomValue, int cptTranslateGD, int cptTranslateHB) {
+		this.rotationValue = rotationValue;
+		this.zoomValue = zoomValue;
+		this.cptTranslateGD = cptTranslateGD;
+		this.cptTranslateHB = cptTranslateHB;
+		setChanged();
+		notifyObservers();
 	}
 }

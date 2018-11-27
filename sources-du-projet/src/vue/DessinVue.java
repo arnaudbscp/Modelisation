@@ -1,5 +1,10 @@
 package src.vue;
 
+import java.io.IOException;
+import java.util.Observable;
+
+import javax.swing.JOptionPane;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -12,14 +17,23 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import src.controleur.Controleur;
+import src.exception.WrongFormatFileException;
 import src.ihm.Strategy;
 import src.ihm.StrategyRotationX;
 import src.ihm.StrategyRotationY;
 import src.ihm.StrategyRotationZ;
+import src.mecanique.Initialisation;
+import src.mecanique.ModeDessin;
 
 public class DessinVue extends Application {
 
@@ -50,42 +64,115 @@ public class DessinVue extends Application {
 	 */
 	private boolean flagZ = false;
 
+	/**
+	 * Couleur de la figure initialisée à  blanche. Elle sera modifiée grâce au colorpicker par l'utilisateur.
+	 */
+	private Color couleur = Color.WHITE;
+
+	/**
+	 * Contient le mode selectionné pour dessiner la figure (faces + arrêtes, faces seulement ou arrêtes seulement).
+	 */
+	private ModeDessin modeDessin = ModeDessin.FACES_ARRETES;
+
+	Controleur controleur;
+
+	GraphicsContext gc;
+
+	public ModeDessin getModeDessin() {
+		return modeDessin;
+	}
+
+	public Color getCouleur() {
+		return couleur;
+	}
+
+	public boolean isFlagX() {
+		return flagX;
+	}
+
+	public boolean isFlagY() {
+		return flagY;
+	}
+
+	public boolean isFlagZ() {
+		return flagZ;
+	}
+
+	public Strategy getStratX() {
+		return stratX;
+	}
+
+	public Strategy getStratY() {
+		return stratY;
+	}
+
+	public Strategy getStratZ() {
+		return stratZ;
+	}
+
+	public GraphicsContext getGc() {
+		return gc;
+	}
+
+	public void setCouleur(Color couleur) {
+		this.couleur = couleur;
+	}
+	
+	public void setFlagX(boolean flagX) {
+		this.flagX = flagX;
+	}
+
+	public void setFlagY(boolean flagY) {
+		this.flagY = flagY;
+	}
+
+	public void setFlagZ(boolean flagZ) {
+		this.flagZ = flagZ;
+	}
+
 	public void start(Stage primaryStage){
 		//ELEMENTS GRAPHIQUES
 		HBox corps = new HBox();
-		Scene scene = new Scene(corps, 1280, 600);
+		Scene scene = new Scene(corps, 1280, 700);
 		VBox menu = new VBox();
 		menu.setMinWidth(150);
-		Button b1 = new Button("Importer");
-		b1.setMinWidth(150);
-		menu.getChildren().add(b1);
-		Canvas canv = new Canvas(1100, 600);
+		Button boutonImport = new Button("Importer");
+		boutonImport.setDefaultButton(true);
+		Button boutonAide = new Button("Aide");
+		VBox vbBoutonsImportAide = new VBox();
+		boutonImport.setMinWidth(150);
+		boutonAide.setMinWidth(150);
+		vbBoutonsImportAide.setSpacing(3);
+		vbBoutonsImportAide.getChildren().addAll(boutonImport, boutonAide);
+		menu.getChildren().add(vbBoutonsImportAide);
+		Canvas canv = new Canvas(1100, 700);
 		GraphicsContext gc = canv.getGraphicsContext2D();
 		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		FileChooser importer = new FileChooser();
-		VBox dessin = new VBox();
+		importer.setTitle("Selectionner un fichier 3D");
 		Separator sep = new Separator(Orientation.VERTICAL);
 		sep.setPrefSize(1, 800);
-		dessin.getChildren().add(sep);
 		corps.getChildren().add(menu);
-		corps.getChildren().add(dessin);
+		corps.getChildren().add(sep);
 		sep.setValignment(VPos.CENTER);
 		sep.setMinHeight(300);
 		sep.setStyle("-fx-padding : 0 0 0 30;");
 		corps.getChildren().add(canv);
+		Text textErreur = new Text(" Erreur.");
+		textErreur.setFill(Color.RED);
 
 		//SLIDER ZOOM
-		Slider zoom = new Slider();
+		Slider sliderZoom = new Slider();
 		Label lblZoom = new Label();
 		lblZoom.setText("Zoomer");
 		lblZoom.setStyle("-fx-padding : 20 0 0 50;");
-		zoom.setDisable(true);
-		menu.getChildren().addAll(lblZoom, zoom);
+		sliderZoom.setDisable(true);
+		menu.getChildren().addAll(lblZoom, sliderZoom);
 
 		//SLIDER ROTATION X (par défaut)
 		Slider sliderRotation = new Slider();
 		Label lblTournerX = new Label();
-		lblTournerX.setText("Tourner X");
+		lblTournerX.setText("Rotation X");
 		lblTournerX.setPadding(new Insets(50,1,1,50));
 		sliderRotation.setMin(0);
 		sliderRotation.setMax(360);
@@ -120,6 +207,12 @@ public class DessinVue extends Application {
 		Button gauche = new Button("G");
 		Button droite = new Button("D");
 		Button bas = new Button("B");
+		HBox hbPas = new HBox();
+		hbPas.setPadding(new Insets(3, 0, 0, 0));
+		Label lblPas = new Label("Pas: ");
+		TextField tfPas = new TextField("10");
+		tfPas.setPrefWidth(50);
+		hbPas.getChildren().addAll(lblPas, tfPas);
 		hbHaut.setPadding(new Insets(10, 0, 0, 60));
 		hbBas.setPadding(new Insets(0, 0, 0,60));
 		hbGaucheDroite.setPadding(new Insets(0, 0, 0,33));
@@ -131,12 +224,98 @@ public class DessinVue extends Application {
 		hbHaut.getChildren().add(haut);
 		hbGaucheDroite.getChildren().addAll(gauche, droite);
 		hbBas.getChildren().add(bas);
-		menu.getChildren().addAll(lblTranslation, hbHaut, hbGaucheDroite, hbBas);
+		menu.getChildren().addAll(lblTranslation, hbHaut, hbGaucheDroite, hbBas, hbPas);
 
 		//CHOIX COULEURS
 		Label lcolor = new Label("Couleur");
 		lcolor.setPadding(new Insets(30, 0, 10,50));
 		ColorPicker cp = new ColorPicker();
+		cp.setValue(couleur);
 		menu.getChildren().addAll(lcolor,cp);
+
+		//BOUTONS FACES/ARRETES/LES DEUX (MODE)
+		Label lblMode = new Label("Mode de dessin:");
+		lblMode.setPadding(new Insets(0, 0, 0, 20));
+		VBox vbBoutonsFacesArretes = new VBox();
+		vbBoutonsFacesArretes.setPadding(new Insets(20, 0, 0, 0));
+		Button boutonFacesEtArretes = new Button("Faces + Arrêtes");
+		boutonFacesEtArretes.setDisable(true);
+		Button boutonFaces = new Button("Faces");
+		Button boutonArretes = new Button("Arrêtes");
+		boutonArretes.setPrefWidth(150);
+		boutonFacesEtArretes.setPrefWidth(150);
+		boutonFaces.setPrefWidth(150);
+		vbBoutonsFacesArretes.getChildren().addAll(lblMode, boutonFacesEtArretes, boutonFaces, boutonArretes);
+		vbBoutonsFacesArretes.setSpacing(2);
+		menu.getChildren().add(vbBoutonsFacesArretes);
+
+		//---------------------GESTION DES EVENEMENTS------------------
+
+		boutonAide.setOnAction(e->{
+			Stage stageAide = new Stage();
+			stageAide.initOwner(primaryStage); //Définit la fenêtre principale comme fenêtre parente.
+			stageAide.initModality(Modality.WINDOW_MODAL); //Verrouille la fenêtre parente.
+			VBox rootAide = new VBox();
+			Scene sceneAide = new Scene(rootAide, 610, 180);
+			stageAide.setTitle("Aide");
+			stageAide.setScene(sceneAide);
+			Text textAide = new Text("Ce logiciel te permet d'afficher des figures géométriques dans un espace 3D. Pour cela, choisis le fichier .ply contenant les coordonnées des points et les faces de la figure que tu souhaites charger grâce au bouton \"Importer\". Tu pourras ensuite déplacer la figure dans l'espace grâce aux différents Sliders et Boutons, qui permettent d'effectuer des rotations, des translations et de zoomer. Tu peux régler le pas de la translation pour plus ou moins de précision dans le champ dédié. Tu peux également zoomer avec la molette de la souris. Enfin, tu peux customiser la figure en changeant sa couleur !");
+			textAide.setWrappingWidth(sceneAide.getWidth()-10); //Adapte le texte à la largeur de la fenêtre.
+			textAide.setLineSpacing(5); //Définit la valeur de l'interligne.
+			textAide.setTextAlignment(TextAlignment.JUSTIFY); //Justifie le texte.
+			Button okAide = new Button("J'ai compris !");
+			okAide.setDefaultButton(true); //Définit le bouton "J'ai compris" comme bouton par défaut de la fenêtre, permettant son activation à l'appui de la touche Entrée.
+			rootAide.getChildren().addAll(textAide, okAide);
+			okAide.setOnAction(e2->{
+				stageAide.close();
+			});
+			rootAide.setPadding(new Insets(5));
+			rootAide.setSpacing(5);
+			stageAide.setResizable(false);
+			stageAide.show();
+		});
+
+		boutonImport.setOnAction(e -> {
+			controleur.updateFichier(importer.showOpenDialog(primaryStage));
+		});
+
+		cp.setOnAction(e ->{
+			controleur.updateCouleur(cp.getValue());
+		});
+		
+		X.setOnAction(e -> {
+			X.setDisable(true);
+			Y.setDisable(false);
+			Z.setDisable(false);
+			lblTournerX.setText("Rotation X");
+			sliderRotation.setValue(stratX.getValeurRotation());
+			controleur.updateX();
+		});
+		
+		Y.setOnAction(e -> {
+			Y.setDisable(true);
+			X.setDisable(false);
+			Z.setDisable(false);
+			lblTournerX.setText("Rotation Y");
+			sliderRotation.setValue(stratY.getValeurRotation());
+			controleur.updateY();
+		});
+		
+		Z.setOnAction(e -> {
+			Z.setDisable(true);
+			Y.setDisable(false);
+			X.setDisable(false);
+			lblTournerX.setText("Rotation Z");
+			sliderRotation.setValue(stratZ.getValeurRotation());
+			controleur.updateZ();
+		});
+		
+		sliderRotation.setOnMouseDragged(e-> {
+			controleur.updateModele(rotationValue, zoomValue, cptTranslateGD, cptTranslateHB);
+		});
+	}
+
+	public void update(Observable o, Object arg) {
+		controleur.miseAJourVue(((src.modele.Modele)o).getRotationValue(), ((src.modele.Modele)o).getZoomValue(), ((src.modele.Modele)o).getCptTranslateGD(), ((src.modele.Modele)o).getCptTranslateHB());
 	}
 }
