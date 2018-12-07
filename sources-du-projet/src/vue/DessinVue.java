@@ -1,10 +1,8 @@
 package src.vue;
 
-import java.io.IOException;
+
 import java.util.Observable;
-
-import javax.swing.JOptionPane;
-
+import java.util.Observer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -27,52 +25,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import src.controleur.Controleur;
-import src.exception.WrongFormatFileException;
-import src.ihm.Strategy;
-import src.ihm.StrategyRotationX;
-import src.ihm.StrategyRotationY;
-import src.ihm.StrategyRotationZ;
-import src.mecanique.Initialisation;
 import src.mecanique.ModeDessin;
 
-public class DessinVue extends Application {
+public class DessinVue extends Application implements Observer{
 
-	private Strategy stratX = new StrategyRotationX(0);
-
-	/**
-	 * A DOCUMENTER
-	 */
-	private Strategy stratY = new StrategyRotationY(0);
-
-	/**
-	 * A DOCUMENTER
-	 */
-	private Strategy stratZ = new StrategyRotationZ(0);
-
-	/**
-	 * Boolean true lorsque le slider de rotation X est activé (par défaut).
-	 */
-	private boolean flagX = true;
-
-	/**
-	 * Boolean true lorsque le slider de rotation Y est activé.
-	 */
-	private boolean flagY = false;
-
-	/**
-	 * Boolean true lorsque le slider de rotation Z est activé.
-	 */
-	private boolean flagZ = false;
-
-	/**
-	 * Couleur de la figure initialisée à  blanche. Elle sera modifiée grâce au colorpicker par l'utilisateur.
-	 */
-	private Color couleur = Color.WHITE;
-
-	/**
-	 * Contient le mode selectionné pour dessiner la figure (faces + arrêtes, faces seulement ou arrêtes seulement).
-	 */
-	private ModeDessin modeDessin = ModeDessin.FACES_ARRETES;
+	
 
 	/**
 	 * Boolean true si le pas de translation est valide, c'est à dire que c'est un bien un nombre réel.
@@ -80,59 +37,9 @@ public class DessinVue extends Application {
 	private boolean pasValide = true;
 
 	Controleur controleur;
-
-	GraphicsContext gc;
-
-	public ModeDessin getModeDessin() {
-		return modeDessin;
-	}
-
-	public Color getCouleur() {
-		return couleur;
-	}
-
-	public boolean isFlagX() {
-		return flagX;
-	}
-
-	public boolean isFlagY() {
-		return flagY;
-	}
-
-	public boolean isFlagZ() {
-		return flagZ;
-	}
-
-	public Strategy getStratX() {
-		return stratX;
-	}
-
-	public Strategy getStratY() {
-		return stratY;
-	}
-
-	public Strategy getStratZ() {
-		return stratZ;
-	}
-
-	public GraphicsContext getGc() {
-		return gc;
-	}
-
-	public void setCouleur(Color couleur) {
-		this.couleur = couleur;
-	}
-
-	public void setFlagX(boolean flagX) {
-		this.flagX = flagX;
-	}
-
-	public void setFlagY(boolean flagY) {
-		this.flagY = flagY;
-	}
-
-	public void setFlagZ(boolean flagZ) {
-		this.flagZ = flagZ;
+	
+	public DessinVue(Controleur controleur) {
+		this.controleur = controleur;
 	}
 
 
@@ -153,6 +60,7 @@ public class DessinVue extends Application {
 		menu.getChildren().add(vbBoutonsImportAide);
 		Canvas canv = new Canvas(1100, 700);
 		GraphicsContext gc = canv.getGraphicsContext2D();
+		controleur.setGc(gc);
 		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		FileChooser importer = new FileChooser();
 		importer.setTitle("Selectionner un fichier 3D");
@@ -236,7 +144,7 @@ public class DessinVue extends Application {
 		Label lcolor = new Label("Couleur");
 		lcolor.setPadding(new Insets(30, 0, 10,50));
 		ColorPicker cp = new ColorPicker();
-		cp.setValue(couleur);
+		cp.setValue(controleur.getCouleur());
 		menu.getChildren().addAll(lcolor,cp);
 
 		//BOUTONS FACES/ARRETES/LES DEUX (MODE)
@@ -283,6 +191,13 @@ public class DessinVue extends Application {
 
 		boutonImport.setOnAction(e -> {
 			controleur.updateFichier(importer.showOpenDialog(primaryStage));
+			sliderZoom.setDisable(false);
+			sliderZoom.setMin(0);
+			sliderZoom.setMax(controleur.getDefaultzoom()*2);
+			sliderZoom.setValue(controleur.getDefaultzoom());
+			sliderZoom.setMajorTickUnit(controleur.getDefaultzoom()/2.5);
+			sliderZoom.setBlockIncrement(controleur.getDefaultzoom()/12.5);
+			sliderZoom.setShowTickLabels(true);
 		});
 
 		cp.setOnAction(e ->{
@@ -294,7 +209,7 @@ public class DessinVue extends Application {
 			Y.setDisable(false);
 			Z.setDisable(false);
 			lblTournerX.setText("Rotation X");
-			sliderRotation.setValue(stratX.getValeurRotation());
+			sliderRotation.setValue(controleur.getStrategyX().getValeurRotation());
 			controleur.updateX();
 		});
 
@@ -303,7 +218,7 @@ public class DessinVue extends Application {
 			X.setDisable(false);
 			Z.setDisable(false);
 			lblTournerX.setText("Rotation Y");
-			sliderRotation.setValue(stratY.getValeurRotation());
+			sliderRotation.setValue(controleur.getStrategyY().getValeurRotation());
 			controleur.updateY();
 		});
 
@@ -312,7 +227,7 @@ public class DessinVue extends Application {
 			Y.setDisable(false);
 			X.setDisable(false);
 			lblTournerX.setText("Rotation Z");
-			sliderRotation.setValue(stratZ.getValeurRotation());
+			sliderRotation.setValue(controleur.getStrategyZ().getValeurRotation());
 			controleur.updateZ();
 		});
 
@@ -404,7 +319,7 @@ public class DessinVue extends Application {
 			boutonFacesEtArretes.setDisable(true);
 			boutonArretes.setDisable(false);
 			boutonFaces.setDisable(false);
-			modeDessin = ModeDessin.FACES_ARRETES;
+			controleur.setModeDessin(ModeDessin.FACES_ARRETES);
 			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
 		});
 
@@ -412,7 +327,7 @@ public class DessinVue extends Application {
 			boutonFacesEtArretes.setDisable(false);
 			boutonArretes.setDisable(false);
 			boutonFaces.setDisable(true);
-			modeDessin = ModeDessin.FACES;
+			controleur.setModeDessin(ModeDessin.FACES);
 			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
 		});
 
@@ -420,7 +335,7 @@ public class DessinVue extends Application {
 			boutonFacesEtArretes.setDisable(false);
 			boutonArretes.setDisable(true);
 			boutonFaces.setDisable(false);
-			modeDessin = ModeDessin.ARRETES;
+			controleur.setModeDessin(ModeDessin.ARRETES);
 			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
 		});
 
@@ -441,7 +356,7 @@ public class DessinVue extends Application {
 		primaryStage.show();
 	}
 
-public void update(Observable o, Object arg) {
-	controleur.miseAJourVue(((src.modele.Modele)o).getRotationValue(), ((src.modele.Modele)o).getZoomValue(), ((src.modele.Modele)o).getCptTranslateGD(), ((src.modele.Modele)o).getCptTranslateHB());
-}
+	public void update(Observable o, Object arg) {
+		controleur.miseAJourVue(((src.modele.Modele)o).getRotationValue(), ((src.modele.Modele)o).getZoomValue(), ((src.modele.Modele)o).getCptTranslateGD(), ((src.modele.Modele)o).getCptTranslateHB());
+	}
 }

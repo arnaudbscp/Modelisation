@@ -563,7 +563,7 @@ public class Interface extends Application {
 								translation.recopiePoint(tabf, tabp);
 								gc.clearRect(0, 0, 1280, 700);
 								init.creerFigure(gc, tabf,couleur, modeDessin);
-
+								
 							} catch (MatriceNullException e) {
 								JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
 							} catch (MatriceFormatException e) {
