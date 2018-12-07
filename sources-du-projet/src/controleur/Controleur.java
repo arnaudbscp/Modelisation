@@ -31,9 +31,34 @@ public class Controleur {
 	}
 
 
-	public void updateModele(double rotationValue, double zoomValue, int cptTranslateGD, int cptTranslateHB) {
+	public void updateModele(double rotationValue, double zoomValue, float cptTranslateGD, float cptTranslateHB) {
 		m.setModele(rotationValue, zoomValue, cptTranslateGD, cptTranslateHB);
 	}
+	
+	public float getcptTranslateGD() {
+		return m.getCptTranslateGD();
+	}
+	
+	public float getcptTranslateHB() {
+		return m.getCptTranslateGD();
+	}
+	
+	public void setcptTranslateGD(float i) {
+		m.setCptTranslateGD(i);
+	}
+	
+	public void setcptTranslateHB(float i) {
+		m.setCptTranslateGD(i);
+	}
+	
+	public double getDefaultzoom() {
+		return m.getDefaultzoom();
+	}
+	
+	public void setDefaultzoom(double valeurzoom) {
+		m.setDefaultzoom(valeurzoom);
+	}
+
 
 	/**
 	 * Méthode mettant à jour la position de la figure dans l'espace à la suite d'un mouvement (rotation, translation ou homothétie).
@@ -41,7 +66,7 @@ public class Controleur {
 	 * @param rotationValue
 	 * @param zoomValue
 	 */
-	public void miseAJourVue(double rotationValue, double zoomValue, int cptTranslateGD, int cptTranslateHB) {
+	public void miseAJourVue(double rotationValue, double zoomValue, float cptTranslateGD, float cptTranslateHB) {
 		if(m.getFilePly()!=null) {
 			Translation translation = new Translation();
 			Rotation rotation = new Rotation();
@@ -150,6 +175,7 @@ public class Controleur {
 			m.getInit().creerFigure(dv.getGc(), m.getInit().getLoadFile().getFaces(), dv.getCouleur(), dv.getModeDessin());
 			m.setCptTranslateGD(0);
 			m.setCptTranslateHB(0);
+			m.setDefaultzoom(defaultZoom());
 		}
 	}
 	public void updateFichier(File fileply) {
@@ -180,5 +206,32 @@ public class Controleur {
 		dv.setFlagX(false);
 		dv.setFlagY(false);
 		dv.setFlagZ(true);
+	}
+	
+	private double defaultZoom() {
+		double max = m.getInit().getLoadFile().getCoordMax(0);
+		if(Math.abs(m.getInit().getLoadFile().getCoordMin(0)) > max)
+			max = Math.abs(m.getInit().getLoadFile().getCoordMin(0));
+		if(max > 500)
+			return 0.5;
+		else if(max > 300)
+			return 1;
+		else if(max > 200)
+			return 1.5;
+		else if(max > 100)
+			return 2.5;
+		else if(max > 75)
+			return 5;
+		else if(max > 50)
+			return 7.5;
+		else if(max > 25)
+			return 10;
+		else if (max > 10)
+			return 12.5;
+		else if(max > 5)
+			return 15;
+		else if(max > 1)
+			return 20;
+		return 30;
 	}
 }

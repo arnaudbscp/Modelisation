@@ -27,9 +27,19 @@ public class Modele extends Observable{
 	
 	private double zoomValue;
 	
-	private int cptTranslateGD;
+	private float cptTranslateGD;
 	
-	private int cptTranslateHB;
+	private float cptTranslateHB;
+	
+	private double defaultzoom;
+
+	public double getDefaultzoom() {
+		return defaultzoom;
+	}
+
+	public void setDefaultzoom(double defaultzoom) {
+		this.defaultzoom = defaultzoom;
+	}
 
 	public double getRotationValue() {
 		return rotationValue;
@@ -39,11 +49,11 @@ public class Modele extends Observable{
 		return zoomValue;
 	}
 
-	public int getCptTranslateGD() {
+	public float getCptTranslateGD() {
 		return cptTranslateGD;
 	}
 
-	public int getCptTranslateHB() {
+	public float getCptTranslateHB() {
 		return cptTranslateHB;
 	}
 
@@ -55,11 +65,11 @@ public class Modele extends Observable{
 		return init;
 	}
 
-	public void setCptTranslateGD(int cptTranslateGD) {
+	public void setCptTranslateGD(float cptTranslateGD) {
 		this.cptTranslateGD = cptTranslateGD;
 	}
 
-	public void setCptTranslateHB(int cptTranslateHB) {
+	public void setCptTranslateHB(float cptTranslateHB) {
 		this.cptTranslateHB = cptTranslateHB;
 	}
 
@@ -81,7 +91,7 @@ public class Modele extends Observable{
 			System.exit(1);
 		}
 	}
-	public void setModele(double rotationValue, double zoomValue, int cptTranslateGD, int cptTranslateHB) {
+	public void setModele(double rotationValue, double zoomValue, float cptTranslateGD, float cptTranslateHB) {
 		this.rotationValue = rotationValue;
 		this.zoomValue = zoomValue;
 		this.cptTranslateGD = cptTranslateGD;

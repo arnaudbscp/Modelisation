@@ -74,6 +74,11 @@ public class DessinVue extends Application {
 	 */
 	private ModeDessin modeDessin = ModeDessin.FACES_ARRETES;
 
+	/**
+	 * Boolean true si le pas de translation est valide, c'est à dire que c'est un bien un nombre réel.
+	 */
+	private boolean pasValide = true;
+
 	Controleur controleur;
 
 	GraphicsContext gc;
@@ -117,7 +122,7 @@ public class DessinVue extends Application {
 	public void setCouleur(Color couleur) {
 		this.couleur = couleur;
 	}
-	
+
 	public void setFlagX(boolean flagX) {
 		this.flagX = flagX;
 	}
@@ -129,6 +134,7 @@ public class DessinVue extends Application {
 	public void setFlagZ(boolean flagZ) {
 		this.flagZ = flagZ;
 	}
+
 
 	public void start(Stage primaryStage){
 		//ELEMENTS GRAPHIQUES
@@ -282,7 +288,7 @@ public class DessinVue extends Application {
 		cp.setOnAction(e ->{
 			controleur.updateCouleur(cp.getValue());
 		});
-		
+
 		X.setOnAction(e -> {
 			X.setDisable(true);
 			Y.setDisable(false);
@@ -291,7 +297,7 @@ public class DessinVue extends Application {
 			sliderRotation.setValue(stratX.getValeurRotation());
 			controleur.updateX();
 		});
-		
+
 		Y.setOnAction(e -> {
 			Y.setDisable(true);
 			X.setDisable(false);
@@ -300,7 +306,7 @@ public class DessinVue extends Application {
 			sliderRotation.setValue(stratY.getValeurRotation());
 			controleur.updateY();
 		});
-		
+
 		Z.setOnAction(e -> {
 			Z.setDisable(true);
 			Y.setDisable(false);
@@ -309,13 +315,133 @@ public class DessinVue extends Application {
 			sliderRotation.setValue(stratZ.getValeurRotation());
 			controleur.updateZ();
 		});
-		
+
 		sliderRotation.setOnMouseDragged(e-> {
-			controleur.updateModele(rotationValue, zoomValue, cptTranslateGD, cptTranslateHB);
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
 		});
+
+		sliderRotation.setOnMouseClicked(e-> {
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+		});
+
+		sliderZoom.setOnMouseDragged(e -> {
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+		});
+
+		sliderZoom.setOnMouseClicked(e -> {
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+		});
+
+		gauche.setOnAction(e->{
+			if(pasValide) {
+				controleur.setcptTranslateGD(controleur.getcptTranslateGD() + Float.parseFloat("0"+tfPas.getText()));
+				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+			}
+		});
+
+		gauche.setOnMouseDragged(e->{
+			if(pasValide) {
+				controleur.setcptTranslateGD(controleur.getcptTranslateGD() + Float.parseFloat("0"+tfPas.getText()));
+				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+			}
+		});
+
+		droite.setOnAction(e->{
+			if(pasValide) {
+				controleur.setcptTranslateGD(controleur.getcptTranslateGD() - Float.parseFloat("0"+tfPas.getText()));
+				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+			}
+		});
+
+		droite.setOnMouseDragged(e->{
+			if(pasValide) {
+				controleur.setcptTranslateGD(controleur.getcptTranslateGD() - Float.parseFloat("0"+tfPas.getText()));
+				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+			}
+		});
+
+		haut.setOnAction(e->{
+			if(pasValide) {
+				controleur.setcptTranslateHB(controleur.getcptTranslateHB() + Float.parseFloat("0"+tfPas.getText()));
+				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+			}
+		});
+
+		haut.setOnMouseDragged(e->{
+			if(pasValide) {
+				controleur.setcptTranslateHB(controleur.getcptTranslateHB() + Float.parseFloat("0"+tfPas.getText()));
+				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+			}
+		});
+
+		bas.setOnAction(e->{
+			if(pasValide) {
+				controleur.setcptTranslateHB(controleur.getcptTranslateHB() - Float.parseFloat("0"+tfPas.getText()));
+				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+			}
+		});
+
+		bas.setOnMouseDragged(e->{
+			if(pasValide) {
+				controleur.setcptTranslateHB(controleur.getcptTranslateHB() - Float.parseFloat("0"+tfPas.getText()));
+				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+			}
+		});
+
+		canv.setOnScroll(e->{
+			if(e.getDeltaY() > 0 && sliderZoom.getValue() < controleur.getDefaultzoom()*2) { //scroll up
+				controleur.setDefaultzoom(sliderZoom.getValue() + controleur.getDefaultzoom()/12.5);
+				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+				sliderZoom.setValue(sliderZoom.getValue() + controleur.getDefaultzoom()/12.5);
+			} else if(e.getDeltaY() < 0 && sliderZoom.getValue() > 0){ //scroll down
+				controleur.setDefaultzoom(sliderZoom.getValue() - controleur.getDefaultzoom()/12.5);
+				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+				sliderZoom.setValue(sliderZoom.getValue() - controleur.getDefaultzoom()/12.5);
+			}
+		});
+
+		boutonFacesEtArretes.setOnAction(e->{
+			boutonFacesEtArretes.setDisable(true);
+			boutonArretes.setDisable(false);
+			boutonFaces.setDisable(false);
+			modeDessin = ModeDessin.FACES_ARRETES;
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+		});
+
+		boutonFaces.setOnAction(e->{
+			boutonFacesEtArretes.setDisable(false);
+			boutonArretes.setDisable(false);
+			boutonFaces.setDisable(true);
+			modeDessin = ModeDessin.FACES;
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+		});
+
+		boutonArretes.setOnAction(e->{
+			boutonFacesEtArretes.setDisable(false);
+			boutonArretes.setDisable(true);
+			boutonFaces.setDisable(false);
+			modeDessin = ModeDessin.ARRETES;
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+		});
+
+
+		tfPas.setOnKeyReleased(e -> {
+			hbPas.getChildren().remove(textErreur);
+			pasValide = true;
+			if(!tfPas.getText().matches("^[0-9]+\\.?[0-9]*$")) {
+				hbPas.getChildren().add(textErreur);
+				pasValide = false;
+			}
+		});
+
+		//----AFFICHAGE FENETRE------
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("i3D"); 
+		primaryStage.setResizable(false);
+		primaryStage.show();
 	}
 
-	public void update(Observable o, Object arg) {
-		controleur.miseAJourVue(((src.modele.Modele)o).getRotationValue(), ((src.modele.Modele)o).getZoomValue(), ((src.modele.Modele)o).getCptTranslateGD(), ((src.modele.Modele)o).getCptTranslateHB());
-	}
+public void update(Observable o, Object arg) {
+	controleur.miseAJourVue(((src.modele.Modele)o).getRotationValue(), ((src.modele.Modele)o).getZoomValue(), ((src.modele.Modele)o).getCptTranslateGD(), ((src.modele.Modele)o).getCptTranslateHB());
+}
 }
