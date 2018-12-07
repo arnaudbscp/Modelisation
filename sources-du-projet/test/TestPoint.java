@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import src.mecanique.LoadFile;
 import src.exception.MissingPointLineException;
+import src.exception.WrongHeaderException;
 import src.exception.WrongPointLineFormatException;
 
 /**
@@ -21,10 +22,11 @@ class TestPoint {
 	/**
 	 * Méthode de test sur un point. On teste si un point est créé à partir des bonnes coordonnées.
 	 * @author Valentin
+	 * @throws WrongHeaderException 
 	 *
 	 */
 	@Test
-	void test() throws IOException {
+	void test() throws IOException, WrongHeaderException {
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"element vertex 1\n" + 

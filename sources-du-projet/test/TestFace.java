@@ -13,6 +13,7 @@ import src.exception.MissingPointLineException;
 import src.exception.TooMuchFaceLineException;
 import src.exception.TooMuchPointLineException;
 import src.exception.WrongFaceLineFormatException;
+import src.exception.WrongHeaderException;
 import src.exception.WrongPointLineFormatException;
 
 /**
@@ -25,9 +26,10 @@ class TestFace {
 	/**
 	 * Méthode de test sur une face. On teste si une face est créée à partir des bons points.
 	 * @throws IOException
+	 * @throws WrongHeaderException 
 	 */
 	@Test
-	void test() throws IOException {
+	void test() throws IOException, WrongHeaderException {
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"element vertex 3\n" + 

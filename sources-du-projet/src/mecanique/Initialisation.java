@@ -11,6 +11,7 @@ import src.exception.MissingPointLineException;
 import src.exception.TooMuchFaceLineException;
 import src.exception.TooMuchPointLineException;
 import src.exception.WrongFaceLineFormatException;
+import src.exception.WrongHeaderException;
 import src.exception.WrongPointLineFormatException;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -22,51 +23,56 @@ import javafx.scene.paint.Color;
  *
  */
 public class Initialisation {
-	
+
 	/**
 	 * Le tableau de faces de la figure.
 	 */
 	private Face[] faces;
-	
+
 	/**
 	 * Le LoadFile qui va lire le fichier pour connaître le nombre de points et de face de la figure.
 	 */
 	private LoadFile lf;
 	
 	/**
+	 * Booléen qui nous donne l'état de l'Initialisation, contient true si aucune erreur n'a été rencontrée à l'instanciation, sinon renvoie false.
+	 */
+	private boolean isGood;
+
+	/**
 	 * Lit le fichier grâce à un LoadFile et créer les points et les faces en calculant également leur centre de gravité.
 	 * @param f : le fichier à interpréter.
 	 * @throws IOException
 	 */
 	public Initialisation(File f) throws IOException{
-		lf = new LoadFile(f);
+		isGood = false;
 		try {
-			lf.creerPoints();
-		} catch (WrongPointLineFormatException e) {
+			lf = new LoadFile(f);
+			try {
+				lf.creerPoints();
+				try {
+					lf.creerFaces();
+					faces = lf.getFaces();
+					for(int i = 0; i < faces.length; ++i)
+						faces[i].setCentreGravite(faces[i].calculCentreGravite());
+					isGood = true;
+				} catch (WrongFaceLineFormatException e) {
+					JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+				} catch (TooMuchPointLineException e) {
+					JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+				} catch (MissingFaceLineException e) {
+					JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+				} catch (TooMuchFaceLineException e) {
+					JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+				}
+			} catch (WrongPointLineFormatException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			} catch (MissingPointLineException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (WrongHeaderException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		} catch (MissingPointLineException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
 		}
-		try {
-			lf.creerFaces();
-		} catch (WrongFaceLineFormatException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		} catch (TooMuchPointLineException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		} catch (MissingFaceLineException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		} catch (TooMuchFaceLineException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		}
-		faces = lf.getFaces();
-		for(int i = 0; i < faces.length; ++i)
-			faces[i].setCentreGravite(faces[i].calculCentreGravite());
 	}
 
 	/**
@@ -104,4 +110,14 @@ public class Initialisation {
 	public LoadFile getLoadFile() {
 		return lf;
 	}
+	
+	/**
+	 * Retourne l'état de l'Initialisation, renvoie true si aucune erreur n'a été rencontrée à l'instanciation, sinon renvoie false.
+	 * @return
+	 */
+	public boolean isGood() {
+		return isGood;
+	}
+	
+	
 }

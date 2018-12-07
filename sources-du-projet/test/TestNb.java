@@ -7,6 +7,7 @@ import java.io.StringReader;
 
 import org.junit.jupiter.api.Test;
 
+import src.exception.WrongHeaderException;
 import src.mecanique.LoadFile;
 
 /**
@@ -19,9 +20,10 @@ class TestNb {
 	/**
 	 * Méthode testant la récupération du nombre de points de la figure dans l'en-tête du fichier.
 	 * @throws IOException
+	 * @throws WrongHeaderException 
 	 */
 	@Test 
-	public void testNbPoints() throws IOException {
+	public void testNbPoints() throws IOException, WrongHeaderException {
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"element vertex 855\n" + 
@@ -39,9 +41,10 @@ class TestNb {
 	/**
 	 * Méthode testant la récupération du nombre de faces de la figure dans l'en-tête du fichier.
 	 * @throws IOException
+	 * @throws WrongHeaderException 
 	 */
 	@Test
-	public void testNbFaces() throws IOException {
+	public void testNbFaces() throws IOException, WrongHeaderException {
 		String model = "ply\n" + 
 				"format ascii 1.0\n" + 
 				"element vertex 855\n" + 

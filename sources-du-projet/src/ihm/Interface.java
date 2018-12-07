@@ -112,7 +112,7 @@ public class Interface extends Application {
 	 * Boolean true si le pas de translation est valide, c'est à dire que c'est un bien un nombre réel.
 	 */
 	private boolean pasValide = true;
-	
+
 	/**
 	 * Contient le mode selectionné pour dessiner la figure (faces + arrêtes, faces seulement ou arrêtes seulement).
 	 */
@@ -223,7 +223,7 @@ public class Interface extends Application {
 		ColorPicker cp = new ColorPicker();
 		cp.setValue(couleur);
 		menu.getChildren().addAll(lcolor,cp);
-		
+
 		//BOUTONS FACES/ARRETES/LES DEUX (MODE)
 		Label lblMode = new Label("Mode de dessin:");
 		lblMode.setPadding(new Insets(0, 0, 0, 20));
@@ -239,7 +239,7 @@ public class Interface extends Application {
 		vbBoutonsFacesArretes.getChildren().addAll(lblMode, boutonFacesEtArretes, boutonFaces, boutonArretes);
 		vbBoutonsFacesArretes.setSpacing(2);
 		menu.getChildren().add(vbBoutonsFacesArretes);
-		
+
 
 		//---------------------GESTION DES EVENEMENTS------------------
 
@@ -281,31 +281,31 @@ public class Interface extends Application {
 						throw new WrongFormatFileException();
 					else
 						gc.clearRect(0, 0, 1600, 800);
+					init = null;
+					try {
+						init = new Initialisation(filePly);
+						if(init.isGood()) {
+							gc.setLineWidth(1); //epaisseur des lignes
+							init.creerFigure(gc, init.getLoadFile().getFaces(), couleur, modeDessin);
+							cptTranslateGD = 0;
+							cptTranslateHB = 0;
+							defaultZoom = defaultZoom();
+							sliderZoom.setDisable(false);
+							sliderZoom.setMin(0);
+							sliderZoom.setMax(defaultZoom*2);
+							sliderZoom.setValue(defaultZoom);
+							sliderZoom.setMajorTickUnit(defaultZoom/2.5);
+							sliderZoom.setBlockIncrement(defaultZoom/12.5);
+							sliderZoom.setShowTickLabels(true);
+							//On simule un premier mouvement de la figure pour que tous les mouvements fonctionnent correctement.
+							miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
+						}
+					} catch (IOException e1) {
+						JOptionPane.showMessageDialog(null, "Erreur", "Erreur Fichier", JOptionPane.ERROR_MESSAGE);
+					}
 				} catch (WrongFormatFileException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-					System.exit(1);
 				}
-				init = null;
-				try {
-					init = new Initialisation(filePly);
-				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(null, "Erreur", "Erreur Fichier", JOptionPane.ERROR_MESSAGE);
-					System.exit(1);
-				}
-				gc.setLineWidth(1); //epaisseur des lignes
-				init.creerFigure(gc, init.getLoadFile().getFaces(), couleur, modeDessin);
-				cptTranslateGD = 0;
-				cptTranslateHB = 0;
-				defaultZoom = defaultZoom();
-				sliderZoom.setDisable(false);
-				sliderZoom.setMin(0);
-				sliderZoom.setMax(defaultZoom*2);
-				sliderZoom.setValue(defaultZoom);
-				sliderZoom.setMajorTickUnit(defaultZoom/2.5);
-				sliderZoom.setBlockIncrement(defaultZoom/12.5);
-				sliderZoom.setShowTickLabels(true);
-				//On simule un premier mouvement de la figure pour que tous les mouvements fonctionnent correctement.
-				miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 			}
 		});
 
@@ -438,7 +438,7 @@ public class Interface extends Application {
 				pasValide = false;
 			}
 		});
-		
+
 		boutonFacesEtArretes.setOnAction(e->{
 			boutonFacesEtArretes.setDisable(true);
 			boutonArretes.setDisable(false);
@@ -454,7 +454,7 @@ public class Interface extends Application {
 			modeDessin = ModeDessin.FACES;
 			miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 		});
-		
+
 		boutonArretes.setOnAction(e->{
 			boutonFacesEtArretes.setDisable(false);
 			boutonArretes.setDisable(true);
@@ -462,7 +462,7 @@ public class Interface extends Application {
 			modeDessin = ModeDessin.ARRETES;
 			miseAJourVue(gc, sliderRotation.getValue(), sliderZoom.getValue());
 		});
-		
+
 		//----AFFICHAGE FENETRE------
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("i3D"); 
@@ -535,71 +535,60 @@ public class Interface extends Application {
 				if(flagX) {
 					tabp = rotation.creerPointRotate(rotationValue, tabp, stratX.execute());
 					stratX.setValeurRotation(rotationValue);
-				}else
+				} else
 					tabp = rotation.creerPointRotate(stratX.getValeurRotation(), tabp, stratX.execute());
+
+				rotation.recopiePoint(tabf, tabp);
+				try {
+					if(flagY) {
+						tabp = rotation.creerPointRotate(rotationValue, tabp, stratY.execute());
+						stratY.setValeurRotation(rotationValue);
+					}else
+						tabp = rotation.creerPointRotate(stratY.getValeurRotation(), tabp, stratY.execute());
+
+					rotation.recopiePoint(tabf, tabp);
+					try {
+						if(flagZ) {
+							tabp = rotation.creerPointRotate(rotationValue, tabp, stratZ.execute());
+							stratZ.setValeurRotation(rotationValue);
+						}else
+							tabp = rotation.creerPointRotate(stratZ.getValeurRotation(), tabp, stratZ.execute());
+
+						rotation.recopiePoint(tabf, tabp);
+						try {
+							tabp = zoom.creerPointZoom(zoomValue, tabp);
+							zoom.recopiePoint(tabf, tabp);
+							try {
+								tabp = translation.creerPointsTranslate(cptTranslateGD, cptTranslateHB, tabp);
+								translation.recopiePoint(tabf, tabp);
+								gc.clearRect(0, 0, 1280, 700);
+								init.creerFigure(gc, tabf,couleur, modeDessin);
+
+							} catch (MatriceNullException e) {
+								JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+							} catch (MatriceFormatException e) {
+								JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+							}
+						} catch (MatriceNullException e) {
+							JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+						} catch (MatriceFormatException e) {
+							JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (MatriceNullException e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+					} catch (MatriceFormatException e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (MatriceNullException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+				} catch (MatriceFormatException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+				}
 			} catch (MatriceNullException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
 			} catch (MatriceFormatException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
 			}
-			rotation.recopiePoint(tabf, tabp);
-
-			try {
-				if(flagY) {
-					tabp = rotation.creerPointRotate(rotationValue, tabp, stratY.execute());
-					stratY.setValeurRotation(rotationValue);
-				}else
-					tabp = rotation.creerPointRotate(stratY.getValeurRotation(), tabp, stratY.execute());
-			} catch (MatriceNullException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			} catch (MatriceFormatException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			}
-			rotation.recopiePoint(tabf, tabp);
-
-			try {
-				if(flagZ) {
-					tabp = rotation.creerPointRotate(rotationValue, tabp, stratZ.execute());
-					stratZ.setValeurRotation(rotationValue);
-				}else
-					tabp = rotation.creerPointRotate(stratZ.getValeurRotation(), tabp, stratZ.execute());
-			} catch (MatriceNullException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			} catch (MatriceFormatException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			}
-			rotation.recopiePoint(tabf, tabp);
-
-			try {
-				tabp = zoom.creerPointZoom(zoomValue, tabp);
-			} catch (MatriceNullException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			} catch (MatriceFormatException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			}
-			zoom.recopiePoint(tabf, tabp);
-
-			try {
-				tabp = translation.creerPointsTranslate(cptTranslateGD, cptTranslateHB, tabp);
-			} catch (MatriceNullException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			} catch (MatriceFormatException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			}
-			translation.recopiePoint(tabf, tabp);
-
-			gc.clearRect(0, 0, 1280, 700);
-			init.creerFigure(gc, tabf,couleur, modeDessin);
 		}
 	}
 
