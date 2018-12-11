@@ -35,21 +35,22 @@ import src.mecanique.ModeDessin;
 
 public class DessinVue extends Application implements Observer{
 
-	
-
 	/**
 	 * Boolean true si le pas de translation est valide, c'est à dire que c'est un bien un nombre réel.
 	 */
 	private boolean pasValide = true;
 
-	Controleur controleur;
+	/**
+	 * Le contrôleur du MVC
+	 */
+	private Controleur controleur;
 	
 	public DessinVue(Controleur controleur) {
 		this.controleur = controleur;
 	}
 
-
 	public void start(Stage primaryStage){
+		
 		//ELEMENTS GRAPHIQUES
 		HBox corps = new HBox();
 		Scene scene = new Scene(corps, 1280, 800);
@@ -81,6 +82,7 @@ public class DessinVue extends Application implements Observer{
 		Text textErreur = new Text(" Erreur.");
 		textErreur.setFill(Color.RED);
 
+		
 		//SLIDER ZOOM
 		Slider sliderZoom = new Slider();
 		Label lblZoom = new Label();
@@ -89,6 +91,7 @@ public class DessinVue extends Application implements Observer{
 		sliderZoom.setDisable(true);
 		menu.getChildren().addAll(lblZoom, sliderZoom);
 
+		
 		//SLIDER ROTATION X (par défaut)
 		Slider sliderRotation = new Slider();
 		Label lblTournerX = new Label();
@@ -101,6 +104,7 @@ public class DessinVue extends Application implements Observer{
 		sliderRotation.setShowTickLabels(true);
 		menu.getChildren().addAll(lblTournerX, sliderRotation);
 
+		
 		//BOUTON DIRECTIONNEL ROTATION
 		Button X = new Button();
 		X.setText("X");
@@ -117,19 +121,16 @@ public class DessinVue extends Application implements Observer{
 		alignementButton.setSpacing(30);
 		menu.getChildren().addAll(alignementButton);
 
+		
 		//BOUTON ROTATION AUTO 
 		Button rotauto = new Button();
-		
-		
 		HBox hb = new HBox();
 		Image image = new Image(new File("img/360-degrees.png").toURI().toString());
 		ImageView i = new ImageView(image);
 		i.setFitHeight(30);
 		i.setPreserveRatio(true);
 		rotauto.setGraphic(i);
-		
 		hb.getChildren().add(rotauto);
-		
 		hb.setPadding(new Insets(15,10,10,55));
 		hb.setSpacing(30);
 		menu.getChildren().addAll(hb);
@@ -164,6 +165,7 @@ public class DessinVue extends Application implements Observer{
 		hbBas.getChildren().add(bas);
 		menu.getChildren().addAll(lblTranslation, hbHaut, hbGaucheDroite, hbBas, hbPas);
 
+		
 		//CHOIX COULEURS
 		Label lcolor = new Label("Couleur");
 		lcolor.setPadding(new Insets(30, 0, 10,50));
@@ -171,6 +173,7 @@ public class DessinVue extends Application implements Observer{
 		cp.setValue(controleur.getCouleur());
 		menu.getChildren().addAll(lcolor,cp);
 
+		
 		//BOUTONS FACES/ARRETES/LES DEUX (MODE)
 		Label lblMode = new Label("Mode de dessin:");
 		lblMode.setPadding(new Insets(0, 0, 0, 20));
@@ -187,8 +190,10 @@ public class DessinVue extends Application implements Observer{
 		vbBoutonsFacesArretes.setSpacing(2);
 		menu.getChildren().add(vbBoutonsFacesArretes);
 
+		
 		//---------------------GESTION DES EVENEMENTS------------------
 
+		
 		boutonAide.setOnAction(e->{	aide(primaryStage);});
 
 		boutonImport.setOnAction(e -> {	importFichier(primaryStage, importer, sliderZoom);});
@@ -234,7 +239,7 @@ public class DessinVue extends Application implements Observer{
 		boutonArretes.setOnAction(e->{ actionArretes(sliderZoom, sliderRotation, boutonFacesEtArretes, boutonFaces, boutonArretes);});
 
 
-		tfPas.setOnKeyReleased(e -> { releasedPas(textErreur, hbPas, tfPas);});
+		tfPas.setOnKeyReleased(e -> { verificationPas(textErreur, hbPas, tfPas);});
 
 		//----AFFICHAGE FENETRE------
 		primaryStage.setScene(scene);
@@ -243,8 +248,13 @@ public class DessinVue extends Application implements Observer{
 		primaryStage.show();
 	}
 
-
-	private void releasedPas(Text textErreur, HBox hbPas, TextField tfPas) {
+	/**
+	 * 
+	 * @param textErreur
+	 * @param hbPas
+	 * @param tfPas
+	 */
+	private void verificationPas(Text textErreur, HBox hbPas, TextField tfPas) {
 		hbPas.getChildren().remove(textErreur);
 		pasValide = true;
 		if(!tfPas.getText().matches("^[0-9]+\\.?[0-9]*$")) {
@@ -253,9 +263,15 @@ public class DessinVue extends Application implements Observer{
 		}
 	}
 
-
-	private void actionArretes(Slider sliderZoom, Slider sliderRotation, Button boutonFacesEtArretes,
-			Button boutonFaces, Button boutonArretes) {
+	/**
+	 * 
+	 * @param sliderZoom
+	 * @param sliderRotation
+	 * @param boutonFacesEtArretes
+	 * @param boutonFaces
+	 * @param boutonArretes
+	 */
+	private void actionArretes(Slider sliderZoom, Slider sliderRotation, Button boutonFacesEtArretes, Button boutonFaces, Button boutonArretes) {
 		boutonFacesEtArretes.setDisable(false);
 		boutonArretes.setDisable(true);
 		boutonFaces.setDisable(false);
@@ -263,9 +279,15 @@ public class DessinVue extends Application implements Observer{
 		controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
 	}
 
-
-	private void actionFaces(Slider sliderZoom, Slider sliderRotation, Button boutonFacesEtArretes, Button boutonFaces,
-			Button boutonArretes) {
+	/**
+	 * 
+	 * @param sliderZoom
+	 * @param sliderRotation
+	 * @param boutonFacesEtArretes
+	 * @param boutonFaces
+	 * @param boutonArretes
+	 */
+	private void actionFaces(Slider sliderZoom, Slider sliderRotation, Button boutonFacesEtArretes, Button boutonFaces, Button boutonArretes) {
 		boutonFacesEtArretes.setDisable(false);
 		boutonArretes.setDisable(false);
 		boutonFaces.setDisable(true);
@@ -273,9 +295,15 @@ public class DessinVue extends Application implements Observer{
 		controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
 	}
 
-
-	private void actionFacesEtArretes(Slider sliderZoom, Slider sliderRotation, Button boutonFacesEtArretes,
-			Button boutonFaces, Button boutonArretes) {
+	/**
+	 * 
+	 * @param sliderZoom
+	 * @param sliderRotation
+	 * @param boutonFacesEtArretes
+	 * @param boutonFaces
+	 * @param boutonArretes
+	 */
+	private void actionFacesEtArretes(Slider sliderZoom, Slider sliderRotation, Button boutonFacesEtArretes, Button boutonFaces, Button boutonArretes) {
 		boutonFacesEtArretes.setDisable(true);
 		boutonArretes.setDisable(false);
 		boutonFaces.setDisable(false);
@@ -283,7 +311,12 @@ public class DessinVue extends Application implements Observer{
 		controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
 	}
 
-
+	/**
+	 * Méthode appelée lors du scroll sur le canvas, permettant de zoomer ou de dézoomer la figure.
+	 * @param sliderZoom
+	 * @param sliderRotation
+	 * @param e
+	 */
 	private void scrollZoom(Slider sliderZoom, Slider sliderRotation, ScrollEvent e) {
 		if(e.getDeltaY() > 0 && sliderZoom.getValue() < controleur.getDefaultzoom()*2) { //scroll up
 			controleur.setDefaultzoom(sliderZoom.getValue() + controleur.getDefaultzoom()/12.5);
@@ -296,7 +329,12 @@ public class DessinVue extends Application implements Observer{
 		}
 	}
 
-
+	/**
+	 * Méthode appelée lors du click ou du drag sur le bouton bas, permettant une translation de la figure en bas selon le pas spécifié.
+	 * @param sliderZoom
+	 * @param sliderRotation
+	 * @param tfPas
+	 */
 	private void actionBas(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
 			controleur.setcptTranslateHB(controleur.getcptTranslateHB() - Float.parseFloat("0"+tfPas.getText()));
@@ -304,7 +342,12 @@ public class DessinVue extends Application implements Observer{
 		}
 	}
 
-
+	/**
+	 * Méthode appelée lors du click ou du drag sur le bouton haut, permettant une translation de la figure en haut selon le pas spécifié.
+	 * @param sliderZoom
+	 * @param sliderRotation
+	 * @param tfPas
+	 */
 	private void actionHaut(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
 			controleur.setcptTranslateHB(controleur.getcptTranslateHB() + Float.parseFloat("0"+tfPas.getText()));
@@ -312,7 +355,12 @@ public class DessinVue extends Application implements Observer{
 		}
 	}
 
-
+	/**
+	 * Méthode appelée lors du click ou du drag sur le bouton droite, permettant une translation de la figure à droite selon le pas spécifié.
+	 * @param sliderZoom
+	 * @param sliderRotation
+	 * @param tfPas
+	 */
 	private void actionDroite(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
 			controleur.setcptTranslateGD(controleur.getcptTranslateGD() - Float.parseFloat("0"+tfPas.getText()));
@@ -320,7 +368,12 @@ public class DessinVue extends Application implements Observer{
 		}
 	}
 
-
+	/**
+	 * Méthode appelée lors du click ou du drag sur le bouton gauche, permettant une translation de la figure à gauche selon le pas spécifié.
+	 * @param sliderZoom
+	 * @param sliderRotation
+	 * @param tfPas
+	 */
 	private void actionGauche(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
 			controleur.setcptTranslateGD(controleur.getcptTranslateGD() + Float.parseFloat("0"+tfPas.getText()));
@@ -328,7 +381,14 @@ public class DessinVue extends Application implements Observer{
 		}
 	}
 
-
+	/**
+	 * Change l'axe sur lequel la rotation s'effectue par l'axe Z, assigné au slider de rotation.
+	 * @param sliderRotation
+	 * @param lblTournerX
+	 * @param X
+	 * @param Y
+	 * @param Z
+	 */
 	private void actionZ(Slider sliderRotation, Label lblTournerX, Button X, Button Y, Button Z) {
 		Z.setDisable(true);
 		Y.setDisable(false);
@@ -338,7 +398,14 @@ public class DessinVue extends Application implements Observer{
 		controleur.updateZ();
 	}
 
-
+	/**
+	 * Change l'axe sur lequel la rotation s'effectue par l'axe Y, assigné au slider de rotation.
+	 * @param sliderRotation
+	 * @param lblTournerX
+	 * @param X
+	 * @param Y
+	 * @param Z
+	 */
 	private void actionY(Slider sliderRotation, Label lblTournerX, Button X, Button Y, Button Z) {
 		Y.setDisable(true);
 		X.setDisable(false);
@@ -348,7 +415,14 @@ public class DessinVue extends Application implements Observer{
 		controleur.updateY();
 	}
 
-
+	/**
+	 * Change l'axe sur lequel la rotation s'effectue par l'axe X, assigné au slider de rotation.
+	 * @param sliderRotation
+	 * @param lblTournerX
+	 * @param X
+	 * @param Y
+	 * @param Z
+	 */
 	private void actionX(Slider sliderRotation, Label lblTournerX, Button X, Button Y, Button Z) {
 		X.setDisable(true);
 		Y.setDisable(false);
@@ -358,7 +432,12 @@ public class DessinVue extends Application implements Observer{
 		controleur.updateX();
 	}
 
-
+	/**
+	 * Importe le fichier dans le logiciel, permettant ensuite son interprétation et l'affichage de la figure qu'il définit.
+	 * @param primaryStage
+	 * @param importer
+	 * @param sliderZoom
+	 */
 	private void importFichier(Stage primaryStage, FileChooser importer, Slider sliderZoom) {
 		controleur.updateFichier(importer.showOpenDialog(primaryStage));
 		sliderZoom.setDisable(false);
@@ -370,7 +449,10 @@ public class DessinVue extends Application implements Observer{
 		sliderZoom.setShowTickLabels(true);
 	}
 
-
+	/**
+	 * Affiche la fenêtre d'aide, expliquant à l'utilisateur les fonctionnalités du logiciel.
+	 * @param primaryStage
+	 */
 	private void aide(Stage primaryStage) {
 		Stage stageAide = new Stage();
 		stageAide.initOwner(primaryStage); //Définit la fenêtre principale comme fenêtre parente.
