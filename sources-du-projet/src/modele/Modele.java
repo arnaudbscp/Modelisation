@@ -288,4 +288,14 @@ public class Modele extends Observable{
 		setChanged();
 		notifyObservers();
 	}
+
+
+	public void setRotationValue(double rotationValue) {
+		this.rotationValue = rotationValue;
+	}
+
+
+	public void setZoomValue(double zoomValue) {
+		this.zoomValue = zoomValue;
+	}
 }

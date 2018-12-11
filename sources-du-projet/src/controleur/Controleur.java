@@ -51,7 +51,7 @@ public class Controleur {
 	}
 	
 	public float getcptTranslateHB() {
-		return m.getCptTranslateGD();
+		return m.getCptTranslateHB();
 	}
 	
 	public void setcptTranslateGD(float i) {
@@ -59,7 +59,7 @@ public class Controleur {
 	}
 	
 	public void setcptTranslateHB(float i) {
-		m.setCptTranslateGD(i);
+		m.setCptTranslateHB(i);
 	}
 	
 	public double getDefaultzoom() {
@@ -187,7 +187,6 @@ public class Controleur {
 					m.setInit(new Initialisation(fileply));
 					if(m.getInit().isGood()) {
 						m.getGc().setLineWidth(1); //epaisseur des lignes
-						m.getInit().creerFigure(m.getGc(), m.getInit().getLoadFile().getFaces(), m.getCouleur(), m.getModeDessin());
 						m.setCptTranslateGD(0);
 						m.setCptTranslateHB(0);
 						m.setDefaultzoom(defaultZoom());
@@ -204,7 +203,6 @@ public class Controleur {
 	}
 	public void updateFichier(File fileply) {
 		setFichier(fileply);
-		m.setModele(m.getRotationValue(), m.getZoomValue(), m.getCptTranslateGD(), m.getCptTranslateHB());
 	}
 	
 	public void updateCouleur(Color c) {
@@ -257,5 +255,9 @@ public class Controleur {
 		else if(max > 1)
 			return 20;
 		return 30;
+	}
+	
+	public void RotationAuto() {
+		
 	}
 }

@@ -111,6 +111,13 @@ public class DessinVue extends Application implements Observer{
 		alignementButton.setSpacing(30);
 		menu.getChildren().addAll(alignementButton);
 
+		//BOUTON ROTATION AUTO 
+		
+		Button rotauto = new Button();
+		rotauto.setText("");
+		HBox hb = new HBox();
+		hb.getChildren().add(rotauto);
+		
 		//CROIX DIRECTIONNELLE TRANSLATION
 		Label lblTranslation = new Label("Translation");
 		lblTranslation.setPadding(new Insets(30,1,1,45));
