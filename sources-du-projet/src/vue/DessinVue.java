@@ -8,7 +8,6 @@ import java.util.Observer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -31,8 +30,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import src.controleur.Controleur;
-import src.mecanique.ModeDessin;
+import src.modele.ModeDessin;
 
+/**
+ * Classe correspondant à la Vue du design-pattern MVC, implémentant toute la partie graphique du logiciel.
+ * @author Valentin
+ *
+ */
 public class DessinVue extends Application implements Observer{
 
 	/**
@@ -41,14 +45,21 @@ public class DessinVue extends Application implements Observer{
 	private boolean pasValide = true;
 
 	/**
-	 * Le contrôleur du MVC
+	 * Le contrôleur du MVC, liant les éléments graphiques aux éléments de traitement.
 	 */
 	private Controleur controleur;
 	
+	/**
+	 * Constructeur de la vue, spécifiant le contrôleur.
+	 * @param controleur
+	 */
 	public DessinVue(Controleur controleur) {
 		this.controleur = controleur;
 	}
-
+	
+	/**
+	 * Méthode permettant d'avoir des éléments graphiques.
+	 */
 	public void start(Stage primaryStage){
 		
 		//ELEMENTS GRAPHIQUES
@@ -65,7 +76,7 @@ public class DessinVue extends Application implements Observer{
 		vbBoutonsImportAide.setSpacing(3);
 		vbBoutonsImportAide.getChildren().addAll(boutonImport, boutonAide);
 		menu.getChildren().add(vbBoutonsImportAide);
-		Canvas canv = new Canvas(1100, 700);
+		Canvas canv = new Canvas(1100, 800);
 		GraphicsContext gc = canv.getGraphicsContext2D();
 		controleur.setGc(gc);
 		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
@@ -123,17 +134,17 @@ public class DessinVue extends Application implements Observer{
 
 		
 		//BOUTON ROTATION AUTO 
-		Button rotauto = new Button();
-		HBox hb = new HBox();
+		Button rotationAuto = new Button();
+		HBox hboxRotAuto = new HBox();
 		Image image = new Image(new File("img/360-degrees.png").toURI().toString());
-		ImageView i = new ImageView(image);
-		i.setFitHeight(30);
-		i.setPreserveRatio(true);
-		rotauto.setGraphic(i);
-		hb.getChildren().add(rotauto);
-		hb.setPadding(new Insets(15,10,10,55));
-		hb.setSpacing(30);
-		menu.getChildren().addAll(hb);
+		ImageView imgView = new ImageView(image);
+		imgView.setFitHeight(30);
+		imgView.setPreserveRatio(true);
+		rotationAuto.setGraphic(imgView);
+		hboxRotAuto.getChildren().add(rotationAuto);
+		hboxRotAuto.setPadding(new Insets(15,10,10,55));
+		hboxRotAuto.setSpacing(30);
+		menu.getChildren().addAll(hboxRotAuto);
 		
 		
 		//CROIX DIRECTIONNELLE TRANSLATION
@@ -206,13 +217,13 @@ public class DessinVue extends Application implements Observer{
 
 		Z.setOnAction(e -> { actionZ(sliderRotation, lblTournerX, X, Y, Z);});
 
-		sliderRotation.setOnMouseDragged(e-> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());});
+		sliderRotation.setOnMouseDragged(e-> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());});
 
-		sliderRotation.setOnMouseClicked(e-> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());});
+		sliderRotation.setOnMouseClicked(e-> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());});
 
-		sliderZoom.setOnMouseDragged(e -> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());});
+		sliderZoom.setOnMouseDragged(e -> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());});
 
-		sliderZoom.setOnMouseClicked(e -> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());});
+		sliderZoom.setOnMouseClicked(e -> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());});
 
 		gauche.setOnAction(e->{ actionGauche(sliderZoom, sliderRotation, tfPas);});
 
@@ -238,7 +249,6 @@ public class DessinVue extends Application implements Observer{
 
 		boutonArretes.setOnAction(e->{ actionArretes(sliderZoom, sliderRotation, boutonFacesEtArretes, boutonFaces, boutonArretes);});
 
-
 		tfPas.setOnKeyReleased(e -> { verificationPas(textErreur, hbPas, tfPas);});
 
 		//----AFFICHAGE FENETRE------
@@ -249,10 +259,12 @@ public class DessinVue extends Application implements Observer{
 	}
 
 	/**
-	 * 
-	 * @param textErreur
-	 * @param hbPas
-	 * @param tfPas
+	 * Vérifie si la valeur entrée dans le TextField du pas de translation est une valeur correcte, c'est-à-dire que c'est une valeur
+	 * réelle, pouvant contenir un point pour séparer la partie entière de la partie décimale. Si la valeur n'est pas au bon format,
+	 * un message d'erreur s'affiche et la valeur vaudra 0 par défaut.
+	 * @param textErreur Le message d'erreur à afficher
+	 * @param hbPas La HBox contenant le TextField
+	 * @param tfPas Le TextField
 	 */
 	private void verificationPas(Text textErreur, HBox hbPas, TextField tfPas) {
 		hbPas.getChildren().remove(textErreur);
@@ -264,7 +276,8 @@ public class DessinVue extends Application implements Observer{
 	}
 
 	/**
-	 * 
+	 * Méthode appelée lors d'une action sur le bouton Arrêtes, permetant de spécifier que l'on ne veut afficher que les arrêtes de la
+	 * figure. Elle désactive ce bouton et réactive les deux autres boutons des autres modes (Faces et Faces+Arrêtes).
 	 * @param sliderZoom
 	 * @param sliderRotation
 	 * @param boutonFacesEtArretes
@@ -276,11 +289,12 @@ public class DessinVue extends Application implements Observer{
 		boutonArretes.setDisable(true);
 		boutonFaces.setDisable(false);
 		controleur.setModeDessin(ModeDessin.ARRETES);
-		controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+		controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
 	}
 
 	/**
-	 * 
+	 * Méthode appelée lors d'une action sur le bouton Faces, permetant de spécifier que l'on ne veut afficher que les faces de la
+	 * figure. Elle désactive ce bouton et réactive les deux autres boutons des autres modes (Arrêtes et Faces+Arrêtes).
 	 * @param sliderZoom
 	 * @param sliderRotation
 	 * @param boutonFacesEtArretes
@@ -292,11 +306,12 @@ public class DessinVue extends Application implements Observer{
 		boutonArretes.setDisable(false);
 		boutonFaces.setDisable(true);
 		controleur.setModeDessin(ModeDessin.FACES);
-		controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+		controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
 	}
 
 	/**
-	 * 
+	 * Méthode appelée lors d'une action sur le bouton Faces+Arrêtes, permetant de spécifier que l'on veut afficher les faces et les 
+	 * arrêtes de la figure. Elle désactive ce bouton et réactive les deux autres boutons des autres modes (Faces et Arrêtes).
 	 * @param sliderZoom
 	 * @param sliderRotation
 	 * @param boutonFacesEtArretes
@@ -308,7 +323,7 @@ public class DessinVue extends Application implements Observer{
 		boutonArretes.setDisable(false);
 		boutonFaces.setDisable(false);
 		controleur.setModeDessin(ModeDessin.FACES_ARRETES);
-		controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+		controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
 	}
 
 	/**
@@ -318,14 +333,14 @@ public class DessinVue extends Application implements Observer{
 	 * @param e
 	 */
 	private void scrollZoom(Slider sliderZoom, Slider sliderRotation, ScrollEvent e) {
-		if(e.getDeltaY() > 0 && sliderZoom.getValue() < controleur.getDefaultzoom()*2) { //scroll up
-			controleur.setDefaultzoom(sliderZoom.getValue() + controleur.getDefaultzoom()/12.5);
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-			sliderZoom.setValue(sliderZoom.getValue() + controleur.getDefaultzoom()/12.5);
+		if(e.getDeltaY() > 0 && sliderZoom.getValue() < controleur.getDefaultZoom()*2) { //scroll up
+			controleur.setDefaultZoom(sliderZoom.getValue() + controleur.getDefaultZoom()/12.5);
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
+			sliderZoom.setValue(sliderZoom.getValue() + controleur.getDefaultZoom()/12.5);
 		} else if(e.getDeltaY() < 0 && sliderZoom.getValue() > 0){ //scroll down
-			controleur.setDefaultzoom(sliderZoom.getValue() - controleur.getDefaultzoom()/12.5);
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-			sliderZoom.setValue(sliderZoom.getValue() - controleur.getDefaultzoom()/12.5);
+			controleur.setDefaultZoom(sliderZoom.getValue() - controleur.getDefaultZoom()/12.5);
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
+			sliderZoom.setValue(sliderZoom.getValue() - controleur.getDefaultZoom()/12.5);
 		}
 	}
 
@@ -337,8 +352,8 @@ public class DessinVue extends Application implements Observer{
 	 */
 	private void actionBas(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
-			controleur.setcptTranslateHB(controleur.getcptTranslateHB() - Float.parseFloat("0"+tfPas.getText()));
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+			controleur.setCptTranslateHB(controleur.getCptTranslateHB() - Float.parseFloat("0"+tfPas.getText()));
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
 		}
 	}
 
@@ -350,8 +365,8 @@ public class DessinVue extends Application implements Observer{
 	 */
 	private void actionHaut(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
-			controleur.setcptTranslateHB(controleur.getcptTranslateHB() + Float.parseFloat("0"+tfPas.getText()));
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+			controleur.setCptTranslateHB(controleur.getCptTranslateHB() + Float.parseFloat("0"+tfPas.getText()));
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
 		}
 	}
 
@@ -363,8 +378,8 @@ public class DessinVue extends Application implements Observer{
 	 */
 	private void actionDroite(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
-			controleur.setcptTranslateGD(controleur.getcptTranslateGD() - Float.parseFloat("0"+tfPas.getText()));
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+			controleur.setCptTranslateGD(controleur.getCptTranslateGD() - Float.parseFloat("0"+tfPas.getText()));
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
 		}
 	}
 
@@ -376,8 +391,8 @@ public class DessinVue extends Application implements Observer{
 	 */
 	private void actionGauche(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
-			controleur.setcptTranslateGD(controleur.getcptTranslateGD() + Float.parseFloat("0"+tfPas.getText()));
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+			controleur.setCptTranslateGD(controleur.getCptTranslateGD() + Float.parseFloat("0"+tfPas.getText()));
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
 		}
 	}
 
@@ -442,10 +457,10 @@ public class DessinVue extends Application implements Observer{
 		controleur.updateFichier(importer.showOpenDialog(primaryStage));
 		sliderZoom.setDisable(false);
 		sliderZoom.setMin(0);
-		sliderZoom.setMax(controleur.getDefaultzoom()*2);
-		sliderZoom.setValue(controleur.getDefaultzoom());
-		sliderZoom.setMajorTickUnit(controleur.getDefaultzoom()/2.5);
-		sliderZoom.setBlockIncrement(controleur.getDefaultzoom()/12.5);
+		sliderZoom.setMax(controleur.getDefaultZoom()*2);
+		sliderZoom.setValue(controleur.getDefaultZoom());
+		sliderZoom.setMajorTickUnit(controleur.getDefaultZoom()/2.5);
+		sliderZoom.setBlockIncrement(controleur.getDefaultZoom()/12.5);
 		sliderZoom.setShowTickLabels(true);
 	}
 
@@ -477,6 +492,9 @@ public class DessinVue extends Application implements Observer{
 		stageAide.show();
 	}
 
+	/**
+	 * Méthode de l'interface Observer, permettant la mise à jour de la figure avec les nouvelles valeurs du modèle.
+	 */
 	public void update(Observable o, Object arg) {
 		controleur.miseAJourVue(((src.modele.Modele)o).getRotationValue(), ((src.modele.Modele)o).getZoomValue(), ((src.modele.Modele)o).getCptTranslateGD(), ((src.modele.Modele)o).getCptTranslateHB());
 	}

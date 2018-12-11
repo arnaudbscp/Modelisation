@@ -7,13 +7,15 @@ import javax.swing.JOptionPane;
 
 import src.donnees.Face;
 import src.donnees.Point;
-
-import src.mecanique.Initialisation;
-import src.mecanique.ModeDessin;
+import src.modele.Initialisation;
+import src.modele.ModeDessin;
+import src.modele.Strategy;
+import src.modele.StrategyRotationX;
+import src.modele.StrategyRotationY;
+import src.modele.StrategyRotationZ;
 import src.mouvements.Rotation;
 import src.mouvements.Translation;
 import src.mouvements.Zoom;
-
 import src.exception.MatriceFormatException;
 import src.exception.MatriceNullException;
 import src.exception.WrongFormatFileException;
@@ -39,6 +41,12 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+
+
+//--------------------------OBSOLETE--------------------------//
+
+
 
 /**
  * Classe représentant la fenêtre graphique et tous les éléments graphiques contenus dedans.
@@ -283,7 +291,8 @@ public class Interface extends Application {
 						gc.clearRect(0, 0, 1600, 800);
 					init = null;
 					try {
-						init = new Initialisation(filePly);
+						init = Initialisation.getInstance();
+						init.doInit(filePly);
 						if(init.isGood()) {
 							gc.setLineWidth(1); //epaisseur des lignes
 							init.creerFigure(gc, init.getLoadFile().getFaces(), couleur, modeDessin);

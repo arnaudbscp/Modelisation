@@ -1,12 +1,10 @@
-package src.mecanique;
+package src.modele;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-
-import javax.swing.JOptionPane;
 
 import src.donnees.Face;
 import src.donnees.Point;
@@ -38,20 +36,34 @@ public class LoadFile {
 	 * Tableau stockant toutes les Face de la figure.
 	 */
 	private Face[] faces;
-
+	
 	/**
-	 * Constructeur vide.
+	 * La seule et unique instance du LoadFile pour le programme.
 	 */
-	public LoadFile() {}
+	private static final LoadFile INSTANCE = new LoadFile();
 
 	/**
-	 * Constructeur permettant de lire un fichier passé en paramètre, appelant la méthode readStream(Reader in) 
+	 * Constructeur privé typique du design-pattern Singleton.
+	 */
+	private LoadFile() {}
+
+	/**
+	 * Retourne la seule et unique instance du LoadFile. En effet, on a besoin que d'un seul LoadFile car on lit un fichier à la fois.
+	 * La lecture d'un nouveau fichier va écraser l'ancienne qui deviendrait inutile.
+	 * @return
+	 */
+	public final static LoadFile getInstance() {
+		return INSTANCE;
+	}
+	
+	/**
+	 * Méthode permettant de lire un fichier passé en paramètre, appelant la méthode lireStream(Reader in) 
 	 * qui va lire le stream du fichier.
 	 * @throws IOException
 	 * @throws WrongHeaderException 
 	 */
-	public LoadFile(File f) throws IOException, WrongHeaderException{
-		readStream(new FileReader(new File(f.getPath())));
+	public void lireFichier(File f) throws IOException, WrongHeaderException{
+		lireStream(new FileReader(new File(f.getPath())));
 	}
 
 	/**
@@ -60,20 +72,20 @@ public class LoadFile {
 	 * @throws IOException
 	 * @throws WrongHeaderException 
 	 */
-	public void readStream(Reader in) throws IOException, WrongHeaderException {
-		String l = "";
+	public void lireStream(Reader in) throws IOException, WrongHeaderException {
+		String ligne = "";
 		br = new BufferedReader(in);
 		for(byte i = 0; i < 3; i++) {
-			l = br.readLine();
+			ligne = br.readLine();
 			//Si la ligne est un commentaire, on ne la prend pas en compte.
-			if(isCommentaire(l))
+			if(isCommentaire(ligne))
 				i--;
 		}
-		points = new Point[recupNb(l)];
+		points = new Point[recupNb(ligne)];
 		for(byte i = 0; i < 3; i++) {
-			l = br.readLine();
+			ligne = br.readLine();
 			//Si la ligne est un commentaire, on ne la prend pas en compte.
-			if(isCommentaire(l))
+			if(isCommentaire(ligne))
 				i--;
 		}
 		faces = new Face[recupNb(br.readLine())];

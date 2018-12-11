@@ -1,4 +1,4 @@
-package src.mecanique;
+package src.modele;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /**
- * Classe permettant la création des tableaux de points et de faces grâce à LoadFile, qui calcule le centre de gravité des faces et qui trie les faces.
+ * Classe Singleton permettant la création des tableaux de points et de faces grâce à LoadFile, 
+ * qui calcule le centre de gravité des faces et qui trie les faces.
  * @author Valentin
  *
  */
@@ -38,16 +39,37 @@ public class Initialisation {
 	 * Booléen qui nous donne l'état de l'Initialisation, contient true si aucune erreur n'a été rencontrée à l'instanciation, sinon renvoie false.
 	 */
 	private boolean isGood;
+	
+	/**
+	 * La seule et unique instance de l'Initialisation pour le programme.
+	 */
+	private final static Initialisation INSTANCE = new Initialisation(); 
+	
+	/**
+	 * Constructeur privé typique du design-pattern Singleton.
+	 */
+	private Initialisation() {}
 
+	/**
+	 * Retourne l'instance de l'Initialisation. On a besoin que d'une seule instance de l'Initialisation car on ne peut ouvrir
+	 * qu'un fichier à la fois. Eneffet, l'ouverture d'un autre fichier écrasera le premier et il est donc inutile de conserver 
+	 * l'Initialisation de celui-ci.
+	 * @return
+	 */
+	public final static Initialisation getInstance() {
+		return INSTANCE;
+	}
+	
 	/**
 	 * Lit le fichier grâce à un LoadFile et créer les points et les faces en calculant également leur centre de gravité.
 	 * @param f : le fichier à interpréter.
 	 * @throws IOException
 	 */
-	public Initialisation(File f) throws IOException{
+	public void doInit(File f) throws IOException{
 		isGood = false;
 		try {
-			lf = new LoadFile(f);
+			lf = LoadFile.getInstance();
+			lf.lireFichier(f);
 			try {
 				lf.creerPoints();
 				try {

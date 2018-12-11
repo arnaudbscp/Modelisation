@@ -1,4 +1,4 @@
-package src.mecanique;
+package src.modele;
 
 import src.donnees.Face;
 
@@ -33,14 +33,14 @@ public final class QuickSort
 	private int high;
 	
 	/**
-	 * Constructeur de l'objet.
+	 * Constructeur privé typique du design-pattern Singleton.
 	 */
 	private QuickSort() {
 		super();
 	}
 	
 	/** 
-	 * Méthode permettant de renvoyer une instance de la classe Singleton.
+	 * Méthode permettant de renvoyer l'instance de la classe Singleton.
 	 * @return
 	 */
 	public final static QuickSort getInstance() {
@@ -122,7 +122,6 @@ public final class QuickSort
 	 * Méthode affichant le tableau trié (pour vérification du bon fonctionnement).
 	 * @param arr
 	 */
-	@SuppressWarnings("unused")
 	public void printArray(Face tab[]) 
 	{ 
 		for (int i=0; i < tab.length; ++i) 

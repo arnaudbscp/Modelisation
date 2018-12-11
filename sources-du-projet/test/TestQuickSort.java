@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import src.donnees.Face;
 import src.donnees.Point;
-
-import src.mecanique.QuickSort;
+import src.modele.QuickSort;
 
 /**
  * Classe de test du tri QuickSort

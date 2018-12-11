@@ -1,4 +1,4 @@
-package src.ihm;
+package src.modele;
 
 /**
  * Interface représentant le design-pattern Strategy, permettant de n'avoir qu'un seul Slider pour les 3 mouvements de rotation, 

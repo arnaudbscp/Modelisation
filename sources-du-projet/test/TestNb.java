@@ -8,7 +8,7 @@ import java.io.StringReader;
 import org.junit.jupiter.api.Test;
 
 import src.exception.WrongHeaderException;
-import src.mecanique.LoadFile;
+import src.modele.LoadFile;
 
 /**
  * Classe de test sur la récupération du nombre de points et de faces de la figure.
@@ -33,8 +33,8 @@ class TestNb {
 				"element face 1689\n" + 
 				"property list uint8 int32 vertex_indices\n" + 
 				"end_header";
-		LoadFile lf = new LoadFile();
-		lf.readStream(new StringReader(model));
+		LoadFile lf = LoadFile.getInstance();
+		lf.lireStream(new StringReader(model));
 		assertEquals(855, lf.getPoints().length);
 	}
 
@@ -54,8 +54,8 @@ class TestNb {
 				"element face 1689\n" + 
 				"property list uint8 int32 vertex_indices\n" + 
 				"end_header";
-		LoadFile lf = new LoadFile();
-		lf.readStream(new StringReader(model));
+		LoadFile lf = LoadFile.getInstance();
+		lf.lireStream(new StringReader(model));
 		assertEquals(1689, lf.getFaces().length);
 	}
 }

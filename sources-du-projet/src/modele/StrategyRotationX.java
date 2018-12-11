@@ -1,4 +1,4 @@
-package src.ihm;
+package src.modele;
 
 /**
  * Implémentation du design-pattern Strategy pour le mouvement de Rotation X.

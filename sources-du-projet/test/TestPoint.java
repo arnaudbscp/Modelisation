@@ -7,10 +7,10 @@ import java.io.StringReader;
 
 import org.junit.jupiter.api.Test;
 
-import src.mecanique.LoadFile;
 import src.exception.MissingPointLineException;
 import src.exception.WrongHeaderException;
 import src.exception.WrongPointLineFormatException;
+import src.modele.LoadFile;
 
 /**
  * Classe de test sur un point. On teste si un point est créé à partir des bonnes coordonnées.
@@ -37,8 +37,8 @@ class TestPoint {
 				"property list uint8 int32 vertex_indices\n" + 
 				"end_header\n" +
 				"13.6601 0 548.364 ";
-		LoadFile lf = new LoadFile();
-		lf.readStream(new StringReader(model));
+		LoadFile lf = LoadFile.getInstance();
+		lf.lireStream(new StringReader(model));
 		try {
 			lf.creerPoints();
 		} catch (WrongPointLineFormatException | MissingPointLineException e) {
