@@ -258,6 +258,15 @@ public class Controleur {
 	}
 	
 	public void RotationAuto(boolean action) {
-		
+		while(action) {
+			m.setRotationValue(m.getRotationValue() + 1);
+			updateModele(m.getRotationValue(), m.getZoomValue(), m.getCptTranslateGD(), m.getCptTranslateHB());
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

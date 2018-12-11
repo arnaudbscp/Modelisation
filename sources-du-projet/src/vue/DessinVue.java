@@ -112,7 +112,6 @@ public class DessinVue extends Application implements Observer{
 		menu.getChildren().addAll(alignementButton);
 
 		//BOUTON ROTATION AUTO 
-		
 		Button rotauto = new Button();
 		rotauto.setText("");
 		HBox hb = new HBox();
