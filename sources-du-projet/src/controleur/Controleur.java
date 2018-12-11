@@ -257,7 +257,7 @@ public class Controleur {
 		return 30;
 	}
 	
-	public void RotationAuto() {
+	public void RotationAuto(boolean action) {
 		
 	}
 }
