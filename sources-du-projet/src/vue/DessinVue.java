@@ -21,6 +21,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -188,195 +189,210 @@ public class DessinVue extends Application implements Observer{
 
 		//---------------------GESTION DES EVENEMENTS------------------
 
-		boutonAide.setOnAction(e->{
-			Stage stageAide = new Stage();
-			stageAide.initOwner(primaryStage); //Définit la fenêtre principale comme fenêtre parente.
-			stageAide.initModality(Modality.WINDOW_MODAL); //Verrouille la fenêtre parente.
-			VBox rootAide = new VBox();
-			Scene sceneAide = new Scene(rootAide, 610, 180);
-			stageAide.setTitle("Aide");
-			stageAide.setScene(sceneAide);
-			Text textAide = new Text("Ce logiciel te permet d'afficher des figures géométriques dans un espace 3D. Pour cela, choisis le fichier .ply contenant les coordonnées des points et les faces de la figure que tu souhaites charger grâce au bouton \"Importer\". Tu pourras ensuite déplacer la figure dans l'espace grâce aux différents Sliders et Boutons, qui permettent d'effectuer des rotations, des translations et de zoomer. Tu peux régler le pas de la translation pour plus ou moins de précision dans le champ dédié. Tu peux également zoomer avec la molette de la souris. Enfin, tu peux customiser la figure en changeant sa couleur !");
-			textAide.setWrappingWidth(sceneAide.getWidth()-10); //Adapte le texte à la largeur de la fenêtre.
-			textAide.setLineSpacing(5); //Définit la valeur de l'interligne.
-			textAide.setTextAlignment(TextAlignment.JUSTIFY); //Justifie le texte.
-			Button okAide = new Button("J'ai compris !");
-			okAide.setDefaultButton(true); //Définit le bouton "J'ai compris" comme bouton par défaut de la fenêtre, permettant son activation à l'appui de la touche Entrée.
-			rootAide.getChildren().addAll(textAide, okAide);
-			okAide.setOnAction(e2->{
-				stageAide.close();
-			});
-			rootAide.setPadding(new Insets(5));
-			rootAide.setSpacing(5);
-			stageAide.setResizable(false);
-			stageAide.show();
-		});
+		boutonAide.setOnAction(e->{	aide(primaryStage);});
 
-		boutonImport.setOnAction(e -> {
-			controleur.updateFichier(importer.showOpenDialog(primaryStage));
-			sliderZoom.setDisable(false);
-			sliderZoom.setMin(0);
-			sliderZoom.setMax(controleur.getDefaultzoom()*2);
-			sliderZoom.setValue(controleur.getDefaultzoom());
-			sliderZoom.setMajorTickUnit(controleur.getDefaultzoom()/2.5);
-			sliderZoom.setBlockIncrement(controleur.getDefaultzoom()/12.5);
-			sliderZoom.setShowTickLabels(true);
-		});
+		boutonImport.setOnAction(e -> {	importFichier(primaryStage, importer, sliderZoom);});
 
-		cp.setOnAction(e ->{
-			controleur.updateCouleur(cp.getValue());
-		});
+		cp.setOnAction(e ->{ controleur.updateCouleur(cp.getValue());});
 
-		X.setOnAction(e -> {
-			X.setDisable(true);
-			Y.setDisable(false);
-			Z.setDisable(false);
-			lblTournerX.setText("Rotation X");
-			sliderRotation.setValue(controleur.getStrategyX().getValeurRotation());
-			controleur.updateX();
-		});
+		X.setOnAction(e -> { actionX(sliderRotation, lblTournerX, X, Y, Z);});
 
-		Y.setOnAction(e -> {
-			Y.setDisable(true);
-			X.setDisable(false);
-			Z.setDisable(false);
-			lblTournerX.setText("Rotation Y");
-			sliderRotation.setValue(controleur.getStrategyY().getValeurRotation());
-			controleur.updateY();
-		});
+		Y.setOnAction(e -> { actionY(sliderRotation, lblTournerX, X, Y, Z);});
 
-		Z.setOnAction(e -> {
-			Z.setDisable(true);
-			Y.setDisable(false);
-			X.setDisable(false);
-			lblTournerX.setText("Rotation Z");
-			sliderRotation.setValue(controleur.getStrategyZ().getValeurRotation());
-			controleur.updateZ();
-		});
+		Z.setOnAction(e -> { actionZ(sliderRotation, lblTournerX, X, Y, Z);});
 
-		sliderRotation.setOnMouseDragged(e-> {
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-		});
+		sliderRotation.setOnMouseDragged(e-> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());});
 
-		sliderRotation.setOnMouseClicked(e-> {
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-		});
+		sliderRotation.setOnMouseClicked(e-> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());});
 
-		sliderZoom.setOnMouseDragged(e -> {
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-		});
+		sliderZoom.setOnMouseDragged(e -> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());});
 
-		sliderZoom.setOnMouseClicked(e -> {
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-		});
+		sliderZoom.setOnMouseClicked(e -> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());});
 
-		gauche.setOnAction(e->{
-			if(pasValide) {
-				controleur.setcptTranslateGD(controleur.getcptTranslateGD() + Float.parseFloat("0"+tfPas.getText()));
-				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-			}
-		});
+		gauche.setOnAction(e->{ actionGauche(sliderZoom, sliderRotation, tfPas);});
 
-		gauche.setOnMouseDragged(e->{
-			if(pasValide) {
-				controleur.setcptTranslateGD(controleur.getcptTranslateGD() + Float.parseFloat("0"+tfPas.getText()));
-				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-			}
-		});
+		gauche.setOnMouseDragged(e->{ actionGauche(sliderZoom, sliderRotation, tfPas);});
 
-		droite.setOnAction(e->{
-			if(pasValide) {
-				controleur.setcptTranslateGD(controleur.getcptTranslateGD() - Float.parseFloat("0"+tfPas.getText()));
-				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-			}
-		});
+		droite.setOnAction(e->{ actionDroite(sliderZoom, sliderRotation, tfPas);});
 
-		droite.setOnMouseDragged(e->{
-			if(pasValide) {
-				controleur.setcptTranslateGD(controleur.getcptTranslateGD() - Float.parseFloat("0"+tfPas.getText()));
-				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-			}
-		});
+		droite.setOnMouseDragged(e->{ actionDroite(sliderZoom, sliderRotation, tfPas);});
 
-		haut.setOnAction(e->{
-			if(pasValide) {
-				controleur.setcptTranslateHB(controleur.getcptTranslateHB() + Float.parseFloat("0"+tfPas.getText()));
-				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-			}
-		});
+		haut.setOnAction(e->{ actionHaut(sliderZoom, sliderRotation, tfPas);});
 
-		haut.setOnMouseDragged(e->{
-			if(pasValide) {
-				controleur.setcptTranslateHB(controleur.getcptTranslateHB() + Float.parseFloat("0"+tfPas.getText()));
-				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-			}
-		});
+		haut.setOnMouseDragged(e->{ actionHaut(sliderZoom, sliderRotation, tfPas);});
 
-		bas.setOnAction(e->{
-			if(pasValide) {
-				controleur.setcptTranslateHB(controleur.getcptTranslateHB() - Float.parseFloat("0"+tfPas.getText()));
-				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-			}
-		});
+		bas.setOnAction(e->{ actionBas(sliderZoom, sliderRotation, tfPas);});
 
-		bas.setOnMouseDragged(e->{
-			if(pasValide) {
-				controleur.setcptTranslateHB(controleur.getcptTranslateHB() - Float.parseFloat("0"+tfPas.getText()));
-				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-			}
-		});
+		bas.setOnMouseDragged(e->{ actionBas(sliderZoom, sliderRotation, tfPas);});
 
-		canv.setOnScroll(e->{
-			if(e.getDeltaY() > 0 && sliderZoom.getValue() < controleur.getDefaultzoom()*2) { //scroll up
-				controleur.setDefaultzoom(sliderZoom.getValue() + controleur.getDefaultzoom()/12.5);
-				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-				sliderZoom.setValue(sliderZoom.getValue() + controleur.getDefaultzoom()/12.5);
-			} else if(e.getDeltaY() < 0 && sliderZoom.getValue() > 0){ //scroll down
-				controleur.setDefaultzoom(sliderZoom.getValue() - controleur.getDefaultzoom()/12.5);
-				controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-				sliderZoom.setValue(sliderZoom.getValue() - controleur.getDefaultzoom()/12.5);
-			}
-		});
+		canv.setOnScroll(e->{ scrollZoom(sliderZoom, sliderRotation, e);});
 
-		boutonFacesEtArretes.setOnAction(e->{
-			boutonFacesEtArretes.setDisable(true);
-			boutonArretes.setDisable(false);
-			boutonFaces.setDisable(false);
-			controleur.setModeDessin(ModeDessin.FACES_ARRETES);
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-		});
+		boutonFacesEtArretes.setOnAction(e->{ actionFacesEtArretes(sliderZoom, sliderRotation, boutonFacesEtArretes, boutonFaces, boutonArretes);});
 
-		boutonFaces.setOnAction(e->{
-			boutonFacesEtArretes.setDisable(false);
-			boutonArretes.setDisable(false);
-			boutonFaces.setDisable(true);
-			controleur.setModeDessin(ModeDessin.FACES);
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-		});
+		boutonFaces.setOnAction(e->{ actionFaces(sliderZoom, sliderRotation, boutonFacesEtArretes, boutonFaces, boutonArretes);});
 
-		boutonArretes.setOnAction(e->{
-			boutonFacesEtArretes.setDisable(false);
-			boutonArretes.setDisable(true);
-			boutonFaces.setDisable(false);
-			controleur.setModeDessin(ModeDessin.ARRETES);
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
-		});
+		boutonArretes.setOnAction(e->{ actionArretes(sliderZoom, sliderRotation, boutonFacesEtArretes, boutonFaces, boutonArretes);});
 
 
-		tfPas.setOnKeyReleased(e -> {
-			hbPas.getChildren().remove(textErreur);
-			pasValide = true;
-			if(!tfPas.getText().matches("^[0-9]+\\.?[0-9]*$")) {
-				hbPas.getChildren().add(textErreur);
-				pasValide = false;
-			}
-		});
+		tfPas.setOnKeyReleased(e -> { releasedPas(textErreur, hbPas, tfPas);});
 
 		//----AFFICHAGE FENETRE------
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("i3D"); 
 		primaryStage.setResizable(false);
 		primaryStage.show();
+	}
+
+
+	private void releasedPas(Text textErreur, HBox hbPas, TextField tfPas) {
+		hbPas.getChildren().remove(textErreur);
+		pasValide = true;
+		if(!tfPas.getText().matches("^[0-9]+\\.?[0-9]*$")) {
+			hbPas.getChildren().add(textErreur);
+			pasValide = false;
+		}
+	}
+
+
+	private void actionArretes(Slider sliderZoom, Slider sliderRotation, Button boutonFacesEtArretes,
+			Button boutonFaces, Button boutonArretes) {
+		boutonFacesEtArretes.setDisable(false);
+		boutonArretes.setDisable(true);
+		boutonFaces.setDisable(false);
+		controleur.setModeDessin(ModeDessin.ARRETES);
+		controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+	}
+
+
+	private void actionFaces(Slider sliderZoom, Slider sliderRotation, Button boutonFacesEtArretes, Button boutonFaces,
+			Button boutonArretes) {
+		boutonFacesEtArretes.setDisable(false);
+		boutonArretes.setDisable(false);
+		boutonFaces.setDisable(true);
+		controleur.setModeDessin(ModeDessin.FACES);
+		controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+	}
+
+
+	private void actionFacesEtArretes(Slider sliderZoom, Slider sliderRotation, Button boutonFacesEtArretes,
+			Button boutonFaces, Button boutonArretes) {
+		boutonFacesEtArretes.setDisable(true);
+		boutonArretes.setDisable(false);
+		boutonFaces.setDisable(false);
+		controleur.setModeDessin(ModeDessin.FACES_ARRETES);
+		controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+	}
+
+
+	private void scrollZoom(Slider sliderZoom, Slider sliderRotation, ScrollEvent e) {
+		if(e.getDeltaY() > 0 && sliderZoom.getValue() < controleur.getDefaultzoom()*2) { //scroll up
+			controleur.setDefaultzoom(sliderZoom.getValue() + controleur.getDefaultzoom()/12.5);
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+			sliderZoom.setValue(sliderZoom.getValue() + controleur.getDefaultzoom()/12.5);
+		} else if(e.getDeltaY() < 0 && sliderZoom.getValue() > 0){ //scroll down
+			controleur.setDefaultzoom(sliderZoom.getValue() - controleur.getDefaultzoom()/12.5);
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+			sliderZoom.setValue(sliderZoom.getValue() - controleur.getDefaultzoom()/12.5);
+		}
+	}
+
+
+	private void actionBas(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
+		if(pasValide) {
+			controleur.setcptTranslateHB(controleur.getcptTranslateHB() - Float.parseFloat("0"+tfPas.getText()));
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+		}
+	}
+
+
+	private void actionHaut(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
+		if(pasValide) {
+			controleur.setcptTranslateHB(controleur.getcptTranslateHB() + Float.parseFloat("0"+tfPas.getText()));
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+		}
+	}
+
+
+	private void actionDroite(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
+		if(pasValide) {
+			controleur.setcptTranslateGD(controleur.getcptTranslateGD() - Float.parseFloat("0"+tfPas.getText()));
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+		}
+	}
+
+
+	private void actionGauche(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
+		if(pasValide) {
+			controleur.setcptTranslateGD(controleur.getcptTranslateGD() + Float.parseFloat("0"+tfPas.getText()));
+			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getcptTranslateGD(), controleur.getcptTranslateHB());
+		}
+	}
+
+
+	private void actionZ(Slider sliderRotation, Label lblTournerX, Button X, Button Y, Button Z) {
+		Z.setDisable(true);
+		Y.setDisable(false);
+		X.setDisable(false);
+		lblTournerX.setText("Rotation Z");
+		sliderRotation.setValue(controleur.getStrategyZ().getValeurRotation());
+		controleur.updateZ();
+	}
+
+
+	private void actionY(Slider sliderRotation, Label lblTournerX, Button X, Button Y, Button Z) {
+		Y.setDisable(true);
+		X.setDisable(false);
+		Z.setDisable(false);
+		lblTournerX.setText("Rotation Y");
+		sliderRotation.setValue(controleur.getStrategyY().getValeurRotation());
+		controleur.updateY();
+	}
+
+
+	private void actionX(Slider sliderRotation, Label lblTournerX, Button X, Button Y, Button Z) {
+		X.setDisable(true);
+		Y.setDisable(false);
+		Z.setDisable(false);
+		lblTournerX.setText("Rotation X");
+		sliderRotation.setValue(controleur.getStrategyX().getValeurRotation());
+		controleur.updateX();
+	}
+
+
+	private void importFichier(Stage primaryStage, FileChooser importer, Slider sliderZoom) {
+		controleur.updateFichier(importer.showOpenDialog(primaryStage));
+		sliderZoom.setDisable(false);
+		sliderZoom.setMin(0);
+		sliderZoom.setMax(controleur.getDefaultzoom()*2);
+		sliderZoom.setValue(controleur.getDefaultzoom());
+		sliderZoom.setMajorTickUnit(controleur.getDefaultzoom()/2.5);
+		sliderZoom.setBlockIncrement(controleur.getDefaultzoom()/12.5);
+		sliderZoom.setShowTickLabels(true);
+	}
+
+
+	private void aide(Stage primaryStage) {
+		Stage stageAide = new Stage();
+		stageAide.initOwner(primaryStage); //Définit la fenêtre principale comme fenêtre parente.
+		stageAide.initModality(Modality.WINDOW_MODAL); //Verrouille la fenêtre parente.
+		VBox rootAide = new VBox();
+		Scene sceneAide = new Scene(rootAide, 610, 180);
+		stageAide.setTitle("Aide");
+		stageAide.setScene(sceneAide);
+		Text textAide = new Text("Ce logiciel te permet d'afficher des figures géométriques dans un espace 3D. Pour cela, choisis le fichier .ply contenant les coordonnées des points et les faces de la figure que tu souhaites charger grâce au bouton \"Importer\". Tu pourras ensuite déplacer la figure dans l'espace grâce aux différents Sliders et Boutons, qui permettent d'effectuer des rotations, des translations et de zoomer. Tu peux régler le pas de la translation pour plus ou moins de précision dans le champ dédié. Tu peux également zoomer avec la molette de la souris. Enfin, tu peux customiser la figure en changeant sa couleur !");
+		textAide.setWrappingWidth(sceneAide.getWidth()-10); //Adapte le texte à la largeur de la fenêtre.
+		textAide.setLineSpacing(5); //Définit la valeur de l'interligne.
+		textAide.setTextAlignment(TextAlignment.JUSTIFY); //Justifie le texte.
+		Button okAide = new Button("J'ai compris !");
+		okAide.setDefaultButton(true); //Définit le bouton "J'ai compris" comme bouton par défaut de la fenêtre, permettant son activation à l'appui de la touche Entrée.
+		rootAide.getChildren().addAll(textAide, okAide);
+		okAide.setOnAction(e2->{
+			stageAide.close();
+		});
+		rootAide.setPadding(new Insets(5));
+		rootAide.setSpacing(5);
+		stageAide.setResizable(false);
+		stageAide.show();
 	}
 
 	public void update(Observable o, Object arg) {
