@@ -1,11 +1,14 @@
 package src.vue;
 
 
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -16,6 +19,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -46,7 +51,7 @@ public class DessinVue extends Application implements Observer{
 	public void start(Stage primaryStage){
 		//ELEMENTS GRAPHIQUES
 		HBox corps = new HBox();
-		Scene scene = new Scene(corps, 1280, 700);
+		Scene scene = new Scene(corps, 1280, 800);
 		VBox menu = new VBox();
 		menu.setMinWidth(150);
 		Button boutonImport = new Button("Importer");
@@ -113,9 +118,21 @@ public class DessinVue extends Application implements Observer{
 
 		//BOUTON ROTATION AUTO 
 		Button rotauto = new Button();
-		rotauto.setText("");
+		
+		
 		HBox hb = new HBox();
+		Image image = new Image(new File("img/360-degrees.png").toURI().toString());
+		ImageView i = new ImageView(image);
+		i.setFitHeight(30);
+		i.setPreserveRatio(true);
+		rotauto.setGraphic(i);
+		
 		hb.getChildren().add(rotauto);
+		
+		hb.setPadding(new Insets(15,10,10,55));
+		hb.setSpacing(30);
+		menu.getChildren().addAll(hb);
+		
 		
 		//CROIX DIRECTIONNELLE TRANSLATION
 		Label lblTranslation = new Label("Translation");
