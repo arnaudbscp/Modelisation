@@ -175,6 +175,16 @@ public class Controleur {
 	}
 	
 	/**
+	 * Initialise les valeurs du modèle lors de l'import d'une figure, pour pouvoir afficher la figure dès l'import et non après
+	 * un premier mouvement.
+	 * @param r
+	 * @param z
+	 */
+	public void initModele(double rotation, double zoom) {
+		m.setModele(rotation, zoom, 0, 0);
+	}
+	
+	/**
 	 * Met à jour la couleur de la figure.
 	 * @param c
 	 */

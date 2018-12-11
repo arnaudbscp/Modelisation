@@ -207,7 +207,7 @@ public class DessinVue extends Application implements Observer{
 		
 		boutonAide.setOnAction(e->{	aide(primaryStage);});
 
-		boutonImport.setOnAction(e -> {	importFichier(primaryStage, importer, sliderZoom);});
+		boutonImport.setOnAction(e -> {	importFichier(primaryStage, importer, sliderZoom, sliderRotation);});
 
 		cp.setOnAction(e ->{ controleur.updateCouleur(cp.getValue());});
 
@@ -453,7 +453,7 @@ public class DessinVue extends Application implements Observer{
 	 * @param importer
 	 * @param sliderZoom
 	 */
-	private void importFichier(Stage primaryStage, FileChooser importer, Slider sliderZoom) {
+	private void importFichier(Stage primaryStage, FileChooser importer, Slider sliderZoom, Slider sliderRotation) {
 		controleur.updateFichier(importer.showOpenDialog(primaryStage));
 		sliderZoom.setDisable(false);
 		sliderZoom.setMin(0);
@@ -462,6 +462,7 @@ public class DessinVue extends Application implements Observer{
 		sliderZoom.setMajorTickUnit(controleur.getDefaultZoom()/2.5);
 		sliderZoom.setBlockIncrement(controleur.getDefaultZoom()/12.5);
 		sliderZoom.setShowTickLabels(true);
+		controleur.initModele(sliderRotation.getValue(), sliderZoom.getValue());
 	}
 
 	/**
