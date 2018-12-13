@@ -7,10 +7,8 @@ import java.io.StringReader;
 
 import org.junit.jupiter.api.Test;
 
-import src.exception.MissingPointLineException;
 import src.exception.WrongHeaderException;
-import src.exception.WrongPointLineFormatException;
-import src.modele.LoadFile;
+import src.modele.Initialisation;
 
 /**
  * Classe de test sur un point. On teste si un point est créé à partir des bonnes coordonnées.
@@ -37,17 +35,11 @@ class TestPoint {
 				"property list uint8 int32 vertex_indices\n" + 
 				"end_header\n" +
 				"13.6601 0 548.364 ";
-		LoadFile lf = LoadFile.getInstance();
-		lf.lireStream(new StringReader(model));
-		try {
-			lf.creerPoints();
-		} catch (WrongPointLineFormatException | MissingPointLineException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		assertEquals((float)13.6601, (float)lf.getPoints()[0].getX());
-		assertEquals((float)0, (float)lf.getPoints()[0].getY());
-		assertEquals((float)548.364, (float)lf.getPoints()[0].getZ());
+		Initialisation i = Initialisation.getInstance();
+		i.doInit(new StringReader(model));
+		assertEquals((float)13.6601, (float)i.getLoadFile().getPoints()[0].getX());
+		assertEquals((float)0, (float)i.getLoadFile().getPoints()[0].getY());
+		assertEquals((float)548.364, (float)i.getLoadFile().getPoints()[0].getZ());
 	}
 	
 	/**
@@ -68,16 +60,10 @@ class TestPoint {
 				"property list uint8 int32 vertex_indices\n" + 
 				"end_header\n" +
 				"13.6601 0.12e-1 548.364 ";
-		LoadFile lf = LoadFile.getInstance();
-		lf.lireStream(new StringReader(model));
-		try {
-			lf.creerPoints();
-		} catch (WrongPointLineFormatException | MissingPointLineException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		assertEquals((float)13.6601, (float)lf.getPoints()[0].getX());
-		assertEquals((float)0.012, (float)lf.getPoints()[0].getY());
-		assertEquals((float)548.364, (float)lf.getPoints()[0].getZ());
+		Initialisation i = Initialisation.getInstance();
+		i.doInit(new StringReader(model));
+		assertEquals((float)13.6601, (float)i.getLoadFile().getPoints()[0].getX());
+		assertEquals((float)0.012, (float)i.getLoadFile().getPoints()[0].getY());
+		assertEquals((float)548.364, (float)i.getLoadFile().getPoints()[0].getZ());
 	}
 }

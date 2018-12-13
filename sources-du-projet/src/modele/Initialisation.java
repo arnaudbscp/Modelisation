@@ -1,7 +1,9 @@
 package src.modele;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 
 import javax.swing.JOptionPane;
 
@@ -61,15 +63,24 @@ public class Initialisation {
 	}
 	
 	/**
-	 * Lit le fichier grâce à un LoadFile et créer les points et les faces en calculant également leur centre de gravité.
-	 * @param f : le fichier à interpréter.
+	 * Appelle la méthode doInit(Reader) permettant la lecture du stream du fichier et son interprétation.
+	 * @param f
 	 * @throws IOException
 	 */
 	public void doInit(File f) throws IOException{
+		doInit(new FileReader(f));
+	}
+	
+	/**
+	 * Lit le stream du fichier grâce à un LoadFile et créer les points et les faces en calculant également leur centre de gravité.
+	 * @param f : le fichier à interpréter.
+	 * @throws IOException
+	 */
+	public void doInit(Reader f) throws IOException{
 		isGood = false;
 		try {
 			lf = LoadFile.getInstance();
-			lf.lireFichier(f);
+			lf.lireStream(f);
 			try {
 				lf.creerPoints();
 				try {
