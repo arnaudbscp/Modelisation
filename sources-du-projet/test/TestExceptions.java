@@ -16,8 +16,17 @@ import src.exception.WrongHeaderException;
 import src.exception.WrongPointLineFormatException;
 import src.modele.LoadFile;
 
+/**
+ * Classe de test sur les différentes exceptions pouvant survenir durant l'execution du programme.
+ * @author genartv
+ *
+ */
 class TestExceptions {
 
+	/**
+	 * Méthode testant si l'exception gérant le format de l'en-tête du fichier est bien soulevée.
+	 * @throws IOException
+	 */
 	@Test
 	void testWrongHeaderFormat() throws IOException {
 		String model = "ply\n" + 
@@ -40,6 +49,11 @@ class TestExceptions {
 		});
 	}
 	
+	/**
+	 * Méthode testant si l'exception gérant le format des lignes de point du fichier est bien soulevée.
+	 * @throws IOException
+	 * @throws WrongHeaderException
+	 */
 	@Test
 	void testWrongPointLineFormatException() throws IOException, WrongHeaderException {
 		String model = "ply\n" + 
@@ -62,6 +76,11 @@ class TestExceptions {
 		});
 	}
 	
+	/**
+	 * Méthode testant si l'exception gérant le nombre de ligne de points dans le cas où il y en a pas assez est bien soulevée.
+	 * @throws IOException
+	 * @throws WrongHeaderException
+	 */
 	@Test
 	void testMissingPointLineException() throws IOException, WrongHeaderException {
 		String model = "ply\n" + 
@@ -83,6 +102,13 @@ class TestExceptions {
 		});
 	}
 
+	/**
+	 * Méthode testant si l'exception gérant le format des lignes de face du fichier est bien soulevée.
+	 * @throws IOException
+	 * @throws WrongHeaderException
+	 * @throws WrongPointLineFormatException
+	 * @throws MissingPointLineException
+	 */
 	@Test
 	void testWrongFaceLineFormatException() throws IOException, WrongHeaderException, WrongPointLineFormatException, MissingPointLineException {
 		String model = "ply\n" + 
@@ -106,6 +132,13 @@ class TestExceptions {
 		});
 	}
 	
+	/**
+	 * Méthode testant si l'exception gérant le nombre de ligne de points dans le cas où il y en a trop est bien soulevée.
+	 * @throws IOException
+	 * @throws WrongHeaderException
+	 * @throws WrongPointLineFormatException
+	 * @throws MissingPointLineException
+	 */
 	@Test
 	void testTooMuchPointLineException() throws IOException, WrongHeaderException, WrongPointLineFormatException, MissingPointLineException {
 		String model = "ply\n" + 
@@ -130,6 +163,13 @@ class TestExceptions {
 		});
 	}
 	
+	/**
+	 * Méthode testant si l'exception gérant le nombre de ligne de faces dans le cas où il y en a pas assez est bien soulevée.
+	 * @throws IOException
+	 * @throws WrongHeaderException
+	 * @throws WrongPointLineFormatException
+	 * @throws MissingPointLineException
+	 */
 	@Test
 	void testMissingFaceLineException() throws IOException, WrongHeaderException, WrongPointLineFormatException, MissingPointLineException {
 		String model = "ply\n" + 
@@ -152,6 +192,13 @@ class TestExceptions {
 		});
 	}
 	
+	/**
+	 * Méthode testant si l'exception gérant le nombre de ligne de faces dans le cas où il y en a trop est bien soulevée.
+	 * @throws IOException
+	 * @throws WrongHeaderException
+	 * @throws WrongPointLineFormatException
+	 * @throws MissingPointLineException
+	 */
 	@Test
 	void testTooMuchFaceLineException() throws IOException, WrongHeaderException, WrongPointLineFormatException, MissingPointLineException {
 		String model = "ply\n" + 
