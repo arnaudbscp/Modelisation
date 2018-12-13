@@ -49,7 +49,7 @@ public class DessinVue extends Application implements Observer{
 	 * Le contrôleur du MVC, liant les éléments graphiques aux éléments de traitement.
 	 */
 	private Controleur controleur;
-	
+
 	/**
 	 * Constructeur de la vue, spécifiant le contrôleur.
 	 * @param controleur
@@ -57,12 +57,12 @@ public class DessinVue extends Application implements Observer{
 	public DessinVue(Controleur controleur) {
 		this.controleur = controleur;
 	}
-	
+
 	/**
 	 * Méthode permettant d'avoir des éléments graphiques.
 	 */
 	public void start(Stage primaryStage){
-		
+
 		//ELEMENTS GRAPHIQUES
 		HBox corps = new HBox();
 		Scene scene = new Scene(corps, 1280, 800);
@@ -94,7 +94,7 @@ public class DessinVue extends Application implements Observer{
 		Text textErreur = new Text(" Erreur.");
 		textErreur.setFill(Color.RED);
 
-		
+
 		//SLIDER ZOOM
 		Slider sliderZoom = new Slider();
 		Label lblZoom = new Label();
@@ -103,7 +103,7 @@ public class DessinVue extends Application implements Observer{
 		sliderZoom.setDisable(true);
 		menu.getChildren().addAll(lblZoom, sliderZoom);
 
-		
+
 		//SLIDER ROTATION X (par défaut)
 		Slider sliderRotation = new Slider();
 		Label lblTournerX = new Label();
@@ -116,7 +116,7 @@ public class DessinVue extends Application implements Observer{
 		sliderRotation.setShowTickLabels(true);
 		menu.getChildren().addAll(lblTournerX, sliderRotation);
 
-		
+
 		//BOUTON DIRECTIONNEL ROTATION
 		Button X = new Button();
 		X.setText("X");
@@ -133,7 +133,7 @@ public class DessinVue extends Application implements Observer{
 		alignementButton.setSpacing(30);
 		menu.getChildren().addAll(alignementButton);
 
-		
+
 		//BOUTON ROTATION AUTO 
 		Button rotationAuto = new Button();
 		HBox hboxRotAuto = new HBox();
@@ -146,8 +146,8 @@ public class DessinVue extends Application implements Observer{
 		hboxRotAuto.setPadding(new Insets(15,10,10,55));
 		hboxRotAuto.setSpacing(30);
 		menu.getChildren().addAll(hboxRotAuto);
-		
-		
+
+
 		//CROIX DIRECTIONNELLE TRANSLATION
 		Label lblTranslation = new Label("Translation");
 		lblTranslation.setPadding(new Insets(30,1,1,45));
@@ -177,7 +177,7 @@ public class DessinVue extends Application implements Observer{
 		hbBas.getChildren().add(bas);
 		menu.getChildren().addAll(lblTranslation, hbHaut, hbGaucheDroite, hbBas, hbPas);
 
-		
+
 		//CHOIX COULEURS
 		Label lcolor = new Label("Couleur");
 		lcolor.setPadding(new Insets(30, 0, 10,50));
@@ -185,7 +185,7 @@ public class DessinVue extends Application implements Observer{
 		cp.setValue(controleur.getCouleur());
 		menu.getChildren().addAll(lcolor,cp);
 
-		
+
 		//BOUTONS FACES/ARRETES/LES DEUX (MODE)
 		Label lblMode = new Label("Mode de dessin:");
 		lblMode.setPadding(new Insets(0, 0, 0, 20));
@@ -202,10 +202,10 @@ public class DessinVue extends Application implements Observer{
 		vbBoutonsFacesArretes.setSpacing(2);
 		menu.getChildren().add(vbBoutonsFacesArretes);
 
-		
+
 		//---------------------GESTION DES EVENEMENTS------------------
 
-		
+
 		boutonAide.setOnAction(e->{	aide(primaryStage);});
 
 		boutonImport.setOnAction(e -> {	importFichier(primaryStage, importer, sliderZoom, sliderRotation);});
@@ -456,14 +456,18 @@ public class DessinVue extends Application implements Observer{
 	 */
 	private void importFichier(Stage primaryStage, FileChooser importer, Slider sliderZoom, Slider sliderRotation) {
 		controleur.updateFichier(importer.showOpenDialog(primaryStage));
-		sliderZoom.setDisable(false);
-		sliderZoom.setMin(0);
-		sliderZoom.setMax(controleur.getDefaultZoom()*2);
-		sliderZoom.setValue(controleur.getDefaultZoom());
-		sliderZoom.setMajorTickUnit(controleur.getDefaultZoom()/2.5);
-		sliderZoom.setBlockIncrement(controleur.getDefaultZoom()/12.5);
-		sliderZoom.setShowTickLabels(true);
-		controleur.initModele(sliderRotation.getValue(), sliderZoom.getValue());
+		if(controleur.getInit() != null) {
+			if(controleur.getInit().isGood()) {
+				sliderZoom.setDisable(false);
+				sliderZoom.setMin(0);
+				sliderZoom.setMax(controleur.getDefaultZoom()*2);
+				sliderZoom.setValue(controleur.getDefaultZoom());
+				sliderZoom.setMajorTickUnit(controleur.getDefaultZoom()/2.5);
+				sliderZoom.setBlockIncrement(controleur.getDefaultZoom()/12.5);
+				sliderZoom.setShowTickLabels(true);
+				controleur.initModele(sliderRotation.getValue(), sliderZoom.getValue());
+			}
+		}
 	}
 
 	/**
