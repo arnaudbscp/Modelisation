@@ -4,9 +4,6 @@ import src.donnees.Face;
 import src.donnees.Matrice;
 import src.donnees.Point;
 
-import src.exception.MatriceFormatException;
-import src.exception.MatriceNullException;
-
 import src.outils.BoiteaOutils;
 
 /**
@@ -27,7 +24,7 @@ public class Translation implements Recopie{
 	 * @throws MatriceNullException
 	 * @throws MatriceFormatException
 	 */
-	public Point[] creerPointsTranslate(double x1, double x2, Point[] p) throws MatriceNullException, MatriceFormatException {
+	public Point[] creerPointsTranslate(double x1, double x2, Point[] p) {
 		BoiteaOutils bo = new BoiteaOutils(); 
 		double[][] matriceDeTranslation = bo.creerTranslation(x1, x2);
 		Matrice m = new Matrice(matriceDeTranslation);

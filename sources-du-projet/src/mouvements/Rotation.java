@@ -4,9 +4,6 @@ import src.donnees.Face;
 import src.donnees.Matrice;
 import src.donnees.Point;
 
-import src.exception.MatriceFormatException;
-import src.exception.MatriceNullException;
-
 import src.outils.BoiteaOutils;
 
 /**
@@ -27,7 +24,7 @@ public class Rotation implements Recopie{
 	 * @throws MatriceNullException
 	 * @throws MatriceFormatException
 	 */
-	public Point[] creerPointRotate(double angle, Point[] p, char axe) throws MatriceNullException, MatriceFormatException {
+	public Point[] creerPointRotate(double angle, Point[] p, char axe) {
 		angle=Math.toRadians(angle);
 		BoiteaOutils bo = new BoiteaOutils(); 
 		double[][] matriceRotate = null;

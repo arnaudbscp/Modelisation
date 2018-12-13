@@ -4,9 +4,6 @@ import src.donnees.Face;
 import src.donnees.Matrice;
 import src.donnees.Point;
 
-import src.exception.MatriceFormatException;
-import src.exception.MatriceNullException;
-
 import src.outils.BoiteaOutils;
 
 /**
@@ -26,7 +23,7 @@ public class Zoom implements Recopie{
 	 * @throws MatriceNullException
 	 * @throws MatriceFormatException
 	 */
-	public Point[] creerPointZoom(double z, Point[] p) throws MatriceNullException, MatriceFormatException {
+	public Point[] creerPointZoom(double z, Point[] p) {
 		BoiteaOutils bo = new BoiteaOutils();
 		double[][] matriceZoom = bo.creerHomothetie(z);
 		Matrice m = new Matrice(matriceZoom);

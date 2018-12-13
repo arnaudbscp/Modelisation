@@ -1,5 +1,7 @@
 package src.exception;
 
+import javax.swing.JOptionPane;
+
 /**
  * Exception soulevée lorsqu'il y a plus de lignes représentant une face dans le fichier que prévu, en se fiant au nombre
  * de face donné dans l'en-tête du fichier.
@@ -29,17 +31,10 @@ public class TooMuchFaceLineException extends Exception {
 	}
 	
 	/**
-	 * Retourne le message d'erreur.
+	 * Affiche le message d'erreur dans un JOptionPane.
 	 */
-	public String getMessage() {
-		return message;
-	}
-	
-	/**
-	 * Retourne le titre du message d'erreur.
-	 * @return
-	 */
-	public String getTitle() {
-		return title;
+	public void showMessage() {
+		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
 	}
 }

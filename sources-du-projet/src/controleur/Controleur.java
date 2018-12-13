@@ -9,8 +9,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import src.donnees.Face;
 import src.donnees.Point;
-import src.exception.MatriceFormatException;
-import src.exception.MatriceNullException;
 import src.exception.WrongFormatFileException;
 import src.modele.Initialisation;
 import src.modele.ModeDessin;
@@ -43,6 +41,7 @@ public class Controleur {
 
 	/**
 	 * Méthode mettant à jour la position de la figure dans l'espace à la suite d'un mouvement (rotation, translation ou homothétie).
+	 * Elle appelle les différentes méthodes de mise à jour de chaque mouvement.
 	 * @param gc
 	 * @param rotationValue
 	 * @param zoomValue
@@ -55,78 +54,98 @@ public class Controleur {
 			Point[] tabp = getInit().getLoadFile().getPoints();
 			Zoom zoom = new Zoom();
 
-			try {
-				if(m.isFlagX()) {
-					tabp = rotation.creerPointRotate(rotationValue, tabp, getStrategyX().execute());
-					getStrategyX().setValeurRotation(rotationValue);
-				}else
-					tabp = rotation.creerPointRotate(getStrategyX().getValeurRotation(), tabp, getStrategyX().execute());
-			} catch (MatriceNullException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			} catch (MatriceFormatException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			}
-			rotation.recopiePoint(tabf, tabp);
+			tabp = miseAJourRotationX(rotationValue, rotation, tabf, tabp);
+			tabp = miseAJourRotationY(rotationValue, rotation, tabf, tabp);
+			tabp = miseAJourRotationZ(rotationValue, rotation, tabf, tabp);
+			tabp = miseAJourZoom(zoomValue, tabf, tabp, zoom);
+			miseAJourTranslation(cptTranslateGD, cptTranslateHB, translation, tabf, tabp);
 
-			try {
-				if(m.isFlagY()) {
-					tabp = rotation.creerPointRotate(rotationValue, tabp, getStrategyY().execute());
-					getStrategyY().setValeurRotation(rotationValue);
-				}else
-					tabp = rotation.creerPointRotate(getStrategyY().getValeurRotation(), tabp, getStrategyY().execute());
-			} catch (MatriceNullException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			} catch (MatriceFormatException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			}
-			rotation.recopiePoint(tabf, tabp);
-
-			try {
-				if(m.isFlagZ()) {
-					tabp = rotation.creerPointRotate(rotationValue, tabp, getStrategyZ().execute());
-					getStrategyZ().setValeurRotation(rotationValue);
-				}else
-					tabp = rotation.creerPointRotate(getStrategyZ().getValeurRotation(), tabp, getStrategyZ().execute());
-			} catch (MatriceNullException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			} catch (MatriceFormatException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			}
-			rotation.recopiePoint(tabf, tabp);
-
-			try {
-				tabp = zoom.creerPointZoom(zoomValue, tabp);
-			} catch (MatriceNullException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			} catch (MatriceFormatException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			}
-			zoom.recopiePoint(tabf, tabp);
-
-			try {
-				tabp = translation.creerPointsTranslate(cptTranslateGD, cptTranslateHB, tabp);
-			} catch (MatriceNullException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			} catch (MatriceFormatException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
-				System.exit(1);
-			}
-			translation.recopiePoint(tabf, tabp);
-			
 			getGc().clearRect(0, 0, 1280, 800);
 			getInit().creerFigure(getGc(), tabf, getCouleur(), getModeDessin());
 		}
 	}
+	
+	/**
+	 * Met à jour la rotation selon l'axe X de la figure.
+	 * @param rotationValue
+	 * @param rotation
+	 * @param tabf
+	 * @param tabp
+	 * @return
+	 */
+	private Point[] miseAJourRotationX(double rotationValue, Rotation rotation, Face[] tabf, Point[] tabp) {
+		if(m.isFlagX()) {
+			tabp = rotation.creerPointRotate(rotationValue, tabp, getStrategyX().execute());
+			getStrategyX().setValeurRotation(rotationValue);
+		}else
+			tabp = rotation.creerPointRotate(getStrategyX().getValeurRotation(), tabp, getStrategyX().execute());
+		rotation.recopiePoint(tabf, tabp);
+		return tabp;
+	}
 
+	/**
+	 * Met à jour la rotation selon l'axe Y de la figure.
+	 * @param rotationValue
+	 * @param rotation
+	 * @param tabf
+	 * @param tabp
+	 * @return
+	 */
+	private Point[] miseAJourRotationY(double rotationValue, Rotation rotation, Face[] tabf, Point[] tabp) {
+		if(m.isFlagY()) {
+			tabp = rotation.creerPointRotate(rotationValue, tabp, getStrategyY().execute());
+			getStrategyY().setValeurRotation(rotationValue);
+		}else
+			tabp = rotation.creerPointRotate(getStrategyY().getValeurRotation(), tabp, getStrategyY().execute());
+		rotation.recopiePoint(tabf, tabp);
+		return tabp;
+	}
+	
+	/**
+	 * Met à jour la rotation selon l'axe Z de la figure.
+	 * @param rotationValue
+	 * @param rotation
+	 * @param tabf
+	 * @param tabp
+	 * @return
+	 */
+	private Point[] miseAJourRotationZ(double rotationValue, Rotation rotation, Face[] tabf, Point[] tabp) {
+		if(m.isFlagZ()) {
+			tabp = rotation.creerPointRotate(rotationValue, tabp, getStrategyZ().execute());
+			getStrategyZ().setValeurRotation(rotationValue);
+		}else
+			tabp = rotation.creerPointRotate(getStrategyZ().getValeurRotation(), tabp, getStrategyZ().execute());
+		rotation.recopiePoint(tabf, tabp);
+		return tabp;
+	}
+	
+	/**
+	 * Met à jour le niveau de zoom de la figure.
+	 * @param zoomValue
+	 * @param tabf
+	 * @param tabp
+	 * @param zoom
+	 * @return
+	 */
+	private Point[] miseAJourZoom(double zoomValue, Face[] tabf, Point[] tabp, Zoom zoom) {
+		tabp = zoom.creerPointZoom(zoomValue, tabp);
+		zoom.recopiePoint(tabf, tabp);
+		return tabp;
+	}
+
+	/**
+	 * Met à jour le niveau de translation de la figure sur les deux axes.
+	 * @param cptTranslateGD
+	 * @param cptTranslateHB
+	 * @param translation
+	 * @param tabf
+	 * @param tabp
+	 */
+	private void miseAJourTranslation(float cptTranslateGD, float cptTranslateHB, Translation translation, Face[] tabf, Point[] tabp) {
+		tabp = translation.creerPointsTranslate(cptTranslateGD, cptTranslateHB, tabp);
+		translation.recopiePoint(tabf, tabp);
+	}
+	
 	/**
 	 * Importe le fichier et effectue les calculs initiaux jusqu'au premier affichage de la figure.
 	 * @param fileply
@@ -161,11 +180,11 @@ public class Controleur {
 					JOptionPane.showMessageDialog(null, "Erreur", "Erreur Fichier", JOptionPane.ERROR_MESSAGE);
 				}
 			} catch (WrongFormatFileException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), e1.getTitle(), JOptionPane.ERROR_MESSAGE);
+				e1.showMessage();
 			}
 		}
 	}
-	
+
 	/**
 	 * Met à jour le fichier utilisé.
 	 * @param fileply
@@ -173,7 +192,7 @@ public class Controleur {
 	public void updateFichier(File fileply) {
 		setFichier(fileply);
 	}
-	
+
 	/**
 	 * Initialise les valeurs du modèle lors de l'import d'une figure, pour pouvoir afficher la figure dès l'import et non après
 	 * un premier mouvement.
@@ -183,7 +202,7 @@ public class Controleur {
 	public void initModele(double rotation, double zoom) {
 		m.setModele(rotation, zoom, 0, 0);
 	}
-	
+
 	/**
 	 * Met à jour la couleur de la figure.
 	 * @param c
@@ -194,7 +213,7 @@ public class Controleur {
 			getInit().creerFigure(getGc(), getInit().getLoadFile().getFaces(), getCouleur(), getModeDessin());
 		}
 	}
-	
+
 	/**
 	 * Désactive le bouton X, réactive les deux autres.
 	 */
@@ -203,7 +222,7 @@ public class Controleur {
 		m.setFlagY(false);
 		m.setFlagZ(false);
 	}
-	
+
 	/**
 	 * Désactive le bouton Y, réactive les deux autres.
 	 */
@@ -212,7 +231,7 @@ public class Controleur {
 		m.setFlagY(true);
 		m.setFlagZ(false);
 	}
-	
+
 	/**
 	 * Désactive le bouton Z, réactive les deux autres.
 	 */
@@ -221,7 +240,7 @@ public class Controleur {
 		m.setFlagY(false);
 		m.setFlagZ(true);
 	}
-	
+
 	/**
 	 * Calcule le niveau de zoom moyen adapté à la figure par rapport à sa taille, et le retourne.
 	 * @return
@@ -242,7 +261,7 @@ public class Controleur {
 		else if(max > 1) return 20;
 		return 30;
 	}
-	
+
 	/**
 	 * Effectue automatiquement une rotation de 360° de la figure autour de l'axe actif.
 	 * @param action
@@ -278,7 +297,7 @@ public class Controleur {
 	public Color getCouleur() {
 		return m.getCouleur();
 	}
-	
+
 	/**
 	 * Retourne l'Initialisation du fichier.
 	 * @return
@@ -294,7 +313,7 @@ public class Controleur {
 	public void setGc(GraphicsContext gc) {
 		m.setGc(gc);
 	}
-	
+
 	/**
 	 * Retourne le contexte graphique de la figure.
 	 * @return
@@ -332,7 +351,7 @@ public class Controleur {
 	private ModeDessin getModeDessin() {
 		return m.getModeDessin();
 	}
-	
+
 	/**
 	 * Retourne le niveau moyen de zoom de la figure, en fonction de la taille de celle-ci.
 	 * @param d
@@ -370,7 +389,7 @@ public class Controleur {
 	public Strategy getStrategyZ() {
 		return m.getStratZ();
 	}
-	
+
 	/**
 	 * Retourne la Strategy Y.
 	 * @return
@@ -378,7 +397,7 @@ public class Controleur {
 	public Strategy getStrategyY() {
 		return m.getStratY();
 	}
-	
+
 	/**
 	 * Retourne la Strategy X.
 	 * @return

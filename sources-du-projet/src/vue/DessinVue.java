@@ -37,6 +37,7 @@ import src.modele.ModeDessin;
  * @author Valentin
  *
  */
+@SuppressWarnings("deprecation")
 public class DessinVue extends Application implements Observer{
 
 	/**

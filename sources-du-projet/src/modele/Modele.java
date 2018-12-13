@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
  * @author Valentin
  *
  */
+@SuppressWarnings("deprecation")
 public class Modele extends Observable{
 	
 	/**

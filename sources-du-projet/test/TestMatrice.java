@@ -7,9 +7,6 @@ import org.junit.jupiter.api.Test;
 import src.donnees.Matrice;
 import src.donnees.Point;
 
-import src.exception.MatriceFormatException;
-import src.exception.MatriceNullException;
-
 /**
  * Classe de test sur les matrices, à savoir la création et la multiplication de matrices.
  * @author Valentin
@@ -23,7 +20,7 @@ class TestMatrice {
 	 * @throws MatriceFormatException
 	 */
 	@Test
-	void testMultiplier() throws MatriceNullException, MatriceFormatException {
+	void testMultiplier() {
 
 		double[][] tab = new double[][] {{1, 2, 3},{3, 2, 1},{2, 3, 1}};
 

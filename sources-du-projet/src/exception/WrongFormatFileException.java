@@ -1,5 +1,7 @@
 package src.exception;
 
+import javax.swing.JOptionPane;
+
 /**
  * Exception soulevée lorsque le format du fichier n'est pas correct, c'est-à-dire que le fichier n'est pas un .ply
  * @author Valentin
@@ -27,17 +29,10 @@ public class WrongFormatFileException extends Exception {
 	}
 	
 	/**
-	 * Retourne le message d'erreur.
+	 * Affiche le message d'erreur dans un JOptionPane.
 	 */
-	public String getMessage() {
-		return message;
-	}
-	
-	/**
-	 * Retourne le titre du message d'erreur.
-	 * @return
-	 */
-	public String getTitle() {
-		return title;
+	public void showMessage() {
+		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
 	}
 }

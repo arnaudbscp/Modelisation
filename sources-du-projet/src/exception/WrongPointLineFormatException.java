@@ -1,5 +1,7 @@
 package src.exception;
 
+import javax.swing.JOptionPane;
+
 /**
  * Exception soulevée lorsqu'une ligne représentant un point n'est pas écrite dans le format attendu.
  * @author Valentin
@@ -28,18 +30,10 @@ public class WrongPointLineFormatException extends Exception {
 	}
 	
 	/**
-	 * Retourne le message d'erreur.
-	 * @return
+	 * Affiche le message d'erreur dans un JOptionPane.
 	 */
-	public String getMessage() {
-		return message;
-	}
-
-	/**
-	 * Retourne le titre du message d'erreur.
-	 * @return
-	 */
-	public String getTitle() {
-		return title;
+	public void showMessage() {
+		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
 	}
 }

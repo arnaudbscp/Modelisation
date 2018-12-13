@@ -18,6 +18,7 @@ import src.modele.LoadFile;
 
 /**
  * Classe de test sur les différentes exceptions pouvant survenir durant l'execution du programme.
+ * 	Fonctionne uniquement sous JUnit 5.
  * @author genartv
  *
  */

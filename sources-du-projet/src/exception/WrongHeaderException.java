@@ -1,5 +1,7 @@
 package src.exception;
 
+import javax.swing.JOptionPane;
+
 /**
  * Exception soulevée lorsque l'en-tête du fichier n'est pas écrit dans le format attendu.
  * @author Valentin
@@ -36,18 +38,10 @@ public class WrongHeaderException extends Exception {
 	}
 	
 	/**
-	 * Retourne le message d'erreur.
-	 * @return
+	 * Affiche le message d'erreur dans un JOptionPane.
 	 */
-	public String getMessage() {
-		return message;
-	}
-	
-	/**
-	 * Retourne le titre du message d'erreur.
-	 * @return
-	 */
-	public String getTitle() {
-		return title;
+	public void showMessage() {
+		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
 	}
 }

@@ -1,8 +1,5 @@
 package src.donnees;
 
-import src.exception.MatriceFormatException;
-import src.exception.MatriceNullException;
-
 /**
  * Création de matrices (réprésente un tableau à deux dimensions), avec opérations de multiplications et additions.
  */
@@ -106,16 +103,9 @@ public class Matrice {
 	 * Multiplie la matrice de base avec celle passée en paramètre. Retourne la matrice résultant de l'opération.
 	 * @return MC
 	 */
-	public double[][] multiplierMatrice(double[][] MB) throws MatriceNullException, MatriceFormatException {
+	public double[][] multiplierMatrice(double[][] MB) {
 		double[][] MC;
 		int l, c;
-
-		if(MA == null || MB == null)
-			throw new MatriceNullException();
-
-
-		if(MA[0].length != MB.length)
-			throw new MatriceFormatException();
 
 		MC = new double[MA.length][MB[0].length];
 
@@ -139,16 +129,9 @@ public class Matrice {
 	 * Additionne la matrice de base avec celle passée en paramètre. Retourne la matrice résultant de l'opération.
 	 * @return MC
 	 */
-	public double[][] additionMatrice(double[][] MB) throws MatriceNullException, MatriceFormatException {
+	public double[][] additionMatrice(double[][] MB) {
 		double[][] MC;
 		int l, c;
-
-		if(MA == null || MB == null)
-			throw new MatriceNullException();
-
-
-		if(MA[0].length != MB.length)
-			throw new MatriceFormatException();
 
 		MC = new double[MA.length][MB[0].length];
 

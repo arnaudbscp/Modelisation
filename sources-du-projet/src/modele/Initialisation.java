@@ -5,8 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
-import javax.swing.JOptionPane;
-
 import src.donnees.Face;
 import src.exception.MissingFaceLineException;
 import src.exception.MissingPointLineException;
@@ -90,21 +88,21 @@ public class Initialisation {
 						faces[i].setCentreGravite(faces[i].calculCentreGravite());
 					isGood = true;
 				} catch (WrongFaceLineFormatException e) {
-					JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+					e.showMessage();
 				} catch (TooMuchPointLineException e) {
-					JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+					e.showMessage();
 				} catch (MissingFaceLineException e) {
-					JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+					e.showMessage();
 				} catch (TooMuchFaceLineException e) {
-					JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+					e.showMessage();
 				}
 			} catch (WrongPointLineFormatException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+				e.showMessage();
 			} catch (MissingPointLineException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+				e.showMessage();
 			}
 		} catch (WrongHeaderException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), e.getTitle(), JOptionPane.ERROR_MESSAGE);
+			e.showMessage();
 		}
 	}
 
