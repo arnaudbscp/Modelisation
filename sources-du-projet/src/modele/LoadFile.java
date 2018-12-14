@@ -6,8 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
-import src.donnees.Face;
-import src.donnees.Point;
 import src.exception.MissingFaceLineException;
 import src.exception.MissingPointLineException;
 import src.exception.TooMuchFaceLineException;

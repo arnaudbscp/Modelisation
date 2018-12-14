@@ -1,4 +1,4 @@
-package src.donnees;
+package src.modele;
 
 /**
  * Création de matrices (réprésente un tableau à deux dimensions), avec opérations de multiplications et additions.

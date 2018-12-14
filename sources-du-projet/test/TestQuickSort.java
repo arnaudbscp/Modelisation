@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import src.donnees.Face;
-import src.donnees.Point;
+import src.modele.Face;
+import src.modele.Point;
 import src.modele.QuickSort;
 
 /**

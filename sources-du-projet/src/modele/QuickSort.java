@@ -1,7 +1,5 @@
 package src.modele;
 
-import src.donnees.Face;
-
 /**
  * Classe implémentant le design pattern "Singleton",
  * réalisant le tri "QuickSort".

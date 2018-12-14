@@ -1,4 +1,4 @@
-package src.outils;
+package src.modele;
 
 /**
  * Contient les différentes matrices définissant chaque mouvement possible.

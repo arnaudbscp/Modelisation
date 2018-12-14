@@ -1,9 +1,14 @@
 package src.modele;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Observable;
+
+import javax.swing.JOptionPane;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import src.exception.WrongFormatFileException;
 
 /**
  * Classe correspondant au Modèle du design-pattern MVC, stockant les différentes valeurs utiles au bon fonctionnement du logiciel,
@@ -28,27 +33,27 @@ public class Modele extends Observable{
 	 * La valeur de la rotation, donnée par le slider correspondant.
 	 */
 	
-	private double rotationValue;
+	private double rotationValue =0;
 	
 	/**
 	 * La valeur de l'homothétie, donnée par le slider correspondant.
 	 */
 	
-	private double zoomValue;
+	private double zoomValue =0;
 	
 	/**
 	 * La valeur de la translation sur l'axe horizontal. On l'incrémente lors de l'appui sur le bouton droite et on la 
 	 * décrémente lors de l'appui sur le bouton gauche pour déplacer la figure horizontalement.
 	 */
 	
-	private float cptTranslateGD;
+	private float cptTranslateGD=0;
 	
 	/**
 	 * La valeur de la translation sur l'axe vertical. On l'incrémente lors de l'appui sur le bouton haut et on la 
 	 * décrémente lors de l'appui sur le bouton bas pour déplacer la figure verticalement.
 	 */
 	
-	private float cptTranslateHB;
+	private float cptTranslateHB=0;
 	
 	/**
 	 * La valeur du zoom moyen par défaut, défini lors de l'importation du fichier en fonction de la taille de la figure.
@@ -89,77 +94,6 @@ public class Modele extends Observable{
 	 * Boolean true lorsque le slider de rotation Z est activé.
 	 */
 	private boolean flagZ = false;
-	
-	/**
-	 * A DOCUMENTER
-	 */
-	private GraphicsContext gc;
-	
-	/**
-	 * Contient le mode selectionné pour dessiner la figure (faces + arrêtes, faces seulement ou arrêtes seulement).
-	 */
-	private ModeDessin modeDessin = ModeDessin.FACES_ARRETES;
-	
-	/**
-	 * Couleur de la figure initialisée à  blanche. Elle sera modifiée grâce au colorpicker par l'utilisateur.
-	 */
-	private Color couleur = Color.WHITE;
-	
-	/**
-	 * Retourne la couleur de la figure.
-	 * @return
-	 */
-	public Color getCouleur() {
-		return couleur;
-	}
-
-	/**
-	 * Définit la couleur de la figure.
-	 * @param couleur
-	 */
-	public void setCouleur(Color couleur) {
-		this.couleur = couleur;
-	}
-
-	/**
-	 * Retourne le mode de dessin de la figure (faces+arrêtes, faces seulement ou arrêtes seulement).
-	 * @return
-	 */
-	public ModeDessin getModeDessin() {
-		return modeDessin;
-	}
-
-	/**
-	 * Définit le mode de dessin de la figure (faces+arrêtes, faces seulement ou arrêtes seulement).
-	 * @param modeDessin
-	 */
-	public void setModeDessin(ModeDessin modeDessin) {
-		this.modeDessin = modeDessin;
-	}
-
-	/**
-	 * Retourne le contexte graphique de la figure.
-	 * @return
-	 */
-	public GraphicsContext getGc() {
-		return gc;
-	}
-
-	/**
-	 * Définit le contexte graphique de la figure.
-	 * @param gc
-	 */
-	public void setGc(GraphicsContext gc) {
-		this.gc = gc;
-	}
-
-	/**
-	 * Retourne true si le slider de rotation est activé pour la Strategy X.
-	 * @return
-	 */
-	public boolean isFlagX() {
-		return flagX;
-	}
 
 	/**
 	 * Définit le booléen pour le slider de rotation activé pour la Strategy X.
@@ -170,27 +104,11 @@ public class Modele extends Observable{
 	}
 
 	/**
-	 * Retourne true si le slider de rotation est activé pour la Strategy Y.
-	 * @return
-	 */
-	public boolean isFlagY() {
-		return flagY;
-	}
-
-	/**
 	 * Définit le booléen pour le slider de rotation activé pour la Strategy Y.
 	 * @param flagY
 	 */
 	public void setFlagY(boolean flagY) {
 		this.flagY = flagY;
-	}
-
-	/**
-	 * Retourne true si le slider de rotation est activé pour la Strategy Z.
-	 * @return
-	 */
-	public boolean isFlagZ() {
-		return flagZ;
 	}
 
 	/**
@@ -235,21 +153,7 @@ public class Modele extends Observable{
 	public void setDefaultzoom(double defaultzoom) {
 		this.defaultZoom = defaultzoom;
 	}
-
-	/**
-	 * Retourne la valeur de la rotation.
-	 */
-	public double getRotationValue() {
-		return rotationValue;
-	}
-
-	/**
-	 * Retourne la valeur de l'homothétie.
-	 */
-	public double getZoomValue() {
-		return zoomValue;
-	}
-
+	
 	/**
 	 * Retourne la valeur de la translation sur l'axe horizontal.
 	 */
@@ -265,13 +169,6 @@ public class Modele extends Observable{
 	}
 	
 	/**
-	 * Retourne le fichier contenant la figure.
-	 */
-	public File getFilePly() {
-		return filePly;
-	}
-	
-	/**
 	 * Retourne l'Initialisation correspondant au fichier.
 	 */
 	public Initialisation getInit() {
@@ -283,6 +180,9 @@ public class Modele extends Observable{
 	 */
 	public void setCptTranslateGD(float cptTranslateGD) {
 		this.cptTranslateGD = cptTranslateGD;
+		setChanged();
+		notifyObservers();
+		
 	}
 	
 	/**
@@ -290,6 +190,8 @@ public class Modele extends Observable{
 	 */
 	public void setCptTranslateHB(float cptTranslateHB) {
 		this.cptTranslateHB = cptTranslateHB;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -307,24 +209,14 @@ public class Modele extends Observable{
 	}
 	
 	/**
-	 * Définit les valeur de rotation, de zoom et de translation pour ensuite notifier aux Observers que les valeurs ont été modifiées
-	 * afin qu'ils se mettent à jour, permettant la mise à jour de la figure.
-	 */
-	public void setModele(double rotationValue, double zoomValue, float cptTranslateGD, float cptTranslateHB) {
-		setRotationValue(rotationValue);
-		setZoomValue(zoomValue);
-		setCptTranslateGD(cptTranslateGD);
-		setCptTranslateHB(cptTranslateHB);
-		setChanged();
-		notifyObservers();
-	}
-	
-	/**
+	 * A completer
 	 * Définit la valeur de rotation.
 	 * @param rotationValue
 	 */
 	public void setRotationValue(double rotationValue) {
 		this.rotationValue = rotationValue;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -333,5 +225,191 @@ public class Modele extends Observable{
 	 */
 	public void setZoomValue(double zoomValue) {
 		this.zoomValue = zoomValue;
+		setChanged();
+		notifyObservers();
 	}
+	
+	/**
+	 * Méthode mettant à jour la position de la figure dans l'espace à la suite d'un mouvement (rotation, translation ou homothétie).
+	 * Elle appelle les différentes méthodes de mise à jour de chaque mouvement.
+	 * @param gc
+	 * @param rotationValue
+	 * @param zoomValue
+	 */
+	public Face[] miseAJourVue() {
+		Face[] tabf = null;
+		if(filePly != null) {
+			Translation translation = new Translation();
+			Rotation rotation = new Rotation();
+			tabf = getInit().getLoadFile().getFaces();
+			Point[] tabp = getInit().getLoadFile().getPoints();
+			Zoom zoom = new Zoom();
+
+			tabp = miseAJourRotationX(rotationValue, rotation, tabf, tabp);
+			tabp = miseAJourRotationY(rotationValue, rotation, tabf, tabp);
+			tabp = miseAJourRotationZ(rotationValue, rotation, tabf, tabp);
+			tabp = miseAJourZoom(zoomValue, tabf, tabp, zoom);
+			miseAJourTranslation(cptTranslateGD, cptTranslateHB, translation, tabf, tabp);
+		}
+		return tabf;
+	}
+	
+	/**
+	 * Met à jour la rotation selon l'axe X de la figure.
+	 * @param rotationValue
+	 * @param rotation
+	 * @param tabf
+	 * @param tabp
+	 * @return
+	 */
+	private Point[] miseAJourRotationX(double rotationValue, Rotation rotation, Face[] tabf, Point[] tabp) {
+		if(flagX) {
+			tabp = rotation.creerPointRotate(rotationValue, tabp, stratX.execute());
+			stratX.setValeurRotation(rotationValue);
+		}else
+			tabp = rotation.creerPointRotate(stratX.getValeurRotation(), tabp, stratX.execute());
+		rotation.recopiePoint(tabf, tabp);
+		return tabp;
+	}
+
+	/**
+	 * Met à jour la rotation selon l'axe Y de la figure.
+	 * @param rotationValue
+	 * @param rotation
+	 * @param tabf
+	 * @param tabp
+	 * @return
+	 */
+	private Point[] miseAJourRotationY(double rotationValue, Rotation rotation, Face[] tabf, Point[] tabp) {
+		if(flagY) {
+			tabp = rotation.creerPointRotate(rotationValue, tabp, stratY.execute());
+			stratY.setValeurRotation(rotationValue);
+		}else
+			tabp = rotation.creerPointRotate(stratY.getValeurRotation(), tabp, stratY.execute());
+		rotation.recopiePoint(tabf, tabp);
+		return tabp;
+	}
+	
+	/**
+	 * Met à jour la rotation selon l'axe Z de la figure.
+	 * @param rotationValue
+	 * @param rotation
+	 * @param tabf
+	 * @param tabp
+	 * @return
+	 */
+	private Point[] miseAJourRotationZ(double rotationValue, Rotation rotation, Face[] tabf, Point[] tabp) {
+		if(flagZ) {
+			tabp = rotation.creerPointRotate(rotationValue, tabp, stratZ.execute());
+			stratZ.setValeurRotation(rotationValue);
+		}else
+			tabp = rotation.creerPointRotate(stratZ.getValeurRotation(), tabp, stratZ.execute());
+		rotation.recopiePoint(tabf, tabp);
+		return tabp;
+	}
+	
+	/**
+	 * Met à jour le niveau de zoom de la figure.
+	 * @param zoomValue
+	 * @param tabf
+	 * @param tabp
+	 * @param zoom
+	 * @return
+	 */
+	private Point[] miseAJourZoom(double zoomValue, Face[] tabf, Point[] tabp, Zoom zoom) {
+		tabp = zoom.creerPointZoom(zoomValue, tabp);
+		zoom.recopiePoint(tabf, tabp);
+		return tabp;
+	}
+
+	/**
+	 * Met à jour le niveau de translation de la figure sur les deux axes.
+	 * @param cptTranslateGD
+	 * @param cptTranslateHB
+	 * @param translation
+	 * @param tabf
+	 * @param tabp
+	 */
+	private void miseAJourTranslation(float cptTranslateGD, float cptTranslateHB, Translation translation, Face[] tabf, Point[] tabp) {
+		tabp = translation.creerPointsTranslate(cptTranslateGD, cptTranslateHB, tabp);
+		translation.recopiePoint(tabf, tabp);
+	}
+	
+	/**
+	 * Importe le fichier et effectue les calculs initiaux jusqu'au premier affichage de la figure.
+	 * @param fileply
+	 */
+	public void setFichier(File fileply) {
+		setFilePly(fileply);
+		if(filePly != null) {
+			String extension = "";
+			short i = 0;
+			while (filePly.getPath().charAt(i) != '.')
+				i++;
+			extension = filePly.getPath().substring(i, filePly.getPath().length());	
+
+			try {
+				if (!extension.equals(".ply"))
+					throw new WrongFormatFileException();
+				
+				try {
+					Initialisation init = Initialisation.getInstance();
+					init.doInit(fileply);
+					setInit(init); 
+					if(getInit().isGood()) {
+						setDefaultzoom(defaultZoom());
+						//On simule un premier mouvement de la figure pour que tous les mouvements fonctionnent correctement.
+						setZoomValue(defaultZoom);
+					}
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(null, "Erreur", "Erreur Fichier", JOptionPane.ERROR_MESSAGE);
+				}
+			} catch (WrongFormatFileException e1) {
+				e1.showMessage();
+			}
+		}
+	}
+	
+	/**
+	 * Calcule le niveau de zoom moyen adapté à la figure par rapport à sa taille, et le retourne.
+	 * @return
+	 */
+	private double defaultZoom() {
+		double max = init.getLoadFile().getCoordMax(0);
+		if(Math.abs(init.getLoadFile().getCoordMin(0)) > max)
+			max = Math.abs(init.getLoadFile().getCoordMin(0));
+		if(max > 500) return 0.5;
+		else if(max > 300) return 1;
+		else if(max > 200) return 1.5;
+		else if(max > 100) return 2.5;
+		else if(max > 75) return 5;
+		else if(max > 50) return 7.5;
+		else if(max > 25) return 10;
+		else if (max > 10) return 12.5;
+		else if(max > 5) return 15;
+		else if(max > 1) return 20;
+		return 30;
+	}
+	
+	/**
+	 * Effectue automatiquement une rotation de 360° de la figure autour de l'axe actif.
+	 * @param action
+	 */
+	public void rotationAuto(boolean action) {
+		while(action) {
+			setRotationValue(rotationValue + 1);
+			try {
+				Thread.sleep(20);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void updateModele() {
+		setChanged();
+		notifyObservers();	
+	}
+	
 }

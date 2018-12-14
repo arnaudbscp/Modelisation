@@ -1,10 +1,4 @@
-package src.mouvements;
-
-import src.donnees.Face;
-import src.donnees.Matrice;
-import src.donnees.Point;
-
-import src.outils.BoiteaOutils;
+package src.modele;
 
 /**
  * Classe représentant un mouvement de zoom (homothétie).

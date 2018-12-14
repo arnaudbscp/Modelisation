@@ -54,6 +54,24 @@ public class DessinVue extends Application implements Observer{
 	 * Constructeur de la vue, spécifiant le contrôleur.
 	 * @param controleur
 	 */
+	
+	/**
+	 * Contient le mode selectionné pour dessiner la figure (faces + arrêtes, faces seulement ou arrêtes seulement).
+	 */
+	private ModeDessin modeDessin = ModeDessin.FACES_ARRETES;
+	
+	/**
+	 * Couleur de la figure initialisée à  blanche. Elle sera modifiée grâce au colorpicker par l'utilisateur.
+	 */
+	private Color couleur = Color.WHITE;
+	
+	/**
+	 * Définit le contexte graphique de la figure.
+	 * @param gc
+	 */
+	private GraphicsContext gc;
+	
+	
 	public DessinVue(Controleur controleur) {
 		this.controleur = controleur;
 	}
@@ -78,8 +96,8 @@ public class DessinVue extends Application implements Observer{
 		vbBoutonsImportAide.getChildren().addAll(boutonImport, boutonAide);
 		menu.getChildren().add(vbBoutonsImportAide);
 		Canvas canv = new Canvas(1100, 800);
-		GraphicsContext gc = canv.getGraphicsContext2D();
-		controleur.setGc(gc);
+		gc = canv.getGraphicsContext2D();
+		gc.setLineWidth(1);
 		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
 		FileChooser importer = new FileChooser();
 		importer.setTitle("Selectionner un fichier 3D");
@@ -182,7 +200,7 @@ public class DessinVue extends Application implements Observer{
 		Label lcolor = new Label("Couleur");
 		lcolor.setPadding(new Insets(30, 0, 10,50));
 		ColorPicker cp = new ColorPicker();
-		cp.setValue(controleur.getCouleur());
+		cp.setValue(couleur);
 		menu.getChildren().addAll(lcolor,cp);
 
 
@@ -210,7 +228,7 @@ public class DessinVue extends Application implements Observer{
 
 		boutonImport.setOnAction(e -> {	importFichier(primaryStage, importer, sliderZoom, sliderRotation);});
 
-		cp.setOnAction(e ->{ controleur.updateCouleur(cp.getValue());});
+		cp.setOnAction(e ->{ updateCouleur(gc, cp);});
 
 		X.setOnAction(e -> { actionX(sliderRotation, lblTournerX, X, Y, Z);});
 
@@ -218,13 +236,13 @@ public class DessinVue extends Application implements Observer{
 
 		Z.setOnAction(e -> { actionZ(sliderRotation, lblTournerX, X, Y, Z);});
 
-		sliderRotation.setOnMouseDragged(e-> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());});
+		sliderRotation.setOnMouseDragged(e-> { controleur.setValeurRotation(sliderRotation.getValue());});
 
-		sliderRotation.setOnMouseClicked(e-> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());});
+		sliderRotation.setOnMouseClicked(e-> { controleur.setValeurRotation(sliderRotation.getValue());});
 
-		sliderZoom.setOnMouseDragged(e -> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());});
+		sliderZoom.setOnMouseDragged(e -> { controleur.setZoomValue(sliderZoom.getValue());});
 
-		sliderZoom.setOnMouseClicked(e -> { controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());});
+		sliderZoom.setOnMouseClicked(e -> { controleur.setZoomValue(sliderZoom.getValue());});
 
 		gauche.setOnAction(e->{ actionGauche(sliderZoom, sliderRotation, tfPas);});
 
@@ -259,6 +277,11 @@ public class DessinVue extends Application implements Observer{
 		primaryStage.show();
 	}
 
+	private void updateCouleur(GraphicsContext gc, ColorPicker cp) {
+		couleur = cp.getValue();
+		controleur.getInit().creerFigure(gc, controleur.getInit().getLoadFile().getFaces(), couleur, modeDessin);
+	}
+
 	/**
 	 * Vérifie si la valeur entrée dans le TextField du pas de translation est une valeur correcte, c'est-à-dire que c'est une valeur
 	 * réelle, pouvant contenir un point pour séparer la partie entière de la partie décimale. Si la valeur n'est pas au bon format,
@@ -289,8 +312,8 @@ public class DessinVue extends Application implements Observer{
 		boutonFacesEtArretes.setDisable(false);
 		boutonArretes.setDisable(true);
 		boutonFaces.setDisable(false);
-		controleur.setModeDessin(ModeDessin.ARRETES);
-		controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
+		modeDessin = ModeDessin.ARRETES;
+		controleur.updateModele();
 	}
 
 	/**
@@ -306,8 +329,8 @@ public class DessinVue extends Application implements Observer{
 		boutonFacesEtArretes.setDisable(false);
 		boutonArretes.setDisable(false);
 		boutonFaces.setDisable(true);
-		controleur.setModeDessin(ModeDessin.FACES);
-		controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
+		modeDessin = ModeDessin.FACES;
+		controleur.updateModele();
 	}
 
 	/**
@@ -323,8 +346,8 @@ public class DessinVue extends Application implements Observer{
 		boutonFacesEtArretes.setDisable(true);
 		boutonArretes.setDisable(false);
 		boutonFaces.setDisable(false);
-		controleur.setModeDessin(ModeDessin.FACES_ARRETES);
-		controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
+		modeDessin = ModeDessin.FACES_ARRETES;
+		controleur.updateModele();
 	}
 
 	/**
@@ -336,11 +359,9 @@ public class DessinVue extends Application implements Observer{
 	private void scrollZoom(Slider sliderZoom, Slider sliderRotation, ScrollEvent e) {
 		if(e.getDeltaY() > 0 && sliderZoom.getValue() < controleur.getDefaultZoom()*2) { //scroll up
 			controleur.setDefaultZoom(sliderZoom.getValue() + controleur.getDefaultZoom()/12.5);
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
 			sliderZoom.setValue(sliderZoom.getValue() + controleur.getDefaultZoom()/12.5);
 		} else if(e.getDeltaY() < 0 && sliderZoom.getValue() > 0){ //scroll down
 			controleur.setDefaultZoom(sliderZoom.getValue() - controleur.getDefaultZoom()/12.5);
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
 			sliderZoom.setValue(sliderZoom.getValue() - controleur.getDefaultZoom()/12.5);
 		}
 	}
@@ -354,7 +375,6 @@ public class DessinVue extends Application implements Observer{
 	private void actionBas(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
 			controleur.setCptTranslateHB(controleur.getCptTranslateHB() - Float.parseFloat("0"+tfPas.getText()));
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
 		}
 	}
 
@@ -367,7 +387,6 @@ public class DessinVue extends Application implements Observer{
 	private void actionHaut(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
 			controleur.setCptTranslateHB(controleur.getCptTranslateHB() + Float.parseFloat("0"+tfPas.getText()));
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
 		}
 	}
 
@@ -380,7 +399,6 @@ public class DessinVue extends Application implements Observer{
 	private void actionDroite(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
 			controleur.setCptTranslateGD(controleur.getCptTranslateGD() - Float.parseFloat("0"+tfPas.getText()));
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
 		}
 	}
 
@@ -393,7 +411,6 @@ public class DessinVue extends Application implements Observer{
 	private void actionGauche(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
 			controleur.setCptTranslateGD(controleur.getCptTranslateGD() + Float.parseFloat("0"+tfPas.getText()));
-			controleur.updateModele(sliderRotation.getValue(), sliderZoom.getValue(), controleur.getCptTranslateGD(), controleur.getCptTranslateHB());
 		}
 	}
 
@@ -465,7 +482,6 @@ public class DessinVue extends Application implements Observer{
 				sliderZoom.setMajorTickUnit(controleur.getDefaultZoom()/2.5);
 				sliderZoom.setBlockIncrement(controleur.getDefaultZoom()/12.5);
 				sliderZoom.setShowTickLabels(true);
-				controleur.initModele(sliderRotation.getValue(), sliderZoom.getValue());
 			}
 		}
 	}
@@ -502,6 +518,7 @@ public class DessinVue extends Application implements Observer{
 	 * Méthode de l'interface Observer, permettant la mise à jour de la figure avec les nouvelles valeurs du modèle.
 	 */
 	public void update(Observable o, Object arg) {
-		controleur.miseAJourVue(((src.modele.Modele)o).getRotationValue(), ((src.modele.Modele)o).getZoomValue(), ((src.modele.Modele)o).getCptTranslateGD(), ((src.modele.Modele)o).getCptTranslateHB());
+		gc.clearRect(0, 0, 1280, 800);
+		controleur.getInit().creerFigure(gc, controleur.gettabFace(), couleur, modeDessin);
 	}
 }

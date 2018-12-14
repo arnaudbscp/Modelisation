@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import src.donnees.Matrice;
-import src.donnees.Point;
+import src.modele.Matrice;
+import src.modele.Point;
 
 /**
  * Classe de test sur les matrices, à savoir la création et la multiplication de matrices.
