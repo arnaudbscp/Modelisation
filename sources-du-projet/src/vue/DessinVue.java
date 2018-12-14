@@ -30,7 +30,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import src.controleur.Controleur;
+import src.modele.Face;
 import src.modele.ModeDessin;
+import src.modele.QuickSort;
 
 /**
  * Classe correspondant à la Vue du design-pattern MVC, implémentant toute la partie graphique du logiciel.
@@ -279,7 +281,7 @@ public class DessinVue extends Application implements Observer{
 
 	private void updateCouleur(GraphicsContext gc, ColorPicker cp) {
 		couleur = cp.getValue();
-		controleur.getInit().creerFigure(gc, controleur.getInit().getLoadFile().getFaces(), couleur, modeDessin);
+		creerFigure(controleur.getInit().getLoadFile().getFaces());
 	}
 
 	/**
@@ -513,12 +515,40 @@ public class DessinVue extends Application implements Observer{
 		stageAide.setResizable(false);
 		stageAide.show();
 	}
+	
+	/**
+	 * Créer la figure en interprétant les différentes coordonnées de points et en les reliant entre eux, puis en colorant la figure.
+	 * @param gc
+	 * @param faces
+	 * @param c
+	 */
+	public void creerFigure(Face[] faces) {
+		double[] px;
+		double[] py;
+		for (int i = 0; i < faces.length; i++)
+			faces[i].setCentreGravite(faces[i].calculCentreGravite());
+		QuickSort.getInstance().setTab(faces);
+		QuickSort.getInstance().sort();
+		for (int i = 0; i < faces.length; i++) {
+			px = new double[] {faces[i].getPoints()[0].getX()*-1 + (gc.getCanvas().getWidth()/2),faces[i].getPoints()[1].getX()*-1 + (gc.getCanvas().getWidth()/2),faces[i].getPoints()[2].getX()*-1+(gc.getCanvas().getWidth()/2)};
+			py = new double[] {faces[i].getPoints()[0].getZ()*-1 + (gc.getCanvas().getHeight()/2),faces[i].getPoints()[1].getZ()*-1 + (gc.getCanvas().getHeight()/2),faces[i].getPoints()[2].getZ()*-1+(gc.getCanvas().getHeight()/2)};
+			if(modeDessin.equals(ModeDessin.FACES_ARRETES)) {
+				gc.fillPolygon(px, py, 3);
+				gc.strokePolygon(px, py, 3);
+				gc.setFill(couleur);
+			}else if(modeDessin.equals(ModeDessin.FACES)) {
+				gc.fillPolygon(px, py, 3);
+				gc.setFill(couleur);
+			}else
+				gc.strokePolygon(px, py, 3);
+		}
+	}
 
 	/**
 	 * Méthode de l'interface Observer, permettant la mise à jour de la figure avec les nouvelles valeurs du modèle.
 	 */
 	public void update(Observable o, Object arg) {
 		gc.clearRect(0, 0, 1280, 800);
-		controleur.getInit().creerFigure(gc, controleur.gettabFace(), couleur, modeDessin);
+		creerFigure(controleur.getTabFace());
 	}
 }

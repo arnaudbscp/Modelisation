@@ -8,7 +8,6 @@ import java.io.StringReader;
 import org.junit.jupiter.api.Test;
 
 import src.modele.Initialisation;
-import src.modele.Point;
 
 /**
  * Classe testant si un fichier est correctement interprété avec des commentaires dedans.

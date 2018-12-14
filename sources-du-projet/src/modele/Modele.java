@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
 
-import javax.swing.JOptionPane;
-
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import src.exception.OtherException;
 import src.exception.WrongFormatFileException;
 
 /**
@@ -182,7 +179,6 @@ public class Modele extends Observable{
 		this.cptTranslateGD = cptTranslateGD;
 		setChanged();
 		notifyObservers();
-		
 	}
 	
 	/**
@@ -210,23 +206,21 @@ public class Modele extends Observable{
 	
 	/**
 	 * A completer
-	 * Définit la valeur de rotation.
+	 * Définit la valeur de rotation, et informe les Observers que le modèle a changé.
 	 * @param rotationValue
 	 */
 	public void setRotationValue(double rotationValue) {
 		this.rotationValue = rotationValue;
-		setChanged();
-		notifyObservers();
+		updateModele();
 	}
 
 	/**
-	 * Définit la valeur de l'homothétie.
+	 * Définit la valeur de l'homothétie, et informe les Observers que le modèle a changé.
 	 * @param zoomValue
 	 */
 	public void setZoomValue(double zoomValue) {
 		this.zoomValue = zoomValue;
-		setChanged();
-		notifyObservers();
+		updateModele();
 	}
 	
 	/**
@@ -362,7 +356,8 @@ public class Modele extends Observable{
 						setZoomValue(defaultZoom);
 					}
 				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(null, "Erreur", "Erreur Fichier", JOptionPane.ERROR_MESSAGE);
+					OtherException e2 = new OtherException();
+					e2.showMessage();
 				}
 			} catch (WrongFormatFileException e1) {
 				e1.showMessage();
@@ -407,9 +402,11 @@ public class Modele extends Observable{
 		}
 	}
 
+	/**
+	 * Informe les Observers que l'état du modèle a changé.
+	 */
 	public void updateModele() {
 		setChanged();
 		notifyObservers();	
-	}
-	
+	}	
 }

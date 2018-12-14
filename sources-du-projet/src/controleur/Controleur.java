@@ -1,22 +1,11 @@
 package src.controleur;
 
 import java.io.File;
-import java.io.IOException;
 
-import javax.swing.JOptionPane;
-
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import src.exception.WrongFormatFileException;
 import src.modele.Face;
 import src.modele.Initialisation;
-import src.modele.ModeDessin;
 import src.modele.Modele;
-import src.modele.Point;
-import src.modele.Rotation;
 import src.modele.Strategy;
-import src.modele.Translation;
-import src.modele.Zoom;
 
 /**
  * Classe correspondant au Controleur du design-pattern MVC, permettant la liaison entre la Vue et le Modèle, en effectuant les calculs
@@ -142,28 +131,42 @@ public class Controleur {
 		return m.getStratX();
 	}
 
-	public Face[] gettabFace() {
-		
+	/**
+	 * Retourne le nouveau tableau de faces suite à la mise à jour de la figure.
+	 * @return
+	 */
+	public Face[] getTabFace() {
 		return m.miseAJourVue();
 	}
 	
+	/**
+	 * Importe le fichier et effectue les calculs initiaux jusqu'au premier affichage de la figure.
+	 * @param file
+	 */
 	public void updateFichier(File file) {
 		m.setFichier(file);
 	}
 
+	/**
+	 * Définit la valeur de rotation.
+	 * @param value
+	 */
 	public void setValeurRotation(double value) {
-		
 		m.setRotationValue(value);
 	}
 
+	/**
+	 * Définit la valeur de l'homothétie.
+	 * @param value
+	 */
 	public void setZoomValue(double value) {
-		
 		m.setZoomValue(value);
 	}
 
+	/**
+	 * Informe les Observers que l'état du modèle a changé.
+	 */
 	public void updateModele() {
-		
 		m.updateModele();
-		
 	}
 }

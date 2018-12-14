@@ -13,9 +13,6 @@ import src.exception.WrongFaceLineFormatException;
 import src.exception.WrongHeaderException;
 import src.exception.WrongPointLineFormatException;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-
 /**
  * Classe Singleton permettant la création des tableaux de points et de faces grâce à LoadFile, 
  * qui calcule le centre de gravité des faces et qui trie les faces.
@@ -106,34 +103,6 @@ public class Initialisation {
 	}
 
 	/**
-	 * Créer la figure en interprétant les différentes coordonnées de points et en les reliant entre eux, puis en colorant la figure.
-	 * @param gc
-	 * @param faces
-	 * @param c
-	 */
-	public void creerFigure(GraphicsContext gc, Face[] faces, Color c, ModeDessin md) {
-		double[] px;
-		double[] py;
-		for (int i = 0; i < faces.length; i++)
-			faces[i].setCentreGravite(faces[i].calculCentreGravite());
-		QuickSort.getInstance().setTab(faces);
-		QuickSort.getInstance().sort();
-		for (int i = 0; i < faces.length; i++) {
-			px = new double[] {faces[i].getPoints()[0].getX()*-1 + (gc.getCanvas().getWidth()/2),faces[i].getPoints()[1].getX()*-1 + (gc.getCanvas().getWidth()/2),faces[i].getPoints()[2].getX()*-1+(gc.getCanvas().getWidth()/2)};
-			py = new double[] {faces[i].getPoints()[0].getZ()*-1 + (gc.getCanvas().getHeight()/2),faces[i].getPoints()[1].getZ()*-1 + (gc.getCanvas().getHeight()/2),faces[i].getPoints()[2].getZ()*-1+(gc.getCanvas().getHeight()/2)};
-			if(md.equals(ModeDessin.FACES_ARRETES)) {
-				gc.fillPolygon(px, py, 3);
-				gc.strokePolygon(px, py, 3);
-				gc.setFill(c);
-			}else if(md.equals(ModeDessin.FACES)) {
-				gc.fillPolygon(px, py, 3);
-				gc.setFill(c);
-			}else
-				gc.strokePolygon(px, py, 3);
-		}
-	}
-
-	/**
 	 * Retourne le LoadFile de la figure.
 	 * @return
 	 */
@@ -148,6 +117,4 @@ public class Initialisation {
 	public boolean isGood() {
 		return isGood;
 	}
-	
-	
 }
