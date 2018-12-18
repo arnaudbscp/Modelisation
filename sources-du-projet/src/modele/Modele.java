@@ -400,6 +400,22 @@ public class Modele extends Observable{
 			}
 		}
 	}
+	
+	public void calculVecteurNormal() {
+		Face[] tabFace = init.getLoadFile().getFaces();
+		VecteurLumiere vl = new VecteurLumiere();
+		for(int i = 0; i<tabFace.length; i++) {
+			Face f = tabFace[i];
+			Point S1S2 = new Point(f.getPt2().getX()-f.getPt1().getX(), f.getPt2().getY()-f.getPt1().getY(), f.getPt2().getZ()-f.getPt1().getZ());
+			Point S1S3 = new Point(f.getPt3().getX()-f.getPt1().getX(), f.getPt3().getY()-f.getPt1().getY(), f.getPt3().getZ()-f.getPt1().getZ());
+			Point vecteurNormal = new Point((S1S2.getY())*(S1S3.getZ())-(S1S2.getZ())*(S1S3.getY()), (S1S2.getZ())*(S1S3.getX())-(S1S2.getX())*(S1S3.getZ()), (S1S2.getX())*(S1S3.getY())-(S1S2.getY())*(S1S3.getX()));
+			double ProdScalaire = (vecteurNormal.getX()*vl.getVECTEUR_LUMIEREX()) + (vecteurNormal.getY()*vl.getVECTEUR_LUMIEREY()) + (vecteurNormal.getZ()*vl.getVECTEUR_LUMIEREZ());
+			double LongueurVectNormal = Math.sqrt(Math.pow(vecteurNormal.getX(),2)+ Math.pow(vecteurNormal.getY(),2)+ Math.pow(vecteurNormal.getZ(), 2));
+			double Longueurvl = Math.sqrt(Math.pow(vl.getVECTEUR_LUMIEREX(), 2)+ Math.pow(vl.getVECTEUR_LUMIEREY(),2)+ Math.pow(vl.getVECTEUR_LUMIEREZ(), 2));
+			double cosinus = (ProdScalaire)/(LongueurVectNormal*Longueurvl);
+			
+		}
+	}
 
 	/**
 	 * Informe les Observers que l'état du modèle a changé.

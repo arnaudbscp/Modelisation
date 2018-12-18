@@ -11,7 +11,7 @@ public class Face implements Comparable<Face>{
 	 * Point 1 de la Face.
 	 */
 	private Point pt1;
-	
+
 	/**
 	 * Point 2 de la Face.
 	 */
@@ -31,6 +31,8 @@ public class Face implements Comparable<Face>{
 	 * Tableau d'entiers représentant la position de la face dans le plan.
 	 */
 	private int[] position;
+	
+	Couleur c = null;
 	
 	/**
 	 * Constructeur créant une face à partir des 3 points spécifiés.
@@ -62,6 +64,18 @@ public class Face implements Comparable<Face>{
 		this.position = position;
 	}
 
+	public Point getPt1() {
+		return pt1;
+	}
+
+	public Point getPt2() {
+		return pt2;
+	}
+
+	public Point getPt3() {
+		return pt3;
+	}
+	
 	/**
 	 * Définit le premier point composant la face.
 	 * @param pt1
