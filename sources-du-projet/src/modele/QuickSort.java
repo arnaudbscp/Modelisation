@@ -66,11 +66,11 @@ public final class QuickSort
 	private int partition(Face tab[], int low, int high) 
 	{ 
 		Face pivot = tab[high];  
-		int i = (low-1); 
-		for (int j=low; j<high; j++) 
+		int i = (low - 1); 
+		for (int j = low; j < high; j++) 
 		{ 
-			if (tab[j].compareTo(pivot)<=0)
-				swap(tab,++i,j);
+			if (tab[j].compareTo(pivot) <= 0)
+				swap(tab, ++i, j);
 		}  
 		swap(tab,i+1,high);
 		return i+1; 

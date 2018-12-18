@@ -265,6 +265,6 @@ public class LoadFile {
 	 * @return
 	 */
 	public boolean isCommentaire(String ligne) {
-		return ligne.startsWith("//");
+		return ligne.startsWith("//") || ligne.startsWith("comment");
 	}
 }

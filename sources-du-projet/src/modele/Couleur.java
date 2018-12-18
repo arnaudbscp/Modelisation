@@ -1,5 +1,7 @@
 package src.modele;
 
+import src.vue.DessinVue;
+
 public class Couleur {
 
 	private int r;
@@ -7,7 +9,7 @@ public class Couleur {
 	private int b;
 	
 	public Couleur() {
-		this.r = DessinVue.getCouleur().;
+		this.r = r;
 		this.g = g;
 		this.b = b;
 	}
@@ -35,8 +37,4 @@ public class Couleur {
 	public void setB(int b) {
 		this.b = b;
 	}
-	
-	
-	
-	
 }

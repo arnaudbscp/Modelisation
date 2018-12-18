@@ -1,7 +1,7 @@
 package src.vue;
 
-
 import java.io.File;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -29,10 +29,10 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import src.controleur.Controleur;
 import src.modele.Face;
 import src.modele.ModeDessin;
-import src.modele.Modele;
 import src.modele.QuickSort;
 
 /**
@@ -56,24 +56,24 @@ public class DessinVue extends Application implements Observer{
 	 * Constructeur de la vue, spécifiant le contrôleur.
 	 * @param controleur
 	 */
-	
+
 	/**
 	 * Contient le mode selectionné pour dessiner la figure (faces + arrêtes, faces seulement ou arrêtes seulement).
 	 */
 	private ModeDessin modeDessin = ModeDessin.FACES_ARRETES;
-	
+
 	/**
 	 * Couleur de la figure initialisée à  blanche. Elle sera modifiée grâce au colorpicker par l'utilisateur.
 	 */
 	private Color couleur = Color.WHITE;
-	
+
 	/**
 	 * Définit le contexte graphique de la figure.
 	 * @param gc
 	 */
 	private GraphicsContext gc;
-	
-	
+
+
 	public DessinVue(Controleur controleur) {
 		this.controleur = controleur;
 	}
@@ -156,6 +156,7 @@ public class DessinVue extends Application implements Observer{
 
 		//BOUTON ROTATION AUTO 
 		Button rotationAuto = new Button();
+		rotationAuto.setDisable(true);
 		HBox hboxRotAuto = new HBox();
 		Image image = new Image(new File("img/360-degrees.png").toURI().toString());
 		ImageView imgView = new ImageView(image);
@@ -271,7 +272,7 @@ public class DessinVue extends Application implements Observer{
 		boutonArretes.setOnAction(e->{ actionArretes(sliderZoom, sliderRotation, boutonFacesEtArretes, boutonFaces, boutonArretes);});
 
 		tfPas.setOnKeyReleased(e -> { verificationPas(textErreur, hbPas, tfPas);});
-		
+
 		rotationAuto.setOnMouseClicked(e -> { rotationAuto(); });
 
 		//----AFFICHAGE FENETRE------
@@ -517,7 +518,7 @@ public class DessinVue extends Application implements Observer{
 		stageAide.setResizable(false);
 		stageAide.show();
 	}
-	
+
 	/**
 	 * Créer la figure en interprétant les différentes coordonnées de points et en les reliant entre eux, puis en colorant la figure.
 	 * @param gc
@@ -532,8 +533,9 @@ public class DessinVue extends Application implements Observer{
 		QuickSort.getInstance().setTab(faces);
 		QuickSort.getInstance().sort();
 		for (int i = 0; i < faces.length; i++) {
-			px = new double[] {faces[i].getPoints()[0].getX()*-1 + (gc.getCanvas().getWidth()/2),faces[i].getPoints()[1].getX()*-1 + (gc.getCanvas().getWidth()/2),faces[i].getPoints()[2].getX()*-1+(gc.getCanvas().getWidth()/2)};
-			py = new double[] {faces[i].getPoints()[0].getZ()*-1 + (gc.getCanvas().getHeight()/2),faces[i].getPoints()[1].getZ()*-1 + (gc.getCanvas().getHeight()/2),faces[i].getPoints()[2].getZ()*-1+(gc.getCanvas().getHeight()/2)};
+			//System.out.println(faces[i]); Problème avec les coordonnées Y des points de la face, toutes à 0. C'est surement ça qui cause les problèmes d'affichage.
+			px = new double[] {faces[i].getPoints()[0].getX()*-1 + (gc.getCanvas().getWidth()/2), faces[i].getPoints()[1].getX()*-1 + (gc.getCanvas().getWidth()/2), faces[i].getPoints()[2].getX()*-1 + (gc.getCanvas().getWidth()/2)};
+			py = new double[] {faces[i].getPoints()[0].getZ()*-1 + (gc.getCanvas().getHeight()/2), faces[i].getPoints()[1].getZ()*-1 + (gc.getCanvas().getHeight()/2), faces[i].getPoints()[2].getZ()*-1 + (gc.getCanvas().getHeight()/2)};
 			if(modeDessin.equals(ModeDessin.FACES_ARRETES)) {
 				gc.fillPolygon(px, py, 3);
 				gc.strokePolygon(px, py, 3);
@@ -554,10 +556,11 @@ public class DessinVue extends Application implements Observer{
 		creerFigure(((src.modele.Modele)o).miseAJourVue());
 	}
 
-	
+	/**
+	 * Effectue automatiquement une rotation de 360° de la figure autour de l'axe actif.
+	 */
 	private void rotationAuto() {
 		boolean rotat = true;
-
-			controleur.rotationAuto(rotat);
+		controleur.rotationAuto(rotat);
 	}
 }

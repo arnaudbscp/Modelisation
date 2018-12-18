@@ -161,6 +161,10 @@ public class Controleur {
 		m.updateModele();
 	}
 	
+	/**
+	 * Effectue automatiquement une rotation de 360° de la figure autour de l'axe actif.
+	 * @param b
+	 */
 	public void rotationAuto(boolean b) {
 		if(b)
 			m.rotationAuto(b);

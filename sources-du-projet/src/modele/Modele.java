@@ -2,6 +2,7 @@ package src.modele;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.util.Observable;
 
 import src.exception.OtherException;
@@ -338,11 +339,9 @@ public class Modele extends Observable{
 			while (filePly.getPath().charAt(i) != '.')
 				i++;
 			extension = filePly.getPath().substring(i, filePly.getPath().length());	
-
 			try {
 				if (!extension.equals(".ply"))
 					throw new WrongFormatFileException();
-				
 				try {
 					Initialisation init = Initialisation.getInstance();
 					init.doInit(fileply);
@@ -353,6 +352,7 @@ public class Modele extends Observable{
 						setDefaultzoom(defaultZoom());
 						//On simule un premier mouvement de la figure pour que tous les mouvements fonctionnent correctement.
 						setZoomValue(defaultZoom);
+						//centrerAuto();
 					}
 				} catch (IOException e1) {
 					OtherException e2 = new OtherException();
@@ -363,29 +363,64 @@ public class Modele extends Observable{
 			}
 		}
 	}
+
+	/**
+	 * NON-FONCTIONNEL
+	 * Centre automatiquement la figure.
+	 */
+	private void centrerAuto() {
+		float minX = getInit().getLoadFile().getCoordMin(0);
+		float maxX = getInit().getLoadFile().getCoordMax(0);
+		float minY = getInit().getLoadFile().getCoordMin(1);
+		float maxY = getInit().getLoadFile().getCoordMax(1);
+		float centreX = (minX + maxX) / 2;
+		float centreY = (minY + maxY) / 2;
+		setCptTranslateGD(centreX);
+		setCptTranslateHB(-centreY);
+	}
 	
 	/**
 	 * Calcule le niveau de zoom moyen adapté à la figure par rapport à sa taille, et le retourne.
 	 * @return
 	 */
 	private double defaultZoom() {
-		double max = init.getLoadFile().getCoordMax(0);
+		double max = Math.abs(init.getLoadFile().getCoordMax(0));
 		if(Math.abs(init.getLoadFile().getCoordMin(0)) > max)
 			max = Math.abs(init.getLoadFile().getCoordMin(0));
-		if(max > 500) return 0.5;
-		else if(max > 300) return 1;
-		else if(max > 200) return 1.5;
-		else if(max > 100) return 2.5;
-		else if(max > 75) return 5;
-		else if(max > 50) return 7.5;
-		else if(max > 25) return 10;
-		else if (max > 10) return 12.5;
-		else if(max > 5) return 15;
-		else if(max > 1) return 20;
-		return 30;
+		if(Math.abs(init.getLoadFile().getCoordMin(1)) > max)
+			max = Math.abs(init.getLoadFile().getCoordMin(1));
+		if(Math.abs(init.getLoadFile().getCoordMax(1)) > max)
+			max = Math.abs(init.getLoadFile().getCoordMax(1));
+		if(max > 500) 		return 0.5;
+		else if(max > 450) 	return 0.75;
+		else if(max > 400) 	return 1;
+		else if(max > 350) 	return 1.25;
+		else if(max > 300) 	return 1.5;
+		else if(max > 250) 	return 1.75;
+		else if(max > 200) 	return 2;
+		else if(max > 150) 	return 2.5;
+		else if(max > 100) 	return 3;
+		else if(max > 75) 	return 5;
+		else if(max > 50) 	return 7;
+		else if(max > 40) 	return 8;
+		else if(max > 30) 	return 10;
+		else if(max > 20) 	return 15;
+		else if(max > 10) 	return 30;
+		else if(max > 5) 	return 60;
+		else if(max > 3) 	return 100;
+		else if(max > 2) 	return 150;
+		else if(max > 1) 	return 200;
+		else if(max > 0.5) 	return 400;
+		else if(max > 0.3) 	return 600;
+		else if(max > 0.2) 	return 1000;
+		else if(max > 0.1) 	return 2000;
+		else if(max > 0.05) return 5000;
+		else if(max > 0.01) return 10000;
+		return 30000;
 	}
 	
 	/**
+	 * NON-FONCTIONNEL
 	 * Effectue automatiquement une rotation de 360° de la figure autour de l'axe actif.
 	 * @param action
 	 */
@@ -393,38 +428,34 @@ public class Modele extends Observable{
 		while(action) {
 			try {
 				Thread.sleep(1000);
-				setRotationValue(getRotationValue() + 5);
-				if(getRotationValue() >= 360) {
+				setRotationValue(rotationValue + 5);
+				if(rotationValue >= 360) {
 					setRotationValue(1);
 					action = !action;
 				}
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				OtherException e1 = new OtherException();
+				e1.showMessage();
 			}
 		}
 		return action;
 	}
 
-	
-	private int getRotationValue() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+	/**
+	 * Calcul le vecteur normal de chaque face.
+	 */
 	public void calculVecteurNormal() {
-		Face[] tabFace = init.getLoadFile().getFaces();
-		VecteurLumiere vl = new VecteurLumiere();
-		for(int i = 0; i<tabFace.length; i++) {
-			Face f = tabFace[i];
-			Point S1S2 = new Point(f.getPt2().getX()-f.getPt1().getX(), f.getPt2().getY()-f.getPt1().getY(), f.getPt2().getZ()-f.getPt1().getZ());
-			Point S1S3 = new Point(f.getPt3().getX()-f.getPt1().getX(), f.getPt3().getY()-f.getPt1().getY(), f.getPt3().getZ()-f.getPt1().getZ());
-			Point vecteurNormal = new Point((S1S2.getY())*(S1S3.getZ())-(S1S2.getZ())*(S1S3.getY()), (S1S2.getZ())*(S1S3.getX())-(S1S2.getX())*(S1S3.getZ()), (S1S2.getX())*(S1S3.getY())-(S1S2.getY())*(S1S3.getX()));
-			double ProdScalaire = (vecteurNormal.getX()*vl.getVECTEUR_LUMIEREX()) + (vecteurNormal.getY()*vl.getVECTEUR_LUMIEREY()) + (vecteurNormal.getZ()*vl.getVECTEUR_LUMIEREZ());
-			double LongueurVectNormal = Math.sqrt(Math.pow(vecteurNormal.getX(),2)+ Math.pow(vecteurNormal.getY(),2)+ Math.pow(vecteurNormal.getZ(), 2));
-			double Longueurvl = Math.sqrt(Math.pow(vl.getVECTEUR_LUMIEREX(), 2)+ Math.pow(vl.getVECTEUR_LUMIEREY(),2)+ Math.pow(vl.getVECTEUR_LUMIEREZ(), 2));
-			double cosinus = (ProdScalaire)/(LongueurVectNormal*Longueurvl);
-			
+		Face[] tabFaces = init.getLoadFile().getFaces();
+		VecteurLumiere vecteurLumiere = new VecteurLumiere();
+		for(int i = 0; i < tabFaces.length; i++) {
+			Face face = tabFaces[i];
+			Point s1s2 = new Point(face.getPt2().getX() - face.getPt1().getX(), face.getPt2().getY() - face.getPt1().getY(), face.getPt2().getZ() - face.getPt1().getZ());
+			Point s1s3 = new Point(face.getPt3().getX() - face.getPt1().getX(), face.getPt3().getY() - face.getPt1().getY(), face.getPt3().getZ() - face.getPt1().getZ());
+			Point vecteurNormal = new Point((s1s2.getY()) * (s1s3.getZ()) - (s1s2.getZ()) * (s1s3.getY()), (s1s2.getZ()) * (s1s3.getX()) - (s1s2.getX()) * (s1s3.getZ()), (s1s2.getX()) * (s1s3.getY()) - (s1s2.getY()) * (s1s3.getX()));
+			double prodScalaire = (vecteurNormal.getX() * vecteurLumiere.getX()) + (vecteurNormal.getY() * vecteurLumiere.getY()) + (vecteurNormal.getZ() * vecteurLumiere.getZ());
+			double longueurVectNormal = Math.sqrt(Math.pow(vecteurNormal.getX(), 2) + Math.pow(vecteurNormal.getY(), 2) + Math.pow(vecteurNormal.getZ(), 2));
+			double longueurVecteurLumiere = Math.sqrt(Math.pow(vecteurLumiere.getX(), 2) + Math.pow(vecteurLumiere.getY(), 2) + Math.pow(vecteurLumiere.getZ(), 2));
+			double cosinus = (prodScalaire) / (longueurVectNormal * longueurVecteurLumiere);
 		}
 	}
 
@@ -432,6 +463,10 @@ public class Modele extends Observable{
 	 * Informe les Observers que l'état du modèle a changé.
 	 */
 	public void updateModele() {
+//		System.out.println(getInit().getLoadFile().getCoordMin(0));
+//		System.out.println(getInit().getLoadFile().getCoordMax(0));
+//		System.out.println(getInit().getLoadFile().getCoordMin(1));
+//		System.out.println(getInit().getLoadFile().getCoordMax(1));
 		setChanged();
 		notifyObservers();	
 	}	

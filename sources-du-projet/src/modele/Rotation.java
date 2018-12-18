@@ -39,12 +39,10 @@ public class Rotation implements Recopie{
 
 	public Point[] creerTabPoint(double[][] matrice) {
 		Point[] tabp = new Point[matrice[0].length];
-		boolean premierTour = true;
 		for (int i = 0; i < matrice.length; i++) {
 			for (int j = 0; j < matrice[0].length; j++) {
-				if(premierTour)
-					tabp[j] = new Point(0, 0, 0);
 				if(i == 0) {
+					tabp[j] = new Point(0, 0, 0);
 					tabp[j].setX((float)matrice[i][j]);
 				} else if(i == 1) {
 					tabp[j].setY((float)matrice[i][j]);
@@ -52,7 +50,6 @@ public class Rotation implements Recopie{
 					tabp[j].setZ((float)matrice[i][j]);
 				}
 			}
-			premierTour = false;
 		}
 		return tabp;
 	}
