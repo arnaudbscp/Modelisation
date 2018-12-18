@@ -389,18 +389,29 @@ public class Modele extends Observable{
 	 * Effectue automatiquement une rotation de 360° de la figure autour de l'axe actif.
 	 * @param action
 	 */
-	public void rotationAuto(boolean action) {
+	public boolean rotationAuto(boolean action) {
 		while(action) {
-			setRotationValue(rotationValue + 1);
 			try {
-				Thread.sleep(20);
+				Thread.sleep(1000);
+				setRotationValue(getRotationValue() + 5);
+				if(getRotationValue() >= 360) {
+					setRotationValue(1);
+					action = !action;
+				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		return action;
 	}
+
 	
+	private int getRotationValue() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 	public void calculVecteurNormal() {
 		Face[] tabFace = init.getLoadFile().getFaces();
 		VecteurLumiere vl = new VecteurLumiere();

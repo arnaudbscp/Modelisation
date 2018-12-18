@@ -271,6 +271,8 @@ public class DessinVue extends Application implements Observer{
 		boutonArretes.setOnAction(e->{ actionArretes(sliderZoom, sliderRotation, boutonFacesEtArretes, boutonFaces, boutonArretes);});
 
 		tfPas.setOnKeyReleased(e -> { verificationPas(textErreur, hbPas, tfPas);});
+		
+		rotationAuto.setOnMouseClicked(e -> { rotationAuto(); });
 
 		//----AFFICHAGE FENETRE------
 		primaryStage.setScene(scene);
@@ -550,5 +552,12 @@ public class DessinVue extends Application implements Observer{
 	public void update(Observable o, Object arg) {
 		gc.clearRect(0, 0, 1280, 800);
 		creerFigure(((src.modele.Modele)o).miseAJourVue());
+	}
+
+	
+	private void rotationAuto() {
+		boolean rotat = true;
+
+			controleur.rotationAuto(rotat);
 	}
 }

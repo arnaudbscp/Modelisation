@@ -160,4 +160,9 @@ public class Controleur {
 	public void updateModele() {
 		m.updateModele();
 	}
+	
+	public void rotationAuto(boolean b) {
+		if(b)
+			m.rotationAuto(b);
+	}
 }
