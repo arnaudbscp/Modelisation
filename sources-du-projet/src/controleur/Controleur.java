@@ -130,15 +130,6 @@ public class Controleur {
 	public Strategy getStrategyX() {
 		return m.getStratX();
 	}
-
-	/**
-	 * Retourne le nouveau tableau de faces suite à la mise à jour de la figure.
-	 * @return
-	 */
-	public Face[] getTabFace() {
-		return m.miseAJourVue();
-	}
-	
 	/**
 	 * Importe le fichier et effectue les calculs initiaux jusqu'au premier affichage de la figure.
 	 * @param file

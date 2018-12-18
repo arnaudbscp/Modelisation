@@ -32,6 +32,7 @@ import javafx.stage.Stage;
 import src.controleur.Controleur;
 import src.modele.Face;
 import src.modele.ModeDessin;
+import src.modele.Modele;
 import src.modele.QuickSort;
 
 /**
@@ -359,11 +360,11 @@ public class DessinVue extends Application implements Observer{
 	 */
 	private void scrollZoom(Slider sliderZoom, Slider sliderRotation, ScrollEvent e) {
 		if(e.getDeltaY() > 0 && sliderZoom.getValue() < controleur.getDefaultZoom()*2) { //scroll up
-			controleur.setDefaultZoom(sliderZoom.getValue() + controleur.getDefaultZoom()/12.5);
 			sliderZoom.setValue(sliderZoom.getValue() + controleur.getDefaultZoom()/12.5);
+			controleur.setZoomValue(sliderZoom.getValue());
 		} else if(e.getDeltaY() < 0 && sliderZoom.getValue() > 0){ //scroll down
-			controleur.setDefaultZoom(sliderZoom.getValue() - controleur.getDefaultZoom()/12.5);
 			sliderZoom.setValue(sliderZoom.getValue() - controleur.getDefaultZoom()/12.5);
+			controleur.setZoomValue(sliderZoom.getValue());
 		}
 	}
 
@@ -548,6 +549,6 @@ public class DessinVue extends Application implements Observer{
 	 */
 	public void update(Observable o, Object arg) {
 		gc.clearRect(0, 0, 1280, 800);
-		creerFigure(controleur.getTabFace());
+		creerFigure(((src.modele.Modele)o).miseAJourVue());
 	}
 }
