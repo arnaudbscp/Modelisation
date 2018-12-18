@@ -17,7 +17,6 @@ public class Launcher extends Application {
 	 * Méthode créant les 3 classes du design-pattern MVC (Modèle, Vue, Contrôleur), attachant au modèle la liste des Vues 
 	 * et lançant l'interface graphique.
 	 */
-	@SuppressWarnings("deprecation")
 	public void start(Stage stage) {
 		Modele m1 = new Modele();
 		Controleur c1 = new Controleur(m1);

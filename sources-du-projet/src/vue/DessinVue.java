@@ -39,7 +39,6 @@ import src.modele.QuickSort;
  * @author Valentin
  *
  */
-@SuppressWarnings("deprecation")
 public class DessinVue extends Application implements Observer{
 
 	/**

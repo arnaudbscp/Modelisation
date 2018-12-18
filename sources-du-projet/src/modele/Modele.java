@@ -13,7 +13,6 @@ import src.exception.WrongFormatFileException;
  * @author Valentin
  *
  */
-@SuppressWarnings("deprecation")
 public class Modele extends Observable{
 	
 	/**
@@ -173,21 +172,19 @@ public class Modele extends Observable{
 	}
 
 	/**
-	 * Définit la valeur de la translation sur l'axe horizontal.
+	 * Définit la valeur de la translation sur l'axe horizontal et informe les Observers que le modèle a changé.
 	 */
 	public void setCptTranslateGD(float cptTranslateGD) {
 		this.cptTranslateGD = cptTranslateGD;
-		setChanged();
-		notifyObservers();
+		updateModele();
 	}
 	
 	/**
-	 * Définit la valeur de la translation sur l'axe vertical.
+	 * Définit la valeur de la translation sur l'axe vertical et informe les Observers que le modèle a changé.
 	 */
 	public void setCptTranslateHB(float cptTranslateHB) {
 		this.cptTranslateHB = cptTranslateHB;
-		setChanged();
-		notifyObservers();
+		updateModele();
 	}
 
 	/**
@@ -351,6 +348,8 @@ public class Modele extends Observable{
 					init.doInit(fileply);
 					setInit(init); 
 					if(getInit().isGood()) {
+						cptTranslateGD = 0;
+						cptTranslateHB = 0;
 						setDefaultzoom(defaultZoom());
 						//On simule un premier mouvement de la figure pour que tous les mouvements fonctionnent correctement.
 						setZoomValue(defaultZoom);
