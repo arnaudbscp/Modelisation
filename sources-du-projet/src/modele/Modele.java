@@ -15,7 +15,7 @@ import src.exception.WrongFormatFileException;
  *
  */
 public class Modele extends Observable{
-	
+
 	/**
 	 * le fichier .ply contenant les points et les faces à  dessiner.
 	 */
@@ -25,61 +25,61 @@ public class Modele extends Observable{
 	 * Interprète le LoadFile pour créer les points et les faces, trier les faces et ainsi créer la figure.
 	 */
 	private Initialisation init;
-	
+
 	/**
 	 * La valeur de la rotation, donnée par le slider correspondant.
 	 */
-	
+
 	private double rotationValue =0;
-	
+
 	/**
 	 * La valeur de l'homothétie, donnée par le slider correspondant.
 	 */
-	
+
 	private double zoomValue =0;
-	
+
 	/**
 	 * La valeur de la translation sur l'axe horizontal. On l'incrémente lors de l'appui sur le bouton droite et on la 
 	 * décrémente lors de l'appui sur le bouton gauche pour déplacer la figure horizontalement.
 	 */
-	
+
 	private float cptTranslateGD=0;
-	
+
 	/**
 	 * La valeur de la translation sur l'axe vertical. On l'incrémente lors de l'appui sur le bouton haut et on la 
 	 * décrémente lors de l'appui sur le bouton bas pour déplacer la figure verticalement.
 	 */
-	
+
 	private float cptTranslateHB=0;
-	
+
 	/**
 	 * La valeur du zoom moyen par défaut, défini lors de l'importation du fichier en fonction de la taille de la figure.
 	 */
-	
+
 	private double defaultZoom;
-	
+
 	/**
 	 * Implémentation de cette Strategy lors de l'appui sur le Bouton X.
 	 */
-	
+
 	private Strategy stratX = new StrategyRotationX(0);
 
 	/**
 	 * Implémentation de cette Strategy lors de l'appui sur le Bouton Y.
 	 */
-	
+
 	private Strategy stratY = new StrategyRotationY(0);
 
 	/**
 	 * Implémentation de cette Strategy lors de l'appui sur le Bouton Z.
 	 */
-	
+
 	private Strategy stratZ = new StrategyRotationZ(0);
-	
+
 	/**
 	 * Boolean true lorsque le slider de rotation X est activé (par défaut).
 	 */
-	
+
 	private boolean flagX = true;
 
 	/**
@@ -122,7 +122,7 @@ public class Modele extends Observable{
 	public double getDefaultZoom() {
 		return defaultZoom;
 	}
-	
+
 	/**
 	 * Retourne la Strategy X.
 	 */
@@ -150,7 +150,7 @@ public class Modele extends Observable{
 	public void setDefaultzoom(double defaultzoom) {
 		this.defaultZoom = defaultzoom;
 	}
-	
+
 	/**
 	 * Retourne la valeur de la translation sur l'axe horizontal.
 	 */
@@ -164,7 +164,7 @@ public class Modele extends Observable{
 	public float getCptTranslateHB() {
 		return cptTranslateHB;
 	}
-	
+
 	/**
 	 * Retourne l'Initialisation correspondant au fichier.
 	 */
@@ -179,7 +179,7 @@ public class Modele extends Observable{
 		this.cptTranslateGD = cptTranslateGD;
 		updateModele();
 	}
-	
+
 	/**
 	 * Définit la valeur de la translation sur l'axe vertical et informe les Observers que le modèle a changé.
 	 */
@@ -194,14 +194,14 @@ public class Modele extends Observable{
 	public void setInit(Initialisation init) {
 		this.init = init;
 	}
-	
+
 	/**
 	 * Définit le fichier contenant la figure.
 	 */
 	public void setFilePly(File filePly) {
 		this.filePly = filePly;
 	}
-	
+
 	/**
 	 * A completer
 	 * Définit la valeur de rotation, et informe les Observers que le modèle a changé.
@@ -220,7 +220,7 @@ public class Modele extends Observable{
 		this.zoomValue = zoomValue;
 		updateModele();
 	}
-	
+
 	/**
 	 * Méthode mettant à jour la position de la figure dans l'espace à la suite d'un mouvement (rotation, translation ou homothétie).
 	 * Elle appelle les différentes méthodes de mise à jour de chaque mouvement.
@@ -245,7 +245,7 @@ public class Modele extends Observable{
 		}
 		return tabf;
 	}
-	
+
 	/**
 	 * Met à jour la rotation selon l'axe X de la figure.
 	 * @param rotationValue
@@ -281,7 +281,7 @@ public class Modele extends Observable{
 		rotation.recopiePoint(tabf, tabp);
 		return tabp;
 	}
-	
+
 	/**
 	 * Met à jour la rotation selon l'axe Z de la figure.
 	 * @param rotationValue
@@ -299,7 +299,7 @@ public class Modele extends Observable{
 		rotation.recopiePoint(tabf, tabp);
 		return tabp;
 	}
-	
+
 	/**
 	 * Met à jour le niveau de zoom de la figure.
 	 * @param zoomValue
@@ -326,7 +326,7 @@ public class Modele extends Observable{
 		tabp = translation.creerPointsTranslate(cptTranslateGD, cptTranslateHB, tabp);
 		translation.recopiePoint(tabf, tabp);
 	}
-	
+
 	/**
 	 * Importe le fichier et effectue les calculs initiaux jusqu'au premier affichage de la figure.
 	 * @param fileply
@@ -378,7 +378,7 @@ public class Modele extends Observable{
 		setCptTranslateGD(centreX);
 		setCptTranslateHB(-centreY);
 	}
-	
+
 	/**
 	 * Calcule le niveau de zoom moyen adapté à la figure par rapport à sa taille, et le retourne.
 	 * @return
@@ -418,7 +418,7 @@ public class Modele extends Observable{
 		else if(max > 0.01) return 10000;
 		return 30000;
 	}
-	
+
 	/**
 	 * NON-FONCTIONNEL
 	 * Effectue automatiquement une rotation de 360° de la figure autour de l'axe actif.
@@ -444,29 +444,26 @@ public class Modele extends Observable{
 	/**
 	 * Calcul le vecteur normal de chaque face.
 	 */
-	public void calculVecteurNormal() {
-		Face[] tabFaces = init.getLoadFile().getFaces();
+	public double calculVecteurNormal(Face face) {
 		VecteurLumiere vecteurLumiere = new VecteurLumiere();
-		for(int i = 0; i < tabFaces.length; i++) {
-			Face face = tabFaces[i];
-			Point s1s2 = new Point(face.getPt2().getX() - face.getPt1().getX(), face.getPt2().getY() - face.getPt1().getY(), face.getPt2().getZ() - face.getPt1().getZ());
-			Point s1s3 = new Point(face.getPt3().getX() - face.getPt1().getX(), face.getPt3().getY() - face.getPt1().getY(), face.getPt3().getZ() - face.getPt1().getZ());
-			Point vecteurNormal = new Point((s1s2.getY()) * (s1s3.getZ()) - (s1s2.getZ()) * (s1s3.getY()), (s1s2.getZ()) * (s1s3.getX()) - (s1s2.getX()) * (s1s3.getZ()), (s1s2.getX()) * (s1s3.getY()) - (s1s2.getY()) * (s1s3.getX()));
-			double prodScalaire = (vecteurNormal.getX() * vecteurLumiere.getX()) + (vecteurNormal.getY() * vecteurLumiere.getY()) + (vecteurNormal.getZ() * vecteurLumiere.getZ());
-			double longueurVectNormal = Math.sqrt(Math.pow(vecteurNormal.getX(), 2) + Math.pow(vecteurNormal.getY(), 2) + Math.pow(vecteurNormal.getZ(), 2));
-			double longueurVecteurLumiere = Math.sqrt(Math.pow(vecteurLumiere.getX(), 2) + Math.pow(vecteurLumiere.getY(), 2) + Math.pow(vecteurLumiere.getZ(), 2));
-			double cosinus = (prodScalaire) / (longueurVectNormal * longueurVecteurLumiere);
-		}
+		Point s1s2 = new Point(face.getPt2().getX() - face.getPt1().getX(), face.getPt2().getY() - face.getPt1().getY(), face.getPt2().getZ() - face.getPt1().getZ());
+		Point s1s3 = new Point(face.getPt3().getX() - face.getPt1().getX(), face.getPt3().getY() - face.getPt1().getY(), face.getPt3().getZ() - face.getPt1().getZ());
+		Point vecteurNormal = new Point((s1s2.getY()) * (s1s3.getZ()) - (s1s2.getZ()) * (s1s3.getY()), (s1s2.getZ()) * (s1s3.getX()) - (s1s2.getX()) * (s1s3.getZ()), (s1s2.getX()) * (s1s3.getY()) - (s1s2.getY()) * (s1s3.getX()));
+		double prodScalaire = (vecteurNormal.getX() * vecteurLumiere.getX()) + (vecteurNormal.getY() * vecteurLumiere.getY()) + (vecteurNormal.getZ() * vecteurLumiere.getZ());
+		double longueurVectNormal = Math.sqrt(Math.pow(vecteurNormal.getX(), 2) + Math.pow(vecteurNormal.getY(), 2) + Math.pow(vecteurNormal.getZ(), 2));
+		double longueurVecteurLumiere = Math.sqrt(Math.pow(vecteurLumiere.getX(), 2) + Math.pow(vecteurLumiere.getY(), 2) + Math.pow(vecteurLumiere.getZ(), 2));
+		double cosinus = (prodScalaire) / (longueurVectNormal * longueurVecteurLumiere);
+		return cosinus;
 	}
 
 	/**
 	 * Informe les Observers que l'état du modèle a changé.
 	 */
 	public void updateModele() {
-//		System.out.println(getInit().getLoadFile().getCoordMin(0));
-//		System.out.println(getInit().getLoadFile().getCoordMax(0));
-//		System.out.println(getInit().getLoadFile().getCoordMin(1));
-//		System.out.println(getInit().getLoadFile().getCoordMax(1));
+		//		System.out.println(getInit().getLoadFile().getCoordMin(0));
+		//		System.out.println(getInit().getLoadFile().getCoordMax(0));
+		//		System.out.println(getInit().getLoadFile().getCoordMin(1));
+		//		System.out.println(getInit().getLoadFile().getCoordMax(1));
 		setChanged();
 		notifyObservers();	
 	}	

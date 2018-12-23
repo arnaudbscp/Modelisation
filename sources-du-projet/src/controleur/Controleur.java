@@ -169,4 +169,8 @@ public class Controleur {
 		if(b)
 			m.rotationAuto(b);
 	}
+	
+	public double calculVecteurNormal(Face face) {
+		return m.calculVecteurNormal(face);
+	}
 }
