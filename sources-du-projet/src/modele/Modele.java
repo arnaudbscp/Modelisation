@@ -442,17 +442,23 @@ public class Modele extends Observable{
 	}
 
 	/**
-	 * Calcul le vecteur normal de chaque face.
+	 * Calcul le vecteur normal de la face passée en paramètre et retourne le cosinus de l'angle entre le vecteur directeur et le 
+	 * vecteur normal de la face.
 	 */
 	public double calculVecteurNormal(Face face) {
-		VecteurLumiere vecteurLumiere = new VecteurLumiere();
+		Point vectLumiere = new Point(-1000, 0, 100);
 		Point s1s2 = new Point(face.getPt2().getX() - face.getPt1().getX(), face.getPt2().getY() - face.getPt1().getY(), face.getPt2().getZ() - face.getPt1().getZ());
 		Point s1s3 = new Point(face.getPt3().getX() - face.getPt1().getX(), face.getPt3().getY() - face.getPt1().getY(), face.getPt3().getZ() - face.getPt1().getZ());
-		Point vecteurNormal = new Point((s1s2.getY()) * (s1s3.getZ()) - (s1s2.getZ()) * (s1s3.getY()), (s1s2.getZ()) * (s1s3.getX()) - (s1s2.getX()) * (s1s3.getZ()), (s1s2.getX()) * (s1s3.getY()) - (s1s2.getY()) * (s1s3.getX()));
-		double prodScalaire = (vecteurNormal.getX() * vecteurLumiere.getX()) + (vecteurNormal.getY() * vecteurLumiere.getY()) + (vecteurNormal.getZ() * vecteurLumiere.getZ());
-		double longueurVectNormal = Math.sqrt(Math.pow(vecteurNormal.getX(), 2) + Math.pow(vecteurNormal.getY(), 2) + Math.pow(vecteurNormal.getZ(), 2));
-		double longueurVecteurLumiere = Math.sqrt(Math.pow(vecteurLumiere.getX(), 2) + Math.pow(vecteurLumiere.getY(), 2) + Math.pow(vecteurLumiere.getZ(), 2));
-		double cosinus = (prodScalaire) / (longueurVectNormal * longueurVecteurLumiere);
+		Point vectNormal = new Point(s1s2.getY() * s1s3.getZ() - s1s2.getZ() * s1s3.getY(), s1s2.getZ() * s1s3.getX() - s1s2.getX() * s1s3.getZ(), s1s2.getX() * s1s3.getY() - s1s2.getY() * s1s3.getX());
+		double prodScalaire = Math.abs(vectNormal.getX() * vectLumiere.getX() + vectNormal.getY() * vectLumiere.getY() + vectNormal.getZ() * vectLumiere.getZ());
+		double longueurVectNormal = Math.sqrt(Math.pow(vectNormal.getX(), 2) + Math.pow(vectNormal.getY(), 2) + Math.pow(vectNormal.getZ(), 2));
+		double longueurVectLumiere = Math.sqrt(Math.pow(vectLumiere.getX(), 2) + Math.pow(vectLumiere.getY(), 2) + Math.pow(vectLumiere.getZ(), 2));
+//		System.out.println("long vect norm: " + longueurVectNormal);
+//		System.out.println("prod scal: " + prodScalaire);
+//		System.out.println("long vect dir: " + longueurVectLumiere);
+		if(longueurVectLumiere * longueurVectNormal == 0.0)
+			return 0;
+		double cosinus = prodScalaire / (longueurVectNormal * longueurVectLumiere);
 		return cosinus;
 	}
 
@@ -460,10 +466,10 @@ public class Modele extends Observable{
 	 * Informe les Observers que l'état du modèle a changé.
 	 */
 	public void updateModele() {
-		//		System.out.println(getInit().getLoadFile().getCoordMin(0));
-		//		System.out.println(getInit().getLoadFile().getCoordMax(0));
-		//		System.out.println(getInit().getLoadFile().getCoordMin(1));
-		//		System.out.println(getInit().getLoadFile().getCoordMax(1));
+//				System.out.println(getInit().getLoadFile().getCoordMin(0));
+//				System.out.println(getInit().getLoadFile().getCoordMax(0));
+//				System.out.println(getInit().getLoadFile().getCoordMin(1));
+//				System.out.println(getInit().getLoadFile().getCoordMax(1));
 		setChanged();
 		notifyObservers();	
 	}	

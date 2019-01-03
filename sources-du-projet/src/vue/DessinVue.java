@@ -533,14 +533,15 @@ public class DessinVue extends Application implements Observer{
 		QuickSort.getInstance().setTab(faces);
 		QuickSort.getInstance().sort();
 		for (int i = 0; i < faces.length; i++) {
-			System.out.println(faces[i]); //Problème avec les coordonnées Y des points de la face, toutes à 0. C'est surement ça qui cause les problèmes d'affichage.
+//			System.out.println(i+" "+faces[i]); //Problème avec les coordonnées Y des points de la face, toutes à 0. C'est surement ça qui cause les problèmes d'affichage.
 			px = new double[] {faces[i].getPoints()[0].getX()*-1 + (gc.getCanvas().getWidth()/2), faces[i].getPoints()[1].getX()*-1 + (gc.getCanvas().getWidth()/2), faces[i].getPoints()[2].getX()*-1 + (gc.getCanvas().getWidth()/2)};
 			py = new double[] {faces[i].getPoints()[0].getZ()*-1 + (gc.getCanvas().getHeight()/2), faces[i].getPoints()[1].getZ()*-1 + (gc.getCanvas().getHeight()/2), faces[i].getPoints()[2].getZ()*-1 + (gc.getCanvas().getHeight()/2)};
 			double cosinus = controleur.calculVecteurNormal(faces[i]);
+			System.out.println(cosinus);
 			if(modeDessin.equals(ModeDessin.FACES_ARRETES)) {
 				gc.fillPolygon(px, py, 3);
 				gc.strokePolygon(px, py, 3);
-				gc.setFill(couleur.deriveColor(couleur.getHue(), couleur.getSaturation(), cosinus, couleur.getOpacity()));
+				gc.setFill(couleur.deriveColor(couleur.getHue(), couleur.getSaturation(), couleur.getBrightness()*cosinus, couleur.getOpacity()));
 			}else if(modeDessin.equals(ModeDessin.FACES)) {
 				gc.fillPolygon(px, py, 3);
 				gc.setFill(couleur.deriveColor(couleur.getHue(), couleur.getSaturation(), couleur.getBrightness()*cosinus, couleur.getOpacity()));
