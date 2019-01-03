@@ -459,7 +459,7 @@ public class Modele extends Observable{
 		if(longueurVectLumiere * longueurVectNormal == 0.0)
 			return 0;
 		double cosinus = prodScalaire / (longueurVectNormal * longueurVectLumiere);
-		return cosinus;
+		return cosinus; //PROBLEME : Le cosinus a la même valeur pour toutes les faces.
 	}
 
 	/**
