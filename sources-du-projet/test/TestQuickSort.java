@@ -45,8 +45,8 @@ class TestQuickSort {
 				new Face(new Point(9, 9, 9), new Point(9, 9, 9), new Point(9, 9, 9))
 		};
 		for (int i = 0; i < tabFaces.length; i++) {
-			tabFaces[i].setCentreGravite(tabFaces[i].calculCentreGravite());
-			tabFacesTriees[i].setCentreGravite(tabFacesTriees[i].calculCentreGravite());
+			tabFaces[i].calculCentreGravite();
+			tabFacesTriees[i].calculCentreGravite();
 		}
 		QuickSort.getInstance().setTab(tabFaces);
 		QuickSort.getInstance().sort();

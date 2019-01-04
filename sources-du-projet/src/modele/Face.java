@@ -64,20 +64,32 @@ public class Face implements Comparable<Face>{
 		this.position = position;
 	}
 
+	/**
+	 * Retourne le premier point composant la face. 
+	 * @return
+	 */
 	public Point getPt1() {
 		return pt1;
 	}
 
+	/**
+	 * Retourne le deuxieme point composant la face. 
+	 * @return
+	 */
 	public Point getPt2() {
 		return pt2;
 	}
 
+	/**
+	 * Retourne le troisieme point composant la face. 
+	 * @return
+	 */
 	public Point getPt3() {
 		return pt3;
 	}
 	
 	/**
-	 * Définit le premier point composant la face.
+	 * Definit le premier point composant la face.
 	 * @param pt1
 	 */
 	public void setPt1(Point pt1) {
@@ -85,7 +97,7 @@ public class Face implements Comparable<Face>{
 	}
 
 	/**
-	 * Définit le deuxième point composant la face.
+	 * Definit le deuxieme point composant la face.
 	 * @param pt2
 	 */
 	public void setPt2(Point pt2) {
@@ -93,7 +105,7 @@ public class Face implements Comparable<Face>{
 	}
 
 	/**
-	 * Définit le troisième point composant la face.
+	 * Definit le troisieme point composant la face.
 	 * @param pt3
 	 */
 	public void setPt3(Point pt3) {
@@ -109,7 +121,7 @@ public class Face implements Comparable<Face>{
 	}
 	
 	/**
-	 * Retourne le centre de gravité de la face triangulaire.
+	 * Retourne le centre de gravite de la face triangulaire.
 	 * @return centreGravite
 	 */
 	public Point getCentreGravite() {
@@ -117,7 +129,7 @@ public class Face implements Comparable<Face>{
 	}
 	
 	/**
-	 * Définit le centre de gravité de la face triangulaire.
+	 * Definit le centre de gravite de la face triangulaire.
 	 * @param centre_gravite
 	 */
 	public void setCentreGravite(Point centreGravite) {
@@ -125,18 +137,18 @@ public class Face implements Comparable<Face>{
 	}
 	
 	/**
-	 * Calcule le centre de gravité de la Face triangulaire.
+	 * Calcule le centre de gravite de la Face triangulaire.
 	 * @return new Point()
 	 */
-	public Point calculCentreGravite() {
+	public void calculCentreGravite() {
 		float x = (this.getPoints()[0].getX() + this.getPoints()[1].getX() + this.getPoints()[2].getX()) / 3;
 		float y = (this.getPoints()[0].getY() + this.getPoints()[1].getY() + this.getPoints()[2].getY()) / 3;
 		float z = (this.getPoints()[0].getZ() + this.getPoints()[1].getZ() + this.getPoints()[2].getZ()) / 3;
-		return new Point(x, y, z);
+		setCentreGravite(new Point(x, y, z));
 	}
 
 	/**
-	 * Représentation textuelle d'une Face.
+	 * Representation textuelle d'une Face.
 	 */
 	public String toString() {
 		return "\n[Face:\nPoint 1:" + pt1.toString() + "\nPoint 2:" + pt2.toString() + "\nPoint 3:" + pt3.toString() + "\nBarycentre:" + centreGravite + "]\n";
@@ -157,7 +169,7 @@ public class Face implements Comparable<Face>{
 	}
 
 	/**
-	 * Teste si la face est égale à celle passée en paramètre.
+	 * Teste si la face est egale a celle passee en parametre.
 	 */
 	public boolean equals(Face f) {
 		return this.pt1.equals(f.pt1) && this.pt2.equals(f.pt2) && this.pt3.equals(f.pt3) && this.centreGravite.equals(f.centreGravite);

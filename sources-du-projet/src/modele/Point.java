@@ -41,7 +41,6 @@ public class Point {
 	 * @param z
 	 */
 	public Point(double d, double e, double f) {
-		// TODO Auto-generated constructor stub
 		this.x = (float) d;
 		this.y = (float) e;
 		this.z = (float) f;

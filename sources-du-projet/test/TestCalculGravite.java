@@ -23,8 +23,9 @@ class TestCalculGravite {
 		Point p2 = new Point(4, 5, 6);
 		Point p3 = new Point(7, 8, 9);
 		Face face = new Face(p1, p2, p3);
-		assertEquals(4.0, face.calculCentreGravite().getX());
-		assertEquals(5.0, face.calculCentreGravite().getY());
-		assertEquals(6.0, face.calculCentreGravite().getZ());
+		face.calculCentreGravite();
+		assertEquals(4.0, face.getCentreGravite().getX());
+		assertEquals(5.0, face.getCentreGravite().getY());
+		assertEquals(6.0, face.getCentreGravite().getZ());
 	}
 }

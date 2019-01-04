@@ -81,7 +81,7 @@ public class Initialisation {
 					lf.creerFaces();
 					faces = lf.getFaces();
 					for(int i = 0; i < faces.length; ++i)
-						faces[i].setCentreGravite(faces[i].calculCentreGravite());
+						faces[i].calculCentreGravite();
 					isGood = true;
 				} catch (WrongFaceLineFormatException e) {
 					e.showMessage();

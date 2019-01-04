@@ -45,7 +45,7 @@ public class DessinVue extends Application implements Observer{
 	/**
 	 * Boolean true si le pas de translation est valide, c'est à dire que c'est un bien un nombre réel.
 	 */
-	private boolean pasValide = true;
+	private boolean pasValide;
 
 	/**
 	 * Le contrôleur du MVC, liant les éléments graphiques aux éléments de traitement.
@@ -53,19 +53,14 @@ public class DessinVue extends Application implements Observer{
 	private Controleur controleur;
 
 	/**
-	 * Constructeur de la vue, spécifiant le contrôleur.
-	 * @param controleur
-	 */
-
-	/**
 	 * Contient le mode selectionné pour dessiner la figure (faces + arrêtes, faces seulement ou arrêtes seulement).
 	 */
-	private ModeDessin modeDessin = ModeDessin.FACES_ARRETES;
+	private ModeDessin modeDessin;
 
 	/**
-	 * Couleur de la figure initialisée à  blanche. Elle sera modifiée grâce au colorpicker par l'utilisateur.
+	 * Couleur de la figure initialisée à blanche dans le constructeur. Elle sera modifiée grâce au colorpicker par l'utilisateur.
 	 */
-	private Color couleur = Color.WHITE;
+	private Color couleur;
 
 	/**
 	 * Définit le contexte graphique de la figure.
@@ -73,9 +68,15 @@ public class DessinVue extends Application implements Observer{
 	 */
 	private GraphicsContext gc;
 
-
+	/**
+	 * Constructeur de la vue, spécifiant le contrôleur et attribuant les valeurs initiales des attributs.
+	 * @param controleur
+	 */
 	public DessinVue(Controleur controleur) {
 		this.controleur = controleur;
+		couleur = Color.WHITE;
+		modeDessin = ModeDessin.FACES_ARRETES;
+		pasValide = true;
 	}
 
 	/**
@@ -379,7 +380,7 @@ public class DessinVue extends Application implements Observer{
 	 */
 	private void actionBas(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
-			controleur.setCptTranslateHB(controleur.getCptTranslateHB() - Float.parseFloat("0"+tfPas.getText()));
+			controleur.setCptTranslateHB(controleur.getCptTranslateHB() + Float.parseFloat("0"+tfPas.getText()));
 		}
 	}
 
@@ -391,7 +392,7 @@ public class DessinVue extends Application implements Observer{
 	 */
 	private void actionHaut(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
-			controleur.setCptTranslateHB(controleur.getCptTranslateHB() + Float.parseFloat("0"+tfPas.getText()));
+			controleur.setCptTranslateHB(controleur.getCptTranslateHB() - Float.parseFloat("0"+tfPas.getText()));
 		}
 	}
 
@@ -403,7 +404,7 @@ public class DessinVue extends Application implements Observer{
 	 */
 	private void actionDroite(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
-			controleur.setCptTranslateGD(controleur.getCptTranslateGD() - Float.parseFloat("0"+tfPas.getText()));
+			controleur.setCptTranslateGD(controleur.getCptTranslateGD() + Float.parseFloat("0"+tfPas.getText()));
 		}
 	}
 
@@ -415,7 +416,7 @@ public class DessinVue extends Application implements Observer{
 	 */
 	private void actionGauche(Slider sliderZoom, Slider sliderRotation, TextField tfPas) {
 		if(pasValide) {
-			controleur.setCptTranslateGD(controleur.getCptTranslateGD() + Float.parseFloat("0"+tfPas.getText()));
+			controleur.setCptTranslateGD(controleur.getCptTranslateGD() - Float.parseFloat("0"+tfPas.getText()));
 		}
 	}
 
@@ -520,33 +521,32 @@ public class DessinVue extends Application implements Observer{
 	}
 
 	/**
-	 * Créer la figure en interprétant les différentes coordonnées de points et en les reliant entre eux, puis en colorant la figure.
+	 * Créer la figure en interprétant les différentes coordonnées de points et en les reliant entre eux, puis en colorant la figure 
+	 * selon l'angle dans lequel arrive la lumière.
 	 * @param gc
 	 * @param faces
 	 * @param c
 	 */
 	public void creerFigure(Face[] faces) {
 		double[] px;
-		double[] py;
-		for (int i = 0; i < faces.length; i++)
-			faces[i].setCentreGravite(faces[i].calculCentreGravite());
+		double[] pz;
 		QuickSort.getInstance().setTab(faces);
 		QuickSort.getInstance().sort();
 		for (int i = 0; i < faces.length; i++) {
-//			System.out.println(i+" "+faces[i]); //Problème avec les coordonnées Y des points de la face, toutes à 0. C'est surement ça qui cause les problèmes d'affichage.
-			px = new double[] {faces[i].getPoints()[0].getX()*-1 + (gc.getCanvas().getWidth()/2), faces[i].getPoints()[1].getX()*-1 + (gc.getCanvas().getWidth()/2), faces[i].getPoints()[2].getX()*-1 + (gc.getCanvas().getWidth()/2)};
-			py = new double[] {faces[i].getPoints()[0].getZ()*-1 + (gc.getCanvas().getHeight()/2), faces[i].getPoints()[1].getZ()*-1 + (gc.getCanvas().getHeight()/2), faces[i].getPoints()[2].getZ()*-1 + (gc.getCanvas().getHeight()/2)};
+			//System.out.println(i+" "+faces[i]); //Problème avec les coordonnées Y des points de la face, toutes à 0. C'est surement ça qui cause les problèmes d'affichage.
+			px = new double[] {faces[i].getPoints()[0].getX() + (gc.getCanvas().getWidth()/2), faces[i].getPoints()[1].getX() + (gc.getCanvas().getWidth()/2), faces[i].getPoints()[2].getX() + (gc.getCanvas().getWidth()/2)};
+			pz = new double[] {faces[i].getPoints()[0].getZ() + (gc.getCanvas().getHeight()/2), faces[i].getPoints()[1].getZ() + (gc.getCanvas().getHeight()/2), faces[i].getPoints()[2].getZ() + (gc.getCanvas().getHeight()/2)};
 			double cosinus = controleur.calculVecteurNormal(faces[i]);
-			System.out.println(cosinus);
+//			System.out.println(cosinus);
 			if(modeDessin.equals(ModeDessin.FACES_ARRETES)) {
-				gc.fillPolygon(px, py, 3);
-				gc.strokePolygon(px, py, 3);
+				gc.fillPolygon(px, pz, 3);
+				gc.strokePolygon(px, pz, 3);
 				gc.setFill(couleur.deriveColor(couleur.getHue(), couleur.getSaturation(), couleur.getBrightness()*cosinus, couleur.getOpacity()));
 			}else if(modeDessin.equals(ModeDessin.FACES)) {
-				gc.fillPolygon(px, py, 3);
+				gc.fillPolygon(px, pz, 3);
 				gc.setFill(couleur.deriveColor(couleur.getHue(), couleur.getSaturation(), couleur.getBrightness()*cosinus, couleur.getOpacity()));
 			}else
-				gc.strokePolygon(px, py, 3);
+				gc.strokePolygon(px, pz, 3);
 		}
 	}
 

@@ -29,68 +29,69 @@ public class Modele extends Observable{
 	/**
 	 * La valeur de la rotation, donnée par le slider correspondant.
 	 */
-
-	private double rotationValue =0;
+	private double rotationValue;
 
 	/**
 	 * La valeur de l'homothétie, donnée par le slider correspondant.
 	 */
-
-	private double zoomValue =0;
-
-	/**
-	 * La valeur de la translation sur l'axe horizontal. On l'incrémente lors de l'appui sur le bouton droite et on la 
-	 * décrémente lors de l'appui sur le bouton gauche pour déplacer la figure horizontalement.
-	 */
-
-	private float cptTranslateGD=0;
+	private double zoomValue;
 
 	/**
-	 * La valeur de la translation sur l'axe vertical. On l'incrémente lors de l'appui sur le bouton haut et on la 
-	 * décrémente lors de l'appui sur le bouton bas pour déplacer la figure verticalement.
+	 * La valeur de la translation sur l'axe horizontal. On l'incrémente lors de l'appui sur le bouton gauche et on la 
+	 * décrémente lors de l'appui sur le bouton droite pour déplacer la figure horizontalement.
 	 */
+	private float cptTranslateGD;
 
-	private float cptTranslateHB=0;
+	/**
+	 * La valeur de la translation sur l'axe vertical. On l'incrémente lors de l'appui sur le bouton bas et on la 
+	 * décrémente lors de l'appui sur le bouton haut pour déplacer la figure verticalement.
+	 */
+	private float cptTranslateHB;
 
 	/**
 	 * La valeur du zoom moyen par défaut, défini lors de l'importation du fichier en fonction de la taille de la figure.
 	 */
-
 	private double defaultZoom;
 
 	/**
 	 * Implémentation de cette Strategy lors de l'appui sur le Bouton X.
 	 */
-
-	private Strategy stratX = new StrategyRotationX(0);
+	private Strategy stratX;
 
 	/**
 	 * Implémentation de cette Strategy lors de l'appui sur le Bouton Y.
 	 */
-
-	private Strategy stratY = new StrategyRotationY(0);
+	private Strategy stratY;
 
 	/**
 	 * Implémentation de cette Strategy lors de l'appui sur le Bouton Z.
 	 */
-
-	private Strategy stratZ = new StrategyRotationZ(0);
+	private Strategy stratZ;
 
 	/**
 	 * Boolean true lorsque le slider de rotation X est activé (par défaut).
 	 */
-
-	private boolean flagX = true;
+	private boolean flagX;
 
 	/**
 	 * Boolean true lorsque le slider de rotation Y est activé.
 	 */
-	private boolean flagY = false;
+	private boolean flagY;
 
 	/**
 	 * Boolean true lorsque le slider de rotation Z est activé.
 	 */
-	private boolean flagZ = false;
+	private boolean flagZ;
+	
+	/**
+	 * Constructeur assignant les valeurs initiales des attributs.
+	 */
+	public Modele() {
+		flagX = true;
+		stratX = new StrategyRotationX(0);
+		stratY = new StrategyRotationY(0);
+		stratZ = new StrategyRotationZ(0);
+	}
 
 	/**
 	 * Définit le booléen pour le slider de rotation activé pour la Strategy X.
@@ -446,20 +447,29 @@ public class Modele extends Observable{
 	 * vecteur normal de la face.
 	 */
 	public double calculVecteurNormal(Face face) {
-		Point vectLumiere = new Point(-1000, 0, 100);
+		Point vectLumiere = new Point(0, 1, 0);
 		Point s1s2 = new Point(face.getPt2().getX() - face.getPt1().getX(), face.getPt2().getY() - face.getPt1().getY(), face.getPt2().getZ() - face.getPt1().getZ());
 		Point s1s3 = new Point(face.getPt3().getX() - face.getPt1().getX(), face.getPt3().getY() - face.getPt1().getY(), face.getPt3().getZ() - face.getPt1().getZ());
 		Point vectNormal = new Point(s1s2.getY() * s1s3.getZ() - s1s2.getZ() * s1s3.getY(), s1s2.getZ() * s1s3.getX() - s1s2.getX() * s1s3.getZ(), s1s2.getX() * s1s3.getY() - s1s2.getY() * s1s3.getX());
 		double prodScalaire = Math.abs(vectNormal.getX() * vectLumiere.getX() + vectNormal.getY() * vectLumiere.getY() + vectNormal.getZ() * vectLumiere.getZ());
-		double longueurVectNormal = Math.sqrt(Math.pow(vectNormal.getX(), 2) + Math.pow(vectNormal.getY(), 2) + Math.pow(vectNormal.getZ(), 2));
-		double longueurVectLumiere = Math.sqrt(Math.pow(vectLumiere.getX(), 2) + Math.pow(vectLumiere.getY(), 2) + Math.pow(vectLumiere.getZ(), 2));
+		double longVectNormal = calculNorme(vectNormal);
+		double longVectLumiere = calculNorme(vectLumiere);
 //		System.out.println("long vect norm: " + longueurVectNormal);
 //		System.out.println("prod scal: " + prodScalaire);
 //		System.out.println("long vect dir: " + longueurVectLumiere);
-		if(longueurVectLumiere * longueurVectNormal == 0.0)
-			return 0;
-		double cosinus = prodScalaire / (longueurVectNormal * longueurVectLumiere);
+		if(longVectLumiere * longVectNormal == 0.0)
+			return 0.0;
+		double cosinus = prodScalaire / (longVectNormal * longVectLumiere);
 		return cosinus; //PROBLEME : Le cosinus a la même valeur pour toutes les faces.
+	}
+	
+	/**
+	 * Calcule et retourne la norme du vecteur passé en paramètre.
+	 * @param p
+	 * @return
+	 */
+	private double calculNorme(Point p) {
+		return Math.sqrt(Math.pow(p.getX(), 2) + Math.pow(p.getY(), 2) + Math.pow(p.getZ(), 2));
 	}
 
 	/**
