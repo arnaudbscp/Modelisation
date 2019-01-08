@@ -29,6 +29,15 @@ public class Controleur {
 	}
 
 	/**
+	 * Permet de récuperer le modele
+	 * @return m
+	 */
+	
+	public Modele getModele() {
+		return m;
+	}
+	
+	/**
 	 * Désactive le bouton X, réactive les deux autres.
 	 */
 	public void updateX() {
@@ -107,7 +116,8 @@ public class Controleur {
 		m.setCptTranslateGD(f);
 	}
 
-	/**
+	/**essinVue(c1);
+	
 	 * Retourne la Strategy Z.
 	 * @return
 	 */
@@ -162,7 +172,8 @@ public class Controleur {
 	}
 	
 	/**
-	 * Effectue automatiquement une rotation de 360° de la figure autour de l'axe actif.
+	 * Effectue automatiquement une roessinVue(c1);
+	tation de 360° de la figure autour de l'axe actif.
 	 * @param b
 	 */
 	public void rotationAuto(boolean b) {

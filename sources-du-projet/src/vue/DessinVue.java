@@ -217,12 +217,20 @@ public class DessinVue extends Application implements Observer{
 		boutonFacesEtArretes.setDisable(true);
 		Button boutonFaces = new Button("Faces");
 		Button boutonArretes = new Button("Arrêtes");
-		boutonArretes.setPrefWidth(150);
 		boutonFacesEtArretes.setPrefWidth(150);
 		boutonFaces.setPrefWidth(150);
+		boutonArretes.setPrefWidth(150);
 		vbBoutonsFacesArretes.getChildren().addAll(lblMode, boutonFacesEtArretes, boutonFaces, boutonArretes);
 		vbBoutonsFacesArretes.setSpacing(2);
 		menu.getChildren().add(vbBoutonsFacesArretes);
+		
+		Button butonNewVue = new Button("Nouvelle vue");
+		VBox vbButonNewVue = new VBox();
+		butonNewVue.setPrefWidth(150);
+		vbButonNewVue.setPadding(new Insets(20,0,0,0));
+		vbButonNewVue.getChildren().addAll(butonNewVue);
+		menu.getChildren().add(vbButonNewVue);
+		
 
 
 		//---------------------GESTION DES EVENEMENTS------------------
@@ -275,6 +283,12 @@ public class DessinVue extends Application implements Observer{
 		tfPas.setOnKeyReleased(e -> { verificationPas(textErreur, hbPas, tfPas);});
 
 		rotationAuto.setOnMouseClicked(e -> { rotationAuto(); });
+		
+		butonNewVue.setOnAction(e -> { DessinVue dv1 = new DessinVue(controleur);
+									   controleur.getModele().addObserver(dv1); 
+									   Stage stage2 = new Stage();
+									   dv1.start(stage2);
+									   controleur.updateModele();});
 
 		//----AFFICHAGE FENETRE------
 		primaryStage.setScene(scene);
