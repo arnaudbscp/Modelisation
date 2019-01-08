@@ -82,7 +82,7 @@ public class Modele extends Observable{
 	 * Boolean true lorsque le slider de rotation Z est activé.
 	 */
 	private boolean flagZ;
-	
+
 	/**
 	 * Constructeur assignant les valeurs initiales des attributs.
 	 */
@@ -362,7 +362,6 @@ public class Modele extends Observable{
 						setDefaultzoom(defaultZoom());
 						//On simule un premier mouvement de la figure pour que tous les mouvements fonctionnent correctement.
 						setZoomValue(defaultZoom);
-						//centrerAuto();
 					}
 				} catch (IOException e1) {
 					OtherException e2 = new OtherException();
@@ -378,6 +377,7 @@ public class Modele extends Observable{
 	 * NON-FONCTIONNEL
 	 * Centre automatiquement la figure.
 	 */
+	@SuppressWarnings("unused")
 	private void centrerAuto() {
 		float minX = getInit().getLoadFile().getCoordMin(0);
 		float maxX = getInit().getLoadFile().getCoordMax(0);
@@ -430,48 +430,67 @@ public class Modele extends Observable{
 	}
 
 	/**
-	 * NON-FONCTIONNEL
 	 * Effectue automatiquement une rotation de 360° de la figure autour de l'axe actif.
-	 * @param action
+	 * Cette méthode créé un nouveau Thread pour chaque nouvelle rotation. Les Threads seront ensuite synchronisés lorsqu'ils
+	 * appelleront runThreadSync.
 	 */
-	public boolean rotationAuto(boolean action) {
-		while(action) {
-			try {
-				Thread.sleep(1000);
-				setRotationValue(rotationValue + 5);
-				if(rotationValue >= 360) {
-					setRotationValue(1);
-					action = !action;
-				}
-			} catch (InterruptedException e) {
-				OtherException e1 = new OtherException();
-				e1.showMessage();
-			}
+	public void rotationAuto() {
+		short step = 12;
+		for(short i = 0; i < step; i++) {
+			Thread newThread = new Thread(new ThreadRotAuto(this, step));
+			newThread.start();
+		}		
+	}
+	
+	/**
+	 * Effectue une rotation de la rotation auto d'un angle de 360/step degrès. Chaque Thread correspondant à chacune
+	 * des rotations sera synchronisé afin d'attendre son tour.
+	 * @param step
+	 */
+	public synchronized void runThreadSync(short step) {
+		setRotationValue(rotationValue + 360 / step);
+		if(rotationValue >= 360)
+			setRotationValue(rotationValue - 360);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			OtherException e1 = new OtherException();
+			e1.showMessage();
 		}
-		return action;
 	}
 
 	/**
 	 * Calcul le vecteur normal de la face passée en paramètre et retourne le cosinus de l'angle entre le vecteur directeur et le 
-	 * vecteur normal de la face.
+	 * vecteur normal de la face, par des calculs intermédiaires de produit scalaire et de normes.
+	 * @param face
+	 * @return cosinus
 	 */
-	public double calculVecteurNormal(Face face) {
-		Point vectLumiere = new Point(0, 1, 0);
-		Point s1s2 = new Point(face.getPt2().getX() - face.getPt1().getX(), face.getPt2().getY() - face.getPt1().getY(), face.getPt2().getZ() - face.getPt1().getZ());
-		Point s1s3 = new Point(face.getPt3().getX() - face.getPt1().getX(), face.getPt3().getY() - face.getPt1().getY(), face.getPt3().getZ() - face.getPt1().getZ());
-		Point vectNormal = new Point(s1s2.getY() * s1s3.getZ() - s1s2.getZ() * s1s3.getY(), s1s2.getZ() * s1s3.getX() - s1s2.getX() * s1s3.getZ(), s1s2.getX() * s1s3.getY() - s1s2.getY() * s1s3.getX());
+	public double calculCosinus(Face face) {
+		Point vectLumiere = new Point(0, 0, -1);
+		//Calcul des 2 vecteurs de la face AB et AC (A, B et C sont les 3 points de la face)
+		Point s1s2 = new Point(	face.getPt2().getX() - face.getPt1().getX(), 
+				face.getPt2().getY() - face.getPt1().getY(), 
+				face.getPt2().getZ() - face.getPt1().getZ());
+		Point s1s3 = new Point(	face.getPt3().getX() - face.getPt1().getX(), 
+				face.getPt3().getY() - face.getPt1().getY(), 
+				face.getPt3().getZ() - face.getPt1().getZ());
+		//Calcul du produit vectoriel grâce aux déterminants (YZ'-ZY', ZX'-XZ', XY'-YX')
+		Point vectNormal = new Point(	s1s2.getY() * s1s3.getZ() - s1s2.getZ() * s1s3.getY(),
+				s1s2.getZ() * s1s3.getX() - s1s2.getX() * s1s3.getZ(),
+				s1s2.getX() * s1s3.getY() - s1s2.getY() * s1s3.getX());
+		//Calcul du produit scalaire (XX'+YY'+ZZ')
 		double prodScalaire = Math.abs(vectNormal.getX() * vectLumiere.getX() + vectNormal.getY() * vectLumiere.getY() + vectNormal.getZ() * vectLumiere.getZ());
 		double longVectNormal = calculNorme(vectNormal);
 		double longVectLumiere = calculNorme(vectLumiere);
-//		System.out.println("long vect norm: " + longueurVectNormal);
-//		System.out.println("prod scal: " + prodScalaire);
-//		System.out.println("long vect dir: " + longueurVectLumiere);
+		//		System.out.println("long vect norm: " + longVectNormal);
+		//		System.out.println("prod scal: " + prodScalaire);
+		//		System.out.println("long vect dir: " + longVectLumiere);
 		if(longVectLumiere * longVectNormal == 0.0)
 			return 0.0;
 		double cosinus = prodScalaire / (longVectNormal * longVectLumiere);
 		return cosinus; //PROBLEME : Le cosinus a la même valeur pour toutes les faces.
 	}
-	
+
 	/**
 	 * Calcule et retourne la norme du vecteur passé en paramètre.
 	 * @param p
@@ -485,11 +504,19 @@ public class Modele extends Observable{
 	 * Informe les Observers que l'état du modèle a changé.
 	 */
 	public void updateModele() {
-//				System.out.println(getInit().getLoadFile().getCoordMin(0));
-//				System.out.println(getInit().getLoadFile().getCoordMax(0));
-//				System.out.println(getInit().getLoadFile().getCoordMin(1));
-//				System.out.println(getInit().getLoadFile().getCoordMax(1));
+		//				System.out.println(getInit().getLoadFile().getCoordMin(0));
+		//				System.out.println(getInit().getLoadFile().getCoordMax(0));
+		//				System.out.println(getInit().getLoadFile().getCoordMin(1));
+		//				System.out.println(getInit().getLoadFile().getCoordMax(1));
 		setChanged();
 		notifyObservers();	
+	}
+
+	/**
+	 * Retourne la valeur de rotation.
+	 * @return
+	 */
+	public synchronized double getRotationValue() {
+		return rotationValue;
 	}	
 }

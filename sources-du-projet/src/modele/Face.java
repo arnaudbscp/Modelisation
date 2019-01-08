@@ -32,8 +32,6 @@ public class Face implements Comparable<Face>{
 	 */
 	private int[] position;
 	
-	Couleur c = null;
-	
 	/**
 	 * Constructeur créant une face à partir des 3 points spécifiés.
 	 * @param pt1

@@ -32,11 +32,11 @@ public class Controleur {
 	 * Permet de récuperer le modele
 	 * @return m
 	 */
-	
+
 	public Modele getModele() {
 		return m;
 	}
-	
+
 	/**
 	 * Désactive le bouton X, réactive les deux autres.
 	 */
@@ -63,7 +63,7 @@ public class Controleur {
 		m.setFlagY(false);
 		m.setFlagZ(true);
 	}
-	
+
 	/**
 	 * Retourne l'Initialisation du fichier.
 	 * @return
@@ -116,7 +116,7 @@ public class Controleur {
 	}
 
 	/**essinVue(c1);
-	
+
 	 * Retourne la Strategy Z.
 	 * @return
 	 */
@@ -169,18 +169,21 @@ public class Controleur {
 	public void updateModele() {
 		m.updateModele();
 	}
-	
+
 	/**
-	 * Effectue automatiquement une roessinVue(c1);
-	tation de 360° de la figure autour de l'axe actif.
-	 * @param b
+	 * Effectue automatiquement une rotation de 360° de la figure autour de l'axe actif.
 	 */
-	public void rotationAuto(boolean b) {
-		if(b)
-			m.rotationAuto(b);
+	public void rotationAuto() {
+			m.rotationAuto();
 	}
-	
-	public double calculVecteurNormal(Face face) {
-		return m.calculVecteurNormal(face);
+
+	/**
+	 * Retourne le cosinus de l'angle entre le vecteur normal de la face spécifiée et le vecteur directeur pour afficher 
+	 * la couleur de la face en fonction de l'angle de l'éclairage
+	 * @param face
+	 * @return
+	 */
+	public double calculCosinus(Face face) {
+		return m.calculCosinus(face);
 	}
 }

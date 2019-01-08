@@ -66,6 +66,11 @@ public class DessinVue extends Application implements Observer{
 	 * Définit le contexte graphique de la figure.
 	 */
 	private GraphicsContext gc;
+	
+	/**
+	 * Le canvas sur lequel on va afficher la figure.
+	 */
+	private Canvas canv;
 
 	/**
 	 * Constructeur de la vue, spécifiant le contrôleur et attribuant les valeurs initiales des attributs.
@@ -97,7 +102,7 @@ public class DessinVue extends Application implements Observer{
 		vbBoutonsImportAide.setSpacing(3);
 		vbBoutonsImportAide.getChildren().addAll(boutonImport, boutonAide);
 		menu.getChildren().add(vbBoutonsImportAide);
-		Canvas canv = new Canvas(1100, 800);
+		canv = new Canvas(1100, 800);
 		gc = canv.getGraphicsContext2D();
 		gc.setLineWidth(1);
 		HBox.setMargin(menu, new Insets(50, 0, 0, 20));
@@ -156,7 +161,6 @@ public class DessinVue extends Application implements Observer{
 
 		//BOUTON ROTATION AUTO 
 		Button rotationAuto = new Button();
-		rotationAuto.setDisable(true);
 		HBox hboxRotAuto = new HBox();
 		Image image = new Image(new File("img/360-degrees.png").toURI().toString());
 		ImageView imgView = new ImageView(image);
@@ -222,14 +226,16 @@ public class DessinVue extends Application implements Observer{
 		vbBoutonsFacesArretes.getChildren().addAll(lblMode, boutonFacesEtArretes, boutonFaces, boutonArretes);
 		vbBoutonsFacesArretes.setSpacing(2);
 		menu.getChildren().add(vbBoutonsFacesArretes);
-		
-		Button butonNewVue = new Button("Nouvelle vue");
-		VBox vbButonNewVue = new VBox();
-		butonNewVue.setPrefWidth(150);
-		vbButonNewVue.setPadding(new Insets(20,0,0,0));
-		vbButonNewVue.getChildren().addAll(butonNewVue);
-		menu.getChildren().add(vbButonNewVue);
-		
+
+
+		//BOUTON NOUVELLE VUE
+		Button buttonNewVue = new Button("Nouvelle vue");
+		VBox vbButtonNewVue = new VBox();
+		buttonNewVue.setPrefWidth(150);
+		vbButtonNewVue.setPadding(new Insets(20, 0, 0, 0));
+		vbButtonNewVue.getChildren().addAll(buttonNewVue);
+		menu.getChildren().add(vbButtonNewVue);
+
 
 
 		//---------------------GESTION DES EVENEMENTS------------------
@@ -281,13 +287,9 @@ public class DessinVue extends Application implements Observer{
 
 		tfPas.setOnKeyReleased(e -> { verificationPas(textErreur, hbPas, tfPas);});
 
-		rotationAuto.setOnMouseClicked(e -> { rotationAuto(); });
-		
-		butonNewVue.setOnAction(e -> { DessinVue dv1 = new DessinVue(controleur);
-									   controleur.getModele().addObserver(dv1); 
-									   Stage stage2 = new Stage();
-									   dv1.start(stage2);
-									   controleur.updateModele();});
+		rotationAuto.setOnMouseClicked(e -> { rotationAuto();});
+
+		buttonNewVue.setOnAction(e -> { newVue();});
 
 		//----AFFICHAGE FENETRE------
 		primaryStage.setScene(scene);
@@ -296,6 +298,22 @@ public class DessinVue extends Application implements Observer{
 		primaryStage.show();
 	}
 
+	/**
+	 * Méthode créant une nouvelle vue du modèle dans une nouvelle fenêtre.
+	 */
+	private void newVue() {
+		DessinVue dv1 = new DessinVue(controleur);
+		controleur.getModele().addObserver(dv1); 
+		Stage stage2 = new Stage();
+		dv1.start(stage2);
+		controleur.updateModele();
+	}
+
+	/**
+	 * Méthode mettant à jour la couleur de la figure.
+	 * @param gc
+	 * @param cp
+	 */
 	private void updateCouleur(GraphicsContext gc, ColorPicker cp) {
 		couleur = cp.getValue();
 		creerFigure(controleur.getInit().getLoadFile().getFaces());
@@ -534,7 +552,7 @@ public class DessinVue extends Application implements Observer{
 	}
 
 	/**
-	 * Créer la figure en interprétant les différentes coordonnées de points et en les reliant entre eux, puis en colorant la figure 
+	 * Créer la figure après avoir trié les faces, en interprétant les différentes coordonnées de points et en les reliant entre eux, puis en colorant la figure 
 	 * selon l'angle dans lequel arrive la lumière.
 	 * @param faces
 	 */
@@ -545,10 +563,14 @@ public class DessinVue extends Application implements Observer{
 		QuickSort.getInstance().sort();
 		for (int i = 0; i < faces.length; i++) {
 			//System.out.println(i+" "+faces[i]); //Problème avec les coordonnées Y des points de la face, toutes à 0. C'est surement ça qui cause les problèmes d'affichage.
-			px = new double[] {faces[i].getPoints()[0].getX() + (gc.getCanvas().getWidth()/2), faces[i].getPoints()[1].getX() + (gc.getCanvas().getWidth()/2), faces[i].getPoints()[2].getX() + (gc.getCanvas().getWidth()/2)};
-			pz = new double[] {faces[i].getPoints()[0].getZ() + (gc.getCanvas().getHeight()/2), faces[i].getPoints()[1].getZ() + (gc.getCanvas().getHeight()/2), faces[i].getPoints()[2].getZ() + (gc.getCanvas().getHeight()/2)};
-			double cosinus = controleur.calculVecteurNormal(faces[i]);
-//			System.out.println(cosinus);
+			px = new double[] {	faces[i].getPoints()[0].getX() + (gc.getCanvas().getWidth()/2), 
+								faces[i].getPoints()[1].getX() + (gc.getCanvas().getWidth()/2), 
+								faces[i].getPoints()[2].getX() + (gc.getCanvas().getWidth()/2)};
+			pz = new double[] {	faces[i].getPoints()[0].getZ() + (gc.getCanvas().getHeight()/2), 
+								faces[i].getPoints()[1].getZ() + (gc.getCanvas().getHeight()/2), 
+								faces[i].getPoints()[2].getZ() + (gc.getCanvas().getHeight()/2)};
+			double cosinus = controleur.calculCosinus(faces[i]);
+			//System.out.println(cosinus);
 			if(modeDessin.equals(ModeDessin.FACES_ARRETES)) {
 				gc.fillPolygon(px, pz, 3);
 				gc.strokePolygon(px, pz, 3);
@@ -565,7 +587,7 @@ public class DessinVue extends Application implements Observer{
 	 * Méthode de l'interface Observer, permettant la mise à jour de la figure avec les nouvelles valeurs du modèle.
 	 */
 	public void update(Observable o, Object arg) {
-		gc.clearRect(0, 0, 1280, 800);
+		gc.clearRect(0, 0, canv.getWidth(), canv.getHeight());
 		creerFigure(((src.modele.Modele)o).miseAJourVue());
 	}
 
@@ -573,7 +595,6 @@ public class DessinVue extends Application implements Observer{
 	 * Effectue automatiquement une rotation de 360° de la figure autour de l'axe actif.
 	 */
 	private void rotationAuto() {
-		boolean rotat = true;
-		controleur.rotationAuto(rotat);
+		controleur.rotationAuto();
 	}
 }
