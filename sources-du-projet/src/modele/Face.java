@@ -114,7 +114,7 @@ public class Face implements Comparable<Face>{
 
 	/**
 	 * Retourne les 3 Point de la Face, sous forme d'un tableau.
-	 * @return new Point[]
+	 * @return
 	 */
 	public Point[] getPoints() {
 		return new Point[] {pt1, pt2, pt3};
@@ -130,7 +130,7 @@ public class Face implements Comparable<Face>{
 	
 	/**
 	 * Definit le centre de gravite de la face triangulaire.
-	 * @param centre_gravite
+	 * @param centreGravite
 	 */
 	public void setCentreGravite(Point centreGravite) {
 		this.centreGravite = centreGravite;
@@ -138,7 +138,6 @@ public class Face implements Comparable<Face>{
 	
 	/**
 	 * Calcule le centre de gravite de la Face triangulaire.
-	 * @return new Point()
 	 */
 	public void calculCentreGravite() {
 		float x = (this.getPoints()[0].getX() + this.getPoints()[1].getX() + this.getPoints()[2].getX()) / 3;
@@ -170,6 +169,8 @@ public class Face implements Comparable<Face>{
 
 	/**
 	 * Teste si la face est egale a celle passee en parametre.
+	 * @param f
+	 * @return
 	 */
 	public boolean equals(Face f) {
 		return this.pt1.equals(f.pt1) && this.pt2.equals(f.pt2) && this.pt3.equals(f.pt3) && this.centreGravite.equals(f.centreGravite);

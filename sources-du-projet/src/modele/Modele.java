@@ -95,7 +95,7 @@ public class Modele extends Observable{
 
 	/**
 	 * Définit le booléen pour le slider de rotation activé pour la Strategy X.
-	 * @return
+	 * @param flagX
 	 */
 	public void setFlagX(boolean flagX) {
 		this.flagX = flagX;
@@ -111,7 +111,7 @@ public class Modele extends Observable{
 
 	/**
 	 * Définit le booléen pour le slider de rotation activé pour la Strategy Z.
-	 * @param flagY
+	 * @param flagZ
 	 */
 	public void setFlagZ(boolean flagZ) {
 		this.flagZ = flagZ;
@@ -119,6 +119,7 @@ public class Modele extends Observable{
 
 	/**
 	 * Retourne le niveau de zoom moyen de la figure, adapté en fonction de la taille de celle-ci.
+	 * @return
 	 */
 	public double getDefaultZoom() {
 		return defaultZoom;
@@ -126,6 +127,7 @@ public class Modele extends Observable{
 
 	/**
 	 * Retourne la Strategy X.
+	 * @return
 	 */
 	public Strategy getStratX() {
 		return stratX;
@@ -133,6 +135,7 @@ public class Modele extends Observable{
 
 	/**
 	 * Retourne la Strategy Y.
+	 * @return
 	 */
 	public Strategy getStratY() {
 		return stratY;
@@ -140,6 +143,7 @@ public class Modele extends Observable{
 
 	/**
 	 * Retourne la Strategy Z.
+	 * @return
 	 */
 	public Strategy getStratZ() {
 		return stratZ;
@@ -147,13 +151,15 @@ public class Modele extends Observable{
 
 	/**
 	 * Définit le niveau de zoom moyen de la figure, en fonction de la taille de celle-ci.
+	 * @param defaultZoom
 	 */
-	public void setDefaultzoom(double defaultzoom) {
-		this.defaultZoom = defaultzoom;
+	public void setDefaultzoom(double defaultZoom) {
+		this.defaultZoom = defaultZoom;
 	}
 
 	/**
 	 * Retourne la valeur de la translation sur l'axe horizontal.
+	 * @return
 	 */
 	public float getCptTranslateGD() {
 		return cptTranslateGD;
@@ -161,6 +167,7 @@ public class Modele extends Observable{
 
 	/**
 	 * Retourne la valeur de la translation sur l'axe vertical.
+	 * @return
 	 */
 	public float getCptTranslateHB() {
 		return cptTranslateHB;
@@ -168,6 +175,7 @@ public class Modele extends Observable{
 
 	/**
 	 * Retourne l'Initialisation correspondant au fichier.
+	 * @return
 	 */
 	public Initialisation getInit() {
 		return init;
@@ -175,6 +183,7 @@ public class Modele extends Observable{
 
 	/**
 	 * Définit la valeur de la translation sur l'axe horizontal et informe les Observers que le modèle a changé.
+	 * @param cptTranslateGD
 	 */
 	public void setCptTranslateGD(float cptTranslateGD) {
 		this.cptTranslateGD = cptTranslateGD;
@@ -183,6 +192,7 @@ public class Modele extends Observable{
 
 	/**
 	 * Définit la valeur de la translation sur l'axe vertical et informe les Observers que le modèle a changé.
+	 * @param cptTranslateHB
 	 */
 	public void setCptTranslateHB(float cptTranslateHB) {
 		this.cptTranslateHB = cptTranslateHB;
@@ -191,6 +201,7 @@ public class Modele extends Observable{
 
 	/**
 	 * Définit l'Initialisation du fichier.
+	 * @param init
 	 */
 	public void setInit(Initialisation init) {
 		this.init = init;
@@ -198,13 +209,13 @@ public class Modele extends Observable{
 
 	/**
 	 * Définit le fichier contenant la figure.
+	 * @param filePly
 	 */
 	public void setFilePly(File filePly) {
 		this.filePly = filePly;
 	}
 
 	/**
-	 * A completer
 	 * Définit la valeur de rotation, et informe les Observers que le modèle a changé.
 	 * @param rotationValue
 	 */
@@ -225,9 +236,7 @@ public class Modele extends Observable{
 	/**
 	 * Méthode mettant à jour la position de la figure dans l'espace à la suite d'un mouvement (rotation, translation ou homothétie).
 	 * Elle appelle les différentes méthodes de mise à jour de chaque mouvement.
-	 * @param gc
-	 * @param rotationValue
-	 * @param zoomValue
+	 * @return
 	 */
 	public Face[] miseAJourVue() {
 		Face[] tabf = null;

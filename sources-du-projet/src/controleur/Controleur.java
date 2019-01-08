@@ -88,7 +88,6 @@ public class Controleur {
 
 	/**
 	 * Retourne le niveau moyen de zoom de la figure, en fonction de la taille de celle-ci.
-	 * @param d
 	 */
 	public double getDefaultZoom() {
 		return m.getDefaultZoom();

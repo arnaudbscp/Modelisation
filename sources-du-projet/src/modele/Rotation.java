@@ -15,8 +15,6 @@ public class Rotation implements Recopie{
 	 * @param p : le tableau de points de la figure sur lesquels effectuer la rotation.
 	 * @param axe : l'axe sur lequel effectuer la rotation (X, Y ou Z).
 	 * @return le nouveau tableau de points représentant la figure après avoir effectueé la rotation.
-	 * @throws MatriceNullException
-	 * @throws MatriceFormatException
 	 */
 	public Point[] creerPointRotate(double angle, Point[] p, char axe) {
 		angle=Math.toRadians(angle);

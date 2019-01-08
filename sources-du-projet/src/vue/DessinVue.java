@@ -64,7 +64,6 @@ public class DessinVue extends Application implements Observer{
 
 	/**
 	 * Définit le contexte graphique de la figure.
-	 * @param gc
 	 */
 	private GraphicsContext gc;
 
@@ -537,9 +536,7 @@ public class DessinVue extends Application implements Observer{
 	/**
 	 * Créer la figure en interprétant les différentes coordonnées de points et en les reliant entre eux, puis en colorant la figure 
 	 * selon l'angle dans lequel arrive la lumière.
-	 * @param gc
 	 * @param faces
-	 * @param c
 	 */
 	public void creerFigure(Face[] faces) {
 		double[] px;

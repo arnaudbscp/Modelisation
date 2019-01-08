@@ -16,8 +16,6 @@ class TestMatrice {
 
 	/**
 	 * Méthode testant que le résultat du produit de deux matrices est correct.
-	 * @throws MatriceNullException
-	 * @throws MatriceFormatException
 	 */
 	@Test
 	void testMultiplier() {

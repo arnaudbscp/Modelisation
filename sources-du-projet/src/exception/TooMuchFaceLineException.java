@@ -23,7 +23,6 @@ public class TooMuchFaceLineException extends Exception {
 	
 	/**
 	 * Constructeur définissant le message d'erreur et son titre.
-	 * @param i
 	 */
 	public TooMuchFaceLineException() {
 		message = "Il y a plus de lignes représentant une face dans le fichier qu'il ne devait y en avoir selon le nombre de lignes fournis dans l'en-tête.";

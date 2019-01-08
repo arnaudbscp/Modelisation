@@ -15,8 +15,6 @@ public class Translation implements Recopie{
 	 * @param x2 : translation verticale.
 	 * @param p : le tableau de points de la figure sur lesquels effectuer la translation.
 	 * @return le nouveau tableau de points représentant la figure après avoir effectueé la translation.
-	 * @throws MatriceNullException
-	 * @throws MatriceFormatException
 	 */
 	public Point[] creerPointsTranslate(double x1, double x2, Point[] p) {
 		BoiteaOutils bo = new BoiteaOutils(); 

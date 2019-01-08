@@ -20,8 +20,8 @@ class TestPoint {
 	/**
 	 * Méthode de test sur un point. On teste si un point est créé à partir des bonnes coordonnées.
 	 * @author Valentin
+	 * @throws IOException
 	 * @throws WrongHeaderException 
-	 *
 	 */
 	@Test
 	void testCreerPoint() throws IOException, WrongHeaderException {
@@ -45,8 +45,8 @@ class TestPoint {
 	/**
 	 * Méthode de test sur un point. On teste si un point est créé à partir des bonnes coordonnées, avec des coordonnées contenant des exposants.
 	 * @author Valentin
+	 * @throws IOException
 	 * @throws WrongHeaderException 
-	 *
 	 */
 	@Test
 	void testCreerPointExposant() throws IOException, WrongHeaderException {

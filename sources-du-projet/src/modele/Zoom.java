@@ -14,8 +14,6 @@ public class Zoom implements Recopie{
 	 * @param z : la valeur du zoom.
 	 * @param p : le tableau de points de la figure sur lesquels effectuer l'homothétie.
 	 * @return le nouveau tableau de points représentant la figure après avoir effectueé l'homothétie.
-	 * @throws MatriceNullException
-	 * @throws MatriceFormatException
 	 */
 	public Point[] creerPointZoom(double z, Point[] p) {
 		BoiteaOutils bo = new BoiteaOutils();

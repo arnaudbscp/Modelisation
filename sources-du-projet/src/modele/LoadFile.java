@@ -57,6 +57,7 @@ public class LoadFile {
 	/**
 	 * Méthode permettant de lire un fichier passé en paramètre, appelant la méthode lireStream(Reader in) 
 	 * qui va lire le stream du fichier.
+	 * @param f
 	 * @throws IOException
 	 * @throws WrongHeaderException 
 	 */
@@ -67,6 +68,7 @@ public class LoadFile {
 	/**
 	 * Méthode permettant de lire un stream sans spécifier de fichier.
 	 * Création des tableaux de Point et de Face de longueurs adéquates, sans les remplir.
+	 * @param in
 	 * @throws IOException
 	 * @throws WrongHeaderException 
 	 */
@@ -130,7 +132,8 @@ public class LoadFile {
 
 	/**
 	 * Création d'un Point dans le cas où ses coordonnées contiennent une puissance de 10.
-	 * @param ligne_point
+	 * @param lignePoint
+	 * @param idx
 	 */
 	private void creerPointsExposant(String lignePoint, int idx) {
 		// TODO Auto-generated method stub
@@ -208,6 +211,7 @@ public class LoadFile {
 	 * Récupère le nombre de points ou le nombre de faces de la figure, en fonction de la ligne passée en paramètre.
 	 * @param ligne
 	 * @return
+	 * @throws WrongHeaderException
 	 */
 	public int recupNb(String ligne) throws WrongHeaderException{
 		if(!ligne.substring(ligne.indexOf(" ", ligne.indexOf(" ")+1)+1, ligne.length()).matches("[0-9]+")) 

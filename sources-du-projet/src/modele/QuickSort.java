@@ -118,7 +118,7 @@ public final class QuickSort
 
 	/**
 	 * Méthode affichant le tableau trié (pour vérification du bon fonctionnement).
-	 * @param arr
+	 * @param tab
 	 */
 	public void printArray(Face tab[]) 
 	{ 

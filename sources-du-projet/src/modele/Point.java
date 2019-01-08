@@ -36,9 +36,9 @@ public class Point {
 	
 	/**
 	 * Constructeur créant le point dans l'espace 3D à partir des 3 coordonnées X,Y et Z. Les paramètres sont castés en float.
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param d
+	 * @param e
+	 * @param f
 	 */
 	public Point(double d, double e, double f) {
 		this.x = (float) d;
