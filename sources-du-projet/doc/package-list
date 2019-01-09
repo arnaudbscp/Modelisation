@@ -1,7 +1,6 @@
-src.donnees
+src.controleur
 src.exception
-src.ihm
-src.mecanique
-src.mouvements
-src.outils
+src.launcher
+src.modele
+src.vue
 test
