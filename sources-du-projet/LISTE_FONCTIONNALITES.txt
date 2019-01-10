@@ -1,4 +1,6 @@
-﻿Une liste des fonctionnalités implémentées par rapport au sujet qui vous a été fourni. Respectez la structure du sujet (Sect. 1: fonctions mathématiques, Sect. 2: gestion de la bibliothèque, Sect. 3: fonctionnalités supplémentaires).
+﻿----------------------------------------------------LIVRABLE 1----------------------------------------------------
+
+Une liste des fonctionnalités implémentées par rapport au sujet qui vous a été fourni. Respectez la structure du sujet (Sect. 1: fonctions mathématiques, Sect. 2: gestion de la bibliothèque, Sect. 3: fonctionnalités supplémentaires).
 
 
 1) Fonctions mathématiques

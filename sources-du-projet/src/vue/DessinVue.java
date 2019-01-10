@@ -5,6 +5,8 @@ import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JOptionPane;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -519,6 +521,8 @@ public class DessinVue extends Application implements Observer{
 				sliderZoom.setMajorTickUnit(controleur.getDefaultZoom()/2.5);
 				sliderZoom.setBlockIncrement(controleur.getDefaultZoom()/12.5);
 				sliderZoom.setShowTickLabels(true);
+				if(controleur.getInit().getLoadFile().getFaces().length > 6000)
+					JOptionPane.showMessageDialog(null, "Attention ! Cette figure est assez lourde à charger et les mouvements que vous effectuez dessus peuvent mettre du temps à s'afficher.", "Attention !",JOptionPane.WARNING_MESSAGE);
 			}
 		}
 	}
@@ -562,7 +566,7 @@ public class DessinVue extends Application implements Observer{
 		QuickSort.getInstance().setTab(faces);
 		QuickSort.getInstance().sort();
 		for (int i = 0; i < faces.length; i++) {
-			//System.out.println(i+" "+faces[i]); //Problème avec les coordonnées Y des points de la face, toutes à 0. C'est surement ça qui cause les problèmes d'affichage.
+			//System.out.println(i+" "+faces[i]); //Problème d'affichage des faces selon certains angles.
 			px = new double[] {	faces[i].getPoints()[0].getX() + (gc.getCanvas().getWidth()/2), 
 								faces[i].getPoints()[1].getX() + (gc.getCanvas().getWidth()/2), 
 								faces[i].getPoints()[2].getX() + (gc.getCanvas().getWidth()/2)};
